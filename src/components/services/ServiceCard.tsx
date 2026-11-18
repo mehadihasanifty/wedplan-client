@@ -1,8 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowUpRight, Flower2, MapPin } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import type { Service } from "@/types";
 
 export function ServiceCard({ service }: { service: Service }) {
+  const reduceMotion = useReducedMotion();
   const id = service.id ?? service._id;
   const image = service.images?.[0] ?? service.serviceImage;
   const vendorName = service.vendor?.businessName || service.vendor?.name || service.businessName || service.vendorName || "Wedding professional";
@@ -11,7 +15,7 @@ export function ServiceCard({ service }: { service: Service }) {
     : service.price.toLocaleString("en");
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border/70 bg-card transition-all duration-300 hover:-translate-y-1 hover:border-rose-200 hover:shadow-xl hover:shadow-rose-950/8">
+    <motion.article whileHover={reduceMotion ? undefined : { y: -6, scale: 1.01 }} transition={{ type: "spring", stiffness: 280, damping: 24 }} className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border/70 bg-card transition-[border-color,box-shadow] duration-300 hover:border-rose-200 hover:shadow-xl hover:shadow-rose-950/8">
       <Link href={id ? `/services/${encodeURIComponent(id)}` : "/services"} aria-label={`View ${service.serviceName} details`} className="relative block aspect-[1.55/1] overflow-hidden bg-gradient-to-br from-rose-100 via-[#f8eee4] to-amber-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-rose-500 dark:from-rose-950/50 dark:via-stone-900 dark:to-amber-950/40">
         {image ? <div role="img" aria-label={`${service.serviceName} service`} className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style={{ backgroundImage: `url("${image}")` }} /> : <div className="absolute inset-0 flex items-center justify-center"><span className="flex size-16 items-center justify-center rounded-full border border-white/70 bg-white/55 text-rose-800 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-black/20 dark:text-rose-200"><Flower2 aria-hidden="true" size={28} strokeWidth={1.4} /></span></div>}
         <span className="absolute left-4 top-4 rounded-full border border-white/60 bg-white/90 px-3 py-1.5 text-xs font-medium text-stone-800 shadow-sm backdrop-blur">{service.category}</span>
@@ -24,6 +28,6 @@ export function ServiceCard({ service }: { service: Service }) {
           <Link href={id ? `/services/${encodeURIComponent(id)}` : "/services"} className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-rose-50 px-3.5 py-2 text-xs font-semibold text-rose-800 transition hover:bg-rose-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 dark:bg-rose-950/40 dark:text-rose-200 dark:hover:bg-rose-950/70">View details<ArrowUpRight aria-hidden="true" size={14} /></Link>
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }

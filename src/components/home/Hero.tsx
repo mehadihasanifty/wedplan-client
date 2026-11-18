@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowDown, ArrowRight, Heart, Sparkles } from "lucide-react";
 import { Reveal } from "@/components/home/Reveal";
-import { WeddingIllustration } from "@/components/home/WeddingIllustration";
+import { HeroArtwork } from "@/components/home/HeroArtwork";
 
 export function Hero() {
   return (
@@ -18,9 +18,7 @@ export function Hero() {
           </div>
           <div className="mt-9 flex items-center gap-3 text-sm text-stone-600 dark:text-stone-300"><span className="flex -space-x-2"><span className="flex size-8 items-center justify-center rounded-full border-2 border-[#fbf6f1] bg-rose-200 text-rose-800 dark:border-[#211a1b]"><Heart aria-hidden="true" size={13} /></span><span className="flex size-8 items-center justify-center rounded-full border-2 border-[#fbf6f1] bg-amber-100 text-amber-800 dark:border-[#211a1b]"><Sparkles aria-hidden="true" size={13} /></span></span><span>One thoughtful place for your wedding plans</span></div>
         </Reveal>
-        <Reveal delay={0.12} className="mx-auto w-full max-w-[520px] lg:max-w-none">
-          <div className="relative rounded-[1.75rem] shadow-[0_30px_70px_-42px_rgba(91,48,54,0.5)]"><WeddingIllustration /><div aria-hidden="true" className="absolute -bottom-4 -left-4 -z-10 h-1/2 w-1/2 rounded-[2rem] border border-rose-200/80 dark:border-rose-100/10" /></div>
-        </Reveal>
+        <HeroArtwork />
       </div>
     </section>
   );
