@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BadgeDollarSign, CalendarDays, ChartNoAxesCombined, CircleUserRound, CreditCard, LayoutDashboard, Plus, Sparkles, Store, Users, type LucideIcon } from "lucide-react";
+import { BadgeDollarSign, CalendarDays, ChartNoAxesCombined, CircleUserRound, CreditCard, LayoutDashboard, Plus, Settings2, Sparkles, Store, Users, type LucideIcon } from "lucide-react";
 import type { UserRole } from "@/types";
 
 const navigation: Record<UserRole, { href: string; label: string; icon: LucideIcon }[]> = {
   vendor: [{ href: "/dashboard/vendor", label: "Overview", icon: LayoutDashboard }, { href: "/dashboard/vendor/my-services", label: "My services", icon: Store }, { href: "/dashboard/vendor/add-service", label: "Add service", icon: Plus }, { href: "/dashboard/vendor/booking-requests", label: "Booking requests", icon: CalendarDays }, { href: "/dashboard/vendor/subscription", label: "Subscription", icon: CreditCard }],
-  customer: [{ href: "/dashboard/customer", label: "Overview", icon: LayoutDashboard }, { href: "/dashboard/customer/my-bookings", label: "My bookings", icon: CalendarDays }],
+  customer: [{ href: "/dashboard/customer", label: "Overview", icon: LayoutDashboard }, { href: "/dashboard/customer/my-bookings", label: "My bookings", icon: CalendarDays }, { href: "/dashboard/customer/profile-settings", label: "Profile settings", icon: Settings2 }],
   admin: [{ href: "/dashboard/admin", label: "Overview", icon: LayoutDashboard }, { href: "/dashboard/admin/users", label: "Users", icon: Users }, { href: "/dashboard/admin/services", label: "Services", icon: Store }, { href: "/dashboard/admin/transactions", label: "Transactions", icon: BadgeDollarSign }],
 };
 
