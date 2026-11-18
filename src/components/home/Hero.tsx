@@ -1,2 +1,27 @@
 import Link from "next/link";
-export function Hero() { return <section className="rounded-3xl bg-rose-50 px-6 py-20 text-center dark:bg-rose-950/20 sm:px-12"><p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-primary">Your day, beautifully planned</p><h1 className="mx-auto max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">Find the people who make your wedding unforgettable.</h1><p className="mx-auto mt-6 max-w-xl text-muted-foreground">Discover trusted wedding professionals and bring your celebration together.</p><Link href="/services" className="mt-8 inline-flex rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground">Explore wedding services</Link></section>; }
+import { ArrowDown, ArrowRight, Heart, Sparkles } from "lucide-react";
+import { Reveal } from "@/components/home/Reveal";
+import { WeddingIllustration } from "@/components/home/WeddingIllustration";
+
+export function Hero() {
+  return (
+    <section className="relative isolate overflow-hidden rounded-[2rem] bg-[#fbf6f1] px-6 py-10 dark:bg-[#211a1b] sm:px-10 sm:py-14 lg:px-14 lg:py-16">
+      <div aria-hidden="true" className="pointer-events-none absolute -left-28 top-8 size-72 rounded-full bg-rose-200/40 blur-3xl dark:bg-rose-500/10" />
+      <div className="relative z-10 grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+        <Reveal className="max-w-2xl">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-rose-200/80 bg-white/80 px-3.5 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-rose-800 shadow-sm dark:border-rose-300/15 dark:bg-white/5 dark:text-rose-200"><Sparkles aria-hidden="true" size={14} />Wedding planning, made personal</div>
+          <h1 className="text-balance text-4xl font-semibold leading-[1.08] tracking-[-0.045em] text-[#352321] dark:text-rose-50 sm:text-5xl lg:text-6xl">Find the people who make your day <span className="font-serif font-normal italic text-rose-700 dark:text-rose-300">unforgettable.</span></h1>
+          <p className="mt-6 max-w-xl text-base leading-7 text-stone-600 dark:text-stone-300 sm:text-lg sm:leading-8">From the first idea to the final detail, discover wedding professionals who bring your celebration to life.</p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link href="/services" className="group inline-flex items-center justify-center gap-2 rounded-full bg-rose-800 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-rose-950/15 transition hover:-translate-y-0.5 hover:bg-rose-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2 dark:bg-rose-300 dark:text-rose-950 dark:hover:bg-rose-200">Explore Wedding Services<ArrowRight aria-hidden="true" size={17} className="transition-transform group-hover:translate-x-1" /></Link>
+            <a href="#how-it-works" className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-medium text-stone-700 transition hover:bg-white/70 dark:text-stone-200 dark:hover:bg-white/5">See how it works<ArrowDown aria-hidden="true" size={15} /></a>
+          </div>
+          <div className="mt-9 flex items-center gap-3 text-sm text-stone-600 dark:text-stone-300"><span className="flex -space-x-2"><span className="flex size-8 items-center justify-center rounded-full border-2 border-[#fbf6f1] bg-rose-200 text-rose-800 dark:border-[#211a1b]"><Heart aria-hidden="true" size={13} /></span><span className="flex size-8 items-center justify-center rounded-full border-2 border-[#fbf6f1] bg-amber-100 text-amber-800 dark:border-[#211a1b]"><Sparkles aria-hidden="true" size={13} /></span></span><span>One thoughtful place for your wedding plans</span></div>
+        </Reveal>
+        <Reveal delay={0.12} className="mx-auto w-full max-w-[520px] lg:max-w-none">
+          <div className="relative rounded-[1.75rem] shadow-[0_30px_70px_-42px_rgba(91,48,54,0.5)]"><WeddingIllustration /><div aria-hidden="true" className="absolute -bottom-4 -left-4 -z-10 h-1/2 w-1/2 rounded-[2rem] border border-rose-200/80 dark:border-rose-100/10" /></div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
