@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
+import { APIError } from "better-auth/api";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 
 const mongoUrl = process.env.MONGODB_URL?.trim();
 if (!mongoUrl) {
@@ -18,6 +19,12 @@ if (process.env.NODE_ENV !== "production") {
 
 export const authDb = mongoClient.db();
 
+function idOptions(id: string) {
+  const options: (string | ObjectId)[] = [id];
+  if (ObjectId.isValid(id) && new ObjectId(id).toHexString() === id.toLowerCase()) options.push(new ObjectId(id));
+  return options;
+}
+
 export const auth = betterAuth({
   appName: "WedPlan",
   baseURL: process.env.BETTER_AUTH_URL?.trim() || "http://localhost:3000",
@@ -31,10 +38,16 @@ export const auth = betterAuth({
     additionalFields: {
       // Public sign-up may choose a customer or vendor account, never admin.
       role: {
-        type: ["customer", "vendor"],
+        type: "string",
         required: false,
         defaultValue: "customer",
         input: true,
+      },
+      blocked: {
+        type: "boolean",
+        required: false,
+        defaultValue: false,
+        input: false,
       },
     },
   },
@@ -48,4 +61,28 @@ export const auth = betterAuth({
         },
       }
     : {}),
+  databaseHooks: {
+    user: {
+      create: {
+        before: async (user) => {
+          const role = user.role ?? "customer";
+          if (role !== "customer" && role !== "vendor") {
+            throw new APIError("BAD_REQUEST", { message: "Public accounts can only be customers or vendors." });
+          }
+          return { data: { ...user, role } };
+        },
+      },
+    },
+    session: {
+      create: {
+        before: async (session) => {
+          const user = await authDb.collection("user").findOne({ _id: { $in: idOptions(session.userId) } } as never);
+          if (user?.blocked === true) {
+            throw new APIError("FORBIDDEN", { message: "This account is blocked. Contact WedPlan support." });
+          }
+          return { data: session };
+        },
+      },
+    },
+  },
 });

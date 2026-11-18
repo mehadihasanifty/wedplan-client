@@ -1,3 +1,2 @@
-import { PageHeader } from "@/components/shared/PageHeader";
-import { EmptyState } from "@/components/shared/EmptyState";
-export default function AdminOverviewPage() { return <><PageHeader title="Admin overview" description="Monitor users, vendors, services, and platform transactions." /><EmptyState title="Dashboard data will appear here" /></>; }
+import { AdminOverview } from "@/components/dashboard/admin/AdminDashboard";
+export default function AdminOverviewPage() { return <AdminOverview />; }

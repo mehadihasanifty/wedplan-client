@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { ArrowLeft, ArrowRight, Flower2, SlidersHorizontal } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
-import { getServices } from "@/services/service-api";
+import { getPublicServices } from "@/services/service-api";
 import type { Service } from "@/types";
 import { ServiceCard } from "@/components/services/ServiceCard";
 import { ServiceFilters, type ServiceFilterValues } from "@/components/services/ServiceFilters";
@@ -28,7 +28,7 @@ function ServiceGridContent({ initialCategory }: { initialCategory: string }) {
 
   useEffect(() => {
     let active = true;
-    getServices({ status: "approved", isActive: "true", limit: 100 })
+    getPublicServices({ limit: 100 })
       .then(data => { if (active) { setServices(data.filter(service => service.status === "approved" && service.isActive === true)); setError(false); } })
       .catch(() => { if (active) setError(true); })
       .finally(() => { if (active) setLoading(false); });

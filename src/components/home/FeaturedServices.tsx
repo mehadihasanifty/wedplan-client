@@ -8,7 +8,7 @@ import { ServiceCard } from "@/components/services/ServiceCard";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { Loading } from "@/components/shared/Loading";
-import { getServices } from "@/services/service-api";
+import { getPublicServices } from "@/services/service-api";
 import type { Service } from "@/types";
 
 export function FeaturedServices() {
@@ -18,7 +18,7 @@ export function FeaturedServices() {
 
   useEffect(() => {
     let active = true;
-    getServices({ status: "approved", isActive: "true", limit: 18 })
+    getPublicServices({ limit: 18 })
       .then(results => {
         if (!active) return;
         setServices(results.filter(service => service.status === "approved" && service.isActive === true).slice(0, 6));
