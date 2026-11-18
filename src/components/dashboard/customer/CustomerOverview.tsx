@@ -33,14 +33,19 @@ export function CustomerOverview() {
   const firstName = user?.name?.trim().split(/\s+/)[0] || "there";
 
   return <div className="mx-auto max-w-7xl">
-    <header className="relative mb-7 overflow-hidden rounded-[1.8rem] border border-[#e9d9cf] bg-[linear-gradient(120deg,#fffaf6,#f8eee8_58%,#f1e3db)] px-5 py-7 shadow-[0_24px_65px_-52px_rgba(82,43,44,.42)] sm:px-8 sm:py-9">
+    <header className="relative mb-7 overflow-hidden rounded-[1.8rem] border border-[#e9d9cf] bg-[linear-gradient(120deg,#fffaf6,#f8eee8_58%,#f1e3db)] px-5 py-6 shadow-[0_24px_65px_-52px_rgba(82,43,44,.42)] sm:px-8 sm:py-9">
       <div aria-hidden="true" className="pointer-events-none absolute -right-12 -top-24 size-72 rounded-full border border-rose-900/[.07]" />
-      <div aria-hidden="true" className="pointer-events-none absolute right-12 top-8 size-48 rounded-full bg-rose-200/30 blur-3xl" />
-      <div className="relative flex flex-wrap items-end justify-between gap-5">
-        <div><p className="text-[10px] font-semibold uppercase tracking-[0.19em] text-rose-800">Your celebration, thoughtfully planned</p><h1 className="mt-2 text-3xl font-semibold tracking-[-0.045em] text-[#352321] sm:text-4xl">Welcome, {firstName}.</h1><p className="mt-2 max-w-xl text-sm leading-6 text-stone-600">Keep every conversation and booking request in one lovely place.</p></div>
-        <Link href="/services" className="inline-flex items-center gap-2 rounded-full bg-rose-800 px-4 py-3 text-xs font-semibold text-white shadow-md shadow-rose-950/10 transition hover:-translate-y-0.5 hover:bg-rose-900"><Compass size={15} />Explore services</Link>
+      <div aria-hidden="true" className="pointer-events-none absolute right-3 top-2 size-48 rounded-full bg-rose-200/30 blur-3xl sm:right-12 sm:top-8" />
+      <div className="relative grid grid-cols-[minmax(0,1fr)_4.25rem] items-center gap-3 sm:grid-cols-[minmax(0,1fr)_7rem] sm:gap-6">
+        <div className="min-w-0"><p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-rose-800 sm:text-[10px] sm:tracking-[0.19em]">Your celebration, thoughtfully planned</p><h1 className="mt-2 text-2xl font-semibold tracking-[-0.045em] text-[#352321] sm:text-4xl">Welcome, {firstName}.</h1><p className="mt-2 max-w-xl text-xs leading-5 text-stone-600 sm:text-sm sm:leading-6">Keep every conversation and booking request in one lovely place.</p><Link href="/services" className="mt-4 inline-flex items-center gap-2 rounded-full bg-rose-800 px-4 py-2.5 text-xs font-semibold text-white shadow-md shadow-rose-950/10 transition hover:-translate-y-0.5 hover:bg-rose-900 sm:mt-5 sm:py-3"><Compass size={15} />Explore services<ArrowRight aria-hidden="true" size={13} /></Link></div>
+        <div aria-label="WedPlan floral emblem" role="img" className="relative mx-auto grid size-16 place-items-center rounded-[1.25rem] border border-white/90 bg-[linear-gradient(145deg,rgba(255,255,255,.92),rgba(250,231,232,.82))] text-rose-800 shadow-[0_14px_35px_-18px_rgba(139,46,76,.4)] ring-1 ring-rose-200/55 sm:size-28 sm:rounded-[1.75rem]">
+          <span aria-hidden="true" className="absolute inset-1.5 rounded-[1rem] border border-rose-200/70 sm:inset-2.5 sm:rounded-[1.25rem]" />
+          <span aria-hidden="true" className="absolute size-10 rounded-full bg-rose-200/50 blur-md sm:size-16" />
+          <Flower2 aria-hidden="true" size={27} strokeWidth={1.45} className="relative sm:hidden" />
+          <Flower2 aria-hidden="true" size={43} strokeWidth={1.35} className="relative hidden sm:block" />
+          <span aria-hidden="true" className="absolute -right-1 -top-1 size-2.5 rounded-full border-2 border-[#fbf3ed] bg-rose-400 sm:-right-1.5 sm:-top-1.5 sm:size-3.5" />
+        </div>
       </div>
-      <div className="pointer-events-none absolute bottom-5 right-8 hidden size-14 items-center justify-center rounded-2xl border border-white/80 bg-white/55 text-rose-700/80 shadow-sm backdrop-blur-sm sm:flex"><Flower2 size={25} strokeWidth={1.4} /></div>
     </header>
 
     {loading ? <Loading label="Gathering your booking activity…" /> : error ? <ErrorState message="We couldn’t load your booking activity. Please refresh and try again." /> : <>
