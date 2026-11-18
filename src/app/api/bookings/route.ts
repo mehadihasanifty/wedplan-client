@@ -64,9 +64,12 @@ export async function POST(request: Request) {
   const eventDate = typeof body?.eventDate === "string" ? body.eventDate.trim() : "";
   const eventLocation = typeof body?.eventLocation === "string" ? body.eventLocation.trim() : "";
   const message = typeof body?.message === "string" ? body.message.trim() : "";
+  const parsedDate = /^\d{4}-\d{2}-\d{2}$/.test(eventDate) ? new Date(`${eventDate}T00:00:00.000Z`) : null;
+  const validDate = Boolean(parsedDate && !Number.isNaN(parsedDate.getTime()) && parsedDate.toISOString().slice(0, 10) === eventDate);
+  const today = new Date().toISOString().slice(0, 10);
 
-  if (!serviceId || !/^\d{4}-\d{2}-\d{2}$/.test(eventDate) || Number.isNaN(Date.parse(`${eventDate}T00:00:00.000Z`)) || !eventLocation || eventLocation.length > 200 || message.length > 2000) {
-    return Response.json({ message: "Enter a valid event date and location. The location can be up to 200 characters and the message up to 2,000 characters." }, { status: 400 });
+  if (!serviceId || serviceId.length > 100 || !validDate || eventDate < today || !eventLocation || eventLocation.length > 200 || message.length > 2000) {
+    return Response.json({ message: "Choose today or a future event date and enter a location. The location can be up to 200 characters and the message up to 2,000 characters." }, { status: 400 });
   }
 
   const service = await authDb.collection("services").findOne({

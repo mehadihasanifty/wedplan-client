@@ -33,8 +33,8 @@ export function BookingForm({ service }: { service: Service }) {
     try {
       await createBooking({ serviceId: id, eventDate, eventLocation: eventLocation.trim(), message: message.trim() || undefined });
       setSent(true); router.refresh();
-    } catch {
-      setError("Your request could not be sent. Please check your details and try again.");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Your request could not be sent. Please check your details and try again.");
     } finally { setSubmitting(false); }
   }
 

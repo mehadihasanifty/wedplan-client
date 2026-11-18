@@ -1,16 +1,24 @@
-import { api } from "@/lib/api";
 import type { Booking, BookingStatus } from "@/types";
 
 export type CreateBookingInput = Pick<Booking, "serviceId" | "eventDate" | "eventLocation" | "message">;
 
-export async function createBooking(input: CreateBookingInput) {
-  const { data } = await api.post<Booking>("/bookings", input);
-  return data;
+async function bookingRequest<T>(url: string, init?: RequestInit) {
+  const response = await fetch(url, {
+    ...init,
+    credentials: "same-origin",
+    headers: { "Content-Type": "application/json", ...init?.headers },
+  });
+  const data = await response.json() as T | { message?: string };
+  if (!response.ok) throw new Error((data as { message?: string }).message || "The booking request could not be completed.");
+  return data as T;
 }
 
-export async function getVendorBookings(vendorId: string) {
-  const { data } = await api.get<Booking[]>("/bookings", { params: { vendorId, limit: 100 } });
-  return data;
+export async function createBooking(input: CreateBookingInput) {
+  return bookingRequest<Booking>("/api/bookings", { method: "POST", body: JSON.stringify(input) });
+}
+
+export async function getVendorBookings(_vendorId: string) {
+  return bookingRequest<Booking[]>("/api/vendor/bookings?limit=100", { cache: "no-store" });
 }
 
 export async function getCustomerBookings(customerId: string) {
@@ -23,8 +31,7 @@ export async function getCustomerBookings(customerId: string) {
 }
 
 export async function updateBookingStatus(id: string, status: Extract<BookingStatus, "accepted" | "rejected">) {
-  const { data } = await api.patch<Booking>(`/bookings/${encodeURIComponent(id)}`, { status });
-  return data;
+  return bookingRequest<Booking>(`/api/vendor/bookings/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ status }) });
 }
 
 export async function cancelBooking(id: string) {
