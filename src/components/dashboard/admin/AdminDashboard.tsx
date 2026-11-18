@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Activity, ArrowRight, BadgeCheck, Ban, Check, CircleDollarSign, CircleUserRound, Clock3, Eye, Filter, Search, Store, Trash2, Users, X } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -53,30 +53,29 @@ export function AdminUsers() {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [role, setRole] = useState("all");
+  const [role, setRole] = useState(() => {
+    if (typeof window === "undefined") return "all";
+    const requestedRole = new URLSearchParams(window.location.search).get("role");
+    return ["admin", "vendor", "customer"].includes(requestedRole || "") ? requestedRole || "all" : "all";
+  });
   const [expanded, setExpanded] = useState("");
   const [busyId, setBusyId] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [notice, setNotice] = useState("");
 
-  useEffect(() => {
-    const requestedRole = new URLSearchParams(window.location.search).get("role");
-    if (["admin", "vendor", "customer"].includes(requestedRole || "")) setRole(requestedRole || "all");
-  }, []);
-
+  const query = useMemo(() => new URLSearchParams({ search, role, page: String(page) }).toString(), [search, role, page]);
   useEffect(() => {
     let active = true;
+    setLoading(true);
     const timer = window.setTimeout(() => {
-      setLoading(true);
-      const query = new URLSearchParams({ search, role, page: String(page) });
       requestJson<{ users: AdminUser[]; total: number }>(`/api/admin/users?${query}`)
         .then((result) => { if (active) { setUsers(result.users); setTotal(result.total); setError(""); } })
         .catch((cause) => { if (active) setError(cause instanceof Error ? cause.message : "Could not load users."); })
         .finally(() => { if (active) setLoading(false); });
     }, 180);
     return () => { active = false; window.clearTimeout(timer); };
-  }, [search, role, page]);
+  }, [query]);
 
   async function setBlocked(user: AdminUser, blocked: boolean) {
     const id = itemId(user);
@@ -101,49 +100,139 @@ export function AdminUsers() {
 export function AdminServices() {
   const [services, setServices] = useState<AdminService[]>([]);
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("all");
+  const [status, setStatus] = useState(() => {
+    if (typeof window === "undefined") return "all";
+    const requestedStatus = new URLSearchParams(window.location.search).get("status");
+    return ["pending", "approved", "rejected"].includes(requestedStatus || "") ? requestedStatus || "all" : "all";
+  });
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState("");
   const [deleteId, setDeleteId] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
 
-  useEffect(() => {
-    const requestedStatus = new URLSearchParams(window.location.search).get("status");
-    if (["pending", "approved", "rejected"].includes(requestedStatus || "")) setStatus(requestedStatus || "all");
-  }, []);
-
   const query = useMemo(() => new URLSearchParams({ search, status }).toString(), [search, status]);
-  const load = useCallback(async () => {
-    setLoading(true);
-    try { setServices(await requestJson<AdminService[]>(`/api/admin/services?${query}`)); setError(""); }
-    catch (cause) { setError(cause instanceof Error ? cause.message : "Could not load services."); }
-    finally { setLoading(false); }
+  useEffect(() => {
+    let active = true;
+    requestJson<AdminService[]>(`/api/admin/services?${query}`)
+      .then((items) => { if (active) { setServices(items); setError(""); } })
+      .catch((cause) => { if (active) setError(cause instanceof Error ? cause.message : "Could not load services."); })
+      .finally(() => { if (active) setLoadedQuery(query); });
+    return () => { active = false; };
   }, [query]);
-  useEffect(() => { void load(); }, [load]);
 
   async function moderate(service: AdminService, nextStatus: ServiceStatus) {
     const id = itemId(service); if (!id) return;
     setBusyId(id); setError(""); setNotice("");
-    try { const updated = await requestJson<AdminService>(`/api/admin/services/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ status: nextStatus }) }); setServices((current) => current.map((item) => itemId(item) === id ? { ...item, ...updated } : item)); setNotice(`${service.serviceName} is now ${nextStatus}.`); }
-    catch (cause) { setError(cause instanceof Error ? cause.message : "Could not update service status."); }
-    finally { setBusyId(""); }
+    try {
+      const updated = await requestJson<AdminService>(`/api/admin/services/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ status: nextStatus }) });
+      setServices((current) => current.map((item) => itemId(item) === id ? { ...item, ...updated } : item));
+      setNotice(`${service.serviceName} is now ${nextStatus}.`);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not update service status.");
+    } finally {
+      setBusyId("");
+    }
   }
+
   async function remove(service: AdminService) {
     const id = itemId(service); if (!id) return;
     setBusyId(id); setError("");
-    try { await requestJson(`/api/admin/services/${encodeURIComponent(id)}`, { method: "DELETE" }); setServices((current) => current.filter((item) => itemId(item) !== id)); setDeleteId(""); setNotice(`${service.serviceName} was deleted.`); }
-    catch (cause) { setError(cause instanceof Error ? cause.message : "Could not delete service."); }
-    finally { setBusyId(""); }
+    try {
+      await requestJson(`/api/admin/services/${encodeURIComponent(id)}`, { method: "DELETE" });
+      setServices((current) => current.filter((item) => itemId(item) !== id));
+      setDeleteId("");
+      setNotice(`${service.serviceName} was deleted.`);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not delete service.");
+    } finally {
+      setBusyId("");
+    }
   }
 
-  return <div className="mx-auto max-w-7xl"><Header eyebrow="Listing moderation" title="Manage services" description="Review every submission and control which listings remain published." />
-    <div className="mb-4 grid gap-3 rounded-[1.4rem] border border-[#eee3dc] bg-white p-4 sm:grid-cols-[1fr_220px] sm:p-5"><label className="relative"><span className="sr-only">Search services</span><Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400" /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search name, category, or location" className="h-11 w-full rounded-xl border border-[#e9ded6] bg-[#fffdfa] pl-10 pr-3 text-sm outline-none focus:border-rose-400 focus:ring-4 focus:ring-rose-100/70" /></label><label className="relative"><span className="sr-only">Filter service status</span><Filter size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400" /><select value={status} onChange={(event) => setStatus(event.target.value)} className="h-11 w-full appearance-none rounded-xl border border-[#e9ded6] bg-[#fffdfa] pl-10 pr-9 text-sm text-stone-700 outline-none"><option value="all">All services</option><option value="pending">Pending review</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select></label></div>
-    {notice && <p role="status" className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs text-emerald-900">{notice}</p>}{error && <div className="mb-4"><ErrorState message={error} /></div>}
-    {loading ? <Loading label="Loading submitted services…" /> : services.length === 0 ? <div className="rounded-[1.5rem] border border-dashed border-[#eadfd5] bg-white p-10 text-center"><Store size={24} className="mx-auto text-rose-700" /><h2 className="mt-3 text-sm font-semibold text-stone-800">No services in this view</h2><p className="mt-1 text-xs text-stone-500">Try a different status filter or search term.</p></div> : <div className="grid gap-4 xl:grid-cols-2">{services.map((service, index) => { const id = itemId(service) || `${service.serviceName}-${index}`; const image = service.images?.[0] || service.serviceImage; return <article key={id} className="overflow-hidden rounded-[1.5rem] border border-[#eee3dc] bg-white shadow-[0_15px_40px_-34px_rgba(82,43,44,.38)]"><div className="flex gap-4 p-4 sm:p-5"><div className="flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-rose-100 to-amber-100 text-rose-800">{image ? <span role="img" aria-label={`${service.serviceName} photo`} className="size-full bg-cover bg-center" style={{ backgroundImage: `url("${image}")` }} /> : <Store size={24} />}</div><div className="min-w-0 flex-1"><div className="flex flex-wrap items-start justify-between gap-2"><div><h2 className="text-sm font-semibold text-stone-900">{service.serviceName}</h2><p className="mt-1 text-xs text-stone-500">{service.category || "Uncategorized"} · {service.location || "Location not set"}</p></div><span className={`rounded-full px-3 py-1.5 text-[10px] font-semibold capitalize ${service.status === "approved" ? "bg-emerald-50 text-emerald-800" : service.status === "rejected" ? "bg-rose-50 text-rose-800" : "bg-amber-50 text-amber-800"}`}>{service.status || "pending"}</span></div><p className="mt-3 text-xs font-semibold text-stone-800">{service.vendor?.businessName || service.vendor?.name || "Vendor"}<span className="ml-2 font-normal text-stone-500">{service.vendor?.email || ""}</span></p><p className="mt-1 text-[10px] text-stone-500">{typeof service.price === "number" ? new Intl.NumberFormat("en", { style: "currency", currency: service.currency || "USD", maximumFractionDigits: 0 }).format(service.price) : "Price not set"} · Submitted {shortDate(service.createdAt)} · {service.isActive ? "Available" : "Unavailable"}</p></div></div>
-      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#f0e8e2] bg-[#fffdfa] px-4 py-3 sm:px-5">{service.status === "pending" ? <div className="flex gap-2"><button type="button" disabled={busyId === id} onClick={() => moderate(service, "approved")} className="inline-flex h-9 items-center gap-1.5 rounded-full bg-emerald-700 px-3.5 text-[10px] font-semibold text-white hover:bg-emerald-800 disabled:opacity-50"><Check size={13} />Approve</button><button type="button" disabled={busyId === id} onClick={() => moderate(service, "rejected")} className="inline-flex h-9 items-center gap-1.5 rounded-full border border-rose-200 px-3.5 text-[10px] font-semibold text-rose-800 hover:bg-rose-50 disabled:opacity-50"><X size={13} />Reject</button></div> : <label className="flex items-center gap-2 text-[10px] font-semibold text-stone-600">Change status<select value={service.status || "pending"} disabled={busyId === id} onChange={(event) => moderate(service, event.target.value as ServiceStatus)} className="h-9 rounded-full border border-[#eadfd5] bg-white px-3 text-[10px] capitalize text-stone-700 disabled:opacity-50"><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select></label>}{deleteId === id ? <div className="flex items-center gap-2"><span className="text-[10px] text-rose-800">Delete permanently?</span><button type="button" onClick={() => setDeleteId("")} className="rounded-full px-2 py-1.5 text-[10px] font-semibold text-stone-600">Keep</button><button type="button" disabled={busyId === id} onClick={() => remove(service)} className="rounded-full bg-rose-800 px-3 py-1.5 text-[10px] font-semibold text-white disabled:opacity-50">Delete</button></div> : <button type="button" onClick={() => setDeleteId(id)} className="inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-[10px] font-semibold text-rose-800 hover:bg-rose-50"><Trash2 size={13} />Delete</button>}</div>
-    </article>; })}</div>}
-  </div>;
+  return (
+    <div className="mx-auto max-w-7xl">
+      <Header eyebrow="Listing moderation" title="Manage services" description="Review every submission and control which listings remain published." />
+      <div className="mb-4 grid gap-3 rounded-[1.4rem] border border-[#eee3dc] bg-white p-4 sm:grid-cols-[1fr_220px] sm:p-5">
+        <label className="relative">
+          <span className="sr-only">Search services</span>
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400" />
+          <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search name, category, or location" className="h-11 w-full rounded-xl border border-[#e9ded6] bg-[#fffdfa] pl-10 pr-3 text-sm outline-none focus:border-rose-400 focus:ring-4 focus:ring-rose-100/70" />
+        </label>
+        <label className="relative">
+          <span className="sr-only">Filter service status</span>
+          <Filter size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400" />
+          <select value={status} onChange={(event) => setStatus(event.target.value)} className="h-11 w-full appearance-none rounded-xl border border-[#e9ded6] bg-[#fffdfa] pl-10 pr-9 text-sm text-stone-700 outline-none">
+            <option value="all">All services</option>
+            <option value="pending">Pending review</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </label>
+      </div>
+      {notice && <p role="status" className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs text-emerald-900">{notice}</p>}
+      {error && <div className="mb-4"><ErrorState message={error} /></div>}
+      {loading ? <Loading label="Loading submitted services…" /> : services.length === 0 ? (
+        <div className="rounded-[1.5rem] border border-dashed border-[#eadfd5] bg-white p-10 text-center">
+          <Store size={24} className="mx-auto text-rose-700" />
+          <h2 className="mt-3 text-sm font-semibold text-stone-800">No services in this view</h2>
+          <p className="mt-1 text-xs text-stone-500">Try a different status filter or search term.</p>
+        </div>
+      ) : (
+        <div className="grid gap-4 xl:grid-cols-2">
+          {services.map((service, index) => {
+            const id = itemId(service) || `${service.serviceName}-${index}`;
+            const image = service.images?.[0] || service.serviceImage;
+            return (
+              <article key={id} className="overflow-hidden rounded-[1.5rem] border border-[#eee3dc] bg-white shadow-[0_15px_40px_-34px_rgba(82,43,44,.38)]">
+                <div className="flex gap-4 p-4 sm:p-5">
+                  <div className="flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-linear-to-br from-rose-100 to-amber-100 text-rose-800">
+                    {image ? <span role="img" aria-label={`${service.serviceName} photo`} className="size-full bg-cover bg-center" style={{ backgroundImage: `url("${image}")` }} /> : <Store size={24} />}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                      <div>
+                        <h2 className="text-sm font-semibold text-stone-900">{service.serviceName}</h2>
+                        <p className="mt-1 text-xs text-stone-500">{service.category || "Uncategorized"} · {service.location || "Location not set"}</p>
+                      </div>
+                      <span className={`rounded-full px-3 py-1.5 text-[10px] font-semibold capitalize ${service.status === "approved" ? "bg-emerald-50 text-emerald-800" : service.status === "rejected" ? "bg-rose-50 text-rose-800" : "bg-amber-50 text-amber-800"}`}>{service.status || "pending"}</span>
+                    </div>
+                    <p className="mt-3 text-xs font-semibold text-stone-800">{service.vendor?.businessName || service.vendor?.name || "Vendor"}<span className="ml-2 font-normal text-stone-500">{service.vendor?.email || ""}</span></p>
+                    <p className="mt-1 text-[10px] text-stone-500">{typeof service.price === "number" ? new Intl.NumberFormat("en", { style: "currency", currency: service.currency || "USD", maximumFractionDigits: 0 }).format(service.price) : "Price not set"} · Submitted {shortDate(service.createdAt)} · {service.isActive ? "Available" : "Unavailable"}</p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#f0e8e2] bg-[#fffdfa] px-4 py-3 sm:px-5">
+                  {service.status === "pending" ? (
+                    <div className="flex gap-2">
+                      <button type="button" disabled={busyId === id} onClick={() => moderate(service, "approved")} className="inline-flex h-9 items-center gap-1.5 rounded-full bg-emerald-700 px-3.5 text-[10px] font-semibold text-white hover:bg-emerald-800 disabled:opacity-50"><Check size={13} />Approve</button>
+                      <button type="button" disabled={busyId === id} onClick={() => moderate(service, "rejected")} className="inline-flex h-9 items-center gap-1.5 rounded-full border border-rose-200 px-3.5 text-[10px] font-semibold text-rose-800 hover:bg-rose-50 disabled:opacity-50"><X size={13} />Reject</button>
+                    </div>
+                  ) : (
+                    <label className="flex items-center gap-2 text-[10px] font-semibold text-stone-600">Change status
+                      <select value={service.status || "pending"} disabled={busyId === id} onChange={(event) => moderate(service, event.target.value as ServiceStatus)} className="h-9 rounded-full border border-[#eadfd5] bg-white px-3 text-[10px] capitalize text-stone-700 disabled:opacity-50">
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                      </select>
+                    </label>
+                  )}
+                  {deleteId === id ? (
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] text-rose-800">Delete permanently?</span>
+                      <button type="button" onClick={() => setDeleteId("")} className="rounded-full px-2 py-1.5 text-[10px] font-semibold text-stone-600">Keep</button>
+                      <button type="button" disabled={busyId === id} onClick={() => remove(service)} className="rounded-full bg-rose-800 px-3 py-1.5 text-[10px] font-semibold text-white disabled:opacity-50">Delete</button>
+                    </div>
+                  ) : (
+                    <button type="button" onClick={() => setDeleteId(id)} className="inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-[10px] font-semibold text-rose-800 hover:bg-rose-50"><Trash2 size={13} />Delete</button>
+                  )}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function AdminTransactions() {
