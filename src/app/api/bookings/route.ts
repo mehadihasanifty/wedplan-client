@@ -46,3 +46,73 @@ export async function GET(request: Request) {
 
   return Response.json(enriched);
 }
+
+export async function POST(request: Request) {
+  const session = await auth.api.getSession({ headers: request.headers });
+  if (!session) return Response.json({ message: "Sign in with a customer account to request a booking." }, { status: 401 });
+  if (session.user.role !== "customer") {
+    return Response.json({ message: "Only customer accounts can send booking requests." }, { status: 403 });
+  }
+
+  const body = await request.json().catch(() => null) as {
+    serviceId?: unknown;
+    eventDate?: unknown;
+    eventLocation?: unknown;
+    message?: unknown;
+  } | null;
+  const serviceId = typeof body?.serviceId === "string" ? body.serviceId.trim() : "";
+  const eventDate = typeof body?.eventDate === "string" ? body.eventDate.trim() : "";
+  const eventLocation = typeof body?.eventLocation === "string" ? body.eventLocation.trim() : "";
+  const message = typeof body?.message === "string" ? body.message.trim() : "";
+
+  if (!serviceId || !/^\d{4}-\d{2}-\d{2}$/.test(eventDate) || Number.isNaN(Date.parse(`${eventDate}T00:00:00.000Z`)) || !eventLocation || eventLocation.length > 200 || message.length > 2000) {
+    return Response.json({ message: "Enter a valid event date and location. The location can be up to 200 characters and the message up to 2,000 characters." }, { status: 400 });
+  }
+
+  const service = await authDb.collection("services").findOne({
+    _id: { $in: idOptions(serviceId) },
+    status: "approved",
+    isActive: true,
+  } as never);
+  if (!service) return Response.json({ message: "This service is no longer available for booking." }, { status: 404 });
+
+  const vendorId = String(service.vendorId ?? service.vendor?.id ?? service.vendor?._id ?? "");
+  if (!vendorId) return Response.json({ message: "Vendor details are missing for this service." }, { status: 409 });
+  if (vendorId === session.user.id) return Response.json({ message: "You can’t book a service listed by your own vendor account." }, { status: 403 });
+
+  const activeRequest = await authDb.collection("bookings").findOne({
+    serviceId: { $in: idOptions(serviceId) },
+    eventDate,
+    status: { $in: ["pending", "accepted"] },
+  } as never);
+  if (activeRequest) {
+    return Response.json({ message: "There is already an active request for this service on that event date. Choose another date or contact the vendor." }, { status: 409 });
+  }
+
+  const customer = await authDb.collection("user").findOne({ _id: { $in: idOptions(session.user.id) } } as never, { projection: { name: 1, email: 1, image: 1 } });
+  const vendor = await authDb.collection("user").findOne({ _id: { $in: idOptions(vendorId) } } as never, { projection: { name: 1, email: 1, image: 1, businessName: 1 } });
+  const booking = {
+    serviceId,
+    vendorId,
+    customerId: session.user.id,
+    eventDate,
+    eventLocation,
+    ...(message ? { message } : {}),
+    status: "pending",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    service: { ...service, vendor: vendor ?? service.vendor ?? null },
+    customer: customer ?? { id: session.user.id, name: session.user.name, email: session.user.email },
+    vendor: vendor ?? service.vendor ?? null,
+  };
+
+  try {
+    const result = await authDb.collection("bookings").insertOne(booking);
+    return Response.json({ ...booking, _id: result.insertedId }, { status: 201 });
+  } catch (cause) {
+    if (cause && typeof cause === "object" && "code" in cause && cause.code === 11000) {
+      return Response.json({ message: "An active request already exists for this service and event date." }, { status: 409 });
+    }
+    throw cause;
+  }
+}

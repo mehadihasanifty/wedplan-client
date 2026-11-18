@@ -67,8 +67,8 @@ export function AdminUsers() {
   const query = useMemo(() => new URLSearchParams({ search, role, page: String(page) }).toString(), [search, role, page]);
   useEffect(() => {
     let active = true;
-    setLoading(true);
     const timer = window.setTimeout(() => {
+      setLoading(true);
       requestJson<{ users: AdminUser[]; total: number }>(`/api/admin/users?${query}`)
         .then((result) => { if (active) { setUsers(result.users); setTotal(result.total); setError(""); } })
         .catch((cause) => { if (active) setError(cause instanceof Error ? cause.message : "Could not load users."); })
@@ -117,7 +117,7 @@ export function AdminServices() {
     requestJson<AdminService[]>(`/api/admin/services?${query}`)
       .then((items) => { if (active) { setServices(items); setError(""); } })
       .catch((cause) => { if (active) setError(cause instanceof Error ? cause.message : "Could not load services."); })
-      .finally(() => { if (active) setLoadedQuery(query); });
+      .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
   }, [query]);
 
