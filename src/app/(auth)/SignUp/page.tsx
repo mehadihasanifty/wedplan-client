@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Check, Eye, EyeOff, ImagePlus, LoaderCircle, LockKeyhole, Mail, Sparkles, Store, UserRound, UserRoundCheck, X } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { syncApiToken } from "@/lib/api-auth";
 
 type AccountRole = "customer" | "vendor";
 type FormValues = { name: string; email: string; password: string };
@@ -88,6 +89,7 @@ export default function SignUpPage() {
       const payload = { name: values.name.trim(), email: values.email.trim(), password: values.password, callbackURL: dashboardPath, role, ...(image ? { image } : {}) };
       const result = await authClient.signUp.email(payload as Parameters<typeof authClient.signUp.email>[0]);
       if (result.error) throw new Error(result.error.message || "We couldn’t create your account. Please try again.");
+      await syncApiToken();
       setSuccess("Your account is ready. Taking you to your WedPlan workspace…");
       router.replace(dashboardPath);
       router.refresh();
@@ -104,7 +106,7 @@ export default function SignUpPage() {
     setSubmitting("google");
     try {
       const image = profileFile ? await uploadProfileImage(profileFile) : undefined;
-      const result = await authClient.signIn.social({ provider: "google", callbackURL: dashboardPath, additionalData: { role, ...(image ? { image } : {}) } });
+      const result = await authClient.signIn.social({ provider: "google", callbackURL: "/auth/redirect", additionalData: { role, ...(image ? { image } : {}) } });
       if (result.error) throw new Error(result.error.message || "Google sign-up could not be started. Please try again.");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Google sign-up could not be started. Please try again.");

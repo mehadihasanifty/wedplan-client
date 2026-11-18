@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Eye, EyeOff, KeyRound, LoaderCircle, Mail, Sparkles } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { syncApiToken } from "@/lib/api-auth";
 
 type AppRole = "customer" | "vendor" | "admin";
 type UserWithRole = { role?: AppRole | null };
@@ -34,6 +35,7 @@ export default function SignInPage() {
       const sessionResult = await authClient.getSession();
       if (sessionResult.error) throw new Error(sessionResult.error.message || "Signed in, but we couldn’t load your account. Please try again.");
       const user = sessionResult.data?.user as UserWithRole | undefined;
+      await syncApiToken();
       setSuccess("You’re signed in. Taking you to your WedPlan workspace…");
       router.replace(dashboardForRole(user?.role));
       router.refresh();

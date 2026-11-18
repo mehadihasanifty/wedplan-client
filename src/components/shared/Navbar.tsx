@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, ChevronDown, Flower2, LayoutDashboard, LogOut, Menu, Settings, X } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { clearApiToken, syncApiToken } from "@/lib/api-auth";
 
 type AppRole = "admin" | "vendor" | "customer";
 type AuthUser = { name?: string | null; email?: string | null; image?: string | null; role?: AppRole | null };
@@ -26,6 +27,7 @@ export function Navbar() {
   const [signOutError, setSignOutError] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
   const user = session?.user as AuthUser | undefined;
+  const userId = session?.user?.id;
   const mobileOpen = mobileOpenPath === pathname;
   const profileOpen = profileOpenPath === pathname;
   const dashboardHref = user?.role ? `/dashboard/${user.role}` : "/dashboard";
@@ -46,10 +48,19 @@ export function Navbar() {
     };
   }, []);
 
+  useEffect(() => {
+    if (isPending || !userId) return;
+    void syncApiToken().catch(() => undefined);
+  }, [isPending, userId]);
+
   async function handleSignOut() {
     setSigningOut(true);
     try {
+      await clearApiToken().catch(() => undefined);
       await authClient.signOut();
+      // Revoke once more after the Better Auth cookie is cleared to close a
+      // race where a concurrent 401 refresh could have issued another JWT.
+      await clearApiToken().catch(() => undefined);
       setSignOutError(false);
       setProfileOpenPath(null);
       setMobileOpenPath(null);

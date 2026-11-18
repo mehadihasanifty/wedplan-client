@@ -81,6 +81,14 @@ export const auth = betterAuth({
           return { data: { ...user, role } };
         },
       },
+      update: {
+        before: async (user) => {
+          if ("role" in user || "subscriptionPlan" in user || "blocked" in user) {
+            throw new APIError("FORBIDDEN", { message: "Account role, access, and subscription settings cannot be changed from profile updates." });
+          }
+          return { data: user };
+        },
+      },
     },
     session: {
       create: {

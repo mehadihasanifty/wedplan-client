@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { BadgeCheck, Camera, CircleUserRound, ImagePlus, LoaderCircle, Mail, Save, ShieldCheck, X } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { api } from "@/lib/api";
 import { uploadImageToImgbb, validateImageFile } from "@/lib/upload-image";
 import { PageHeader } from "@/components/shared/PageHeader";
 
@@ -40,12 +41,7 @@ export function CustomerProfileSettings({ role = "customer" }: { role?: "custome
     setSaving(true);
     try {
       const uploadedImage = selectedFile ? await uploadImageToImgbb(selectedFile) : image;
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/profile`, {
-        method: "PATCH", credentials: "include", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: cleanName, image: uploadedImage, phoneNumber: phone.trim(), location: location.trim(), bio: bio.trim() }),
-      });
-      const result = await response.json() as { message?: string };
-      if (!response.ok) throw new Error(result.message || "We couldn’t update your profile.");
+      await api.patch("/profile", { name: cleanName, image: uploadedImage, phoneNumber: phone.trim(), location: location.trim(), bio: bio.trim() });
       await authClient.getSession();
       setImage(uploadedImage || ""); setSelectedFile(null); setSuccess("Your profile has been updated successfully.");
     } catch (cause) { setError(cause instanceof Error ? cause.message : "We couldn’t update your profile. Please try again."); }
