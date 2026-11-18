@@ -18,7 +18,7 @@ const socialLinks = [
 const navigation = [
   { label: "Home", href: "/" },
   { label: "Browse services", href: "/services" },
-  { label: "Sign in", href: "/login" },
+  { label: "Sign in", href: "/signin" },
   { label: "Create an account", href: "/signup" },
 ];
 

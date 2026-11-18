@@ -103,7 +103,7 @@ export function Navbar() {
                 </motion.div>}
               </AnimatePresence>
             </div>
-          ) : <><Link href="/login" onClick={closeMenus} className="rounded-full px-4 py-2.5 text-sm font-semibold text-stone-700 transition hover:bg-rose-50 hover:text-rose-800">Sign in</Link><Link href="/signup" onClick={closeMenus} className="group inline-flex items-center gap-2 rounded-full bg-rose-800 px-5 py-3 text-sm font-semibold text-white shadow-md shadow-rose-900/15 transition duration-200 hover:-translate-y-0.5 hover:bg-rose-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2">Sign Up <ArrowUpRight aria-hidden="true" size={15} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></Link></>}
+          ) : <><Link href="/signin" onClick={closeMenus} className="rounded-full px-4 py-2.5 text-sm font-semibold text-stone-700 transition hover:bg-rose-50 hover:text-rose-800">Sign in</Link><Link href="/signup" onClick={closeMenus} className="group inline-flex items-center gap-2 rounded-full bg-rose-800 px-5 py-3 text-sm font-semibold text-white shadow-md shadow-rose-900/15 transition duration-200 hover:-translate-y-0.5 hover:bg-rose-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2">Sign Up <ArrowUpRight aria-hidden="true" size={15} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></Link></>}
         </div>
 
         <button type="button" aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"} aria-expanded={mobileOpen} onClick={() => setMobileOpenPath(mobileOpen ? null : pathname)} className="inline-flex size-11 items-center justify-center justify-self-end rounded-full border border-rose-200/80 bg-white text-stone-800 shadow-sm transition hover:bg-rose-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 lg:hidden">
@@ -122,7 +122,7 @@ export function Navbar() {
               <MobileNavLink href={profileHref} label="Profile Settings" icon={<Settings size={17} />} onClick={closeMenus} />
               <button type="button" onClick={handleSignOut} disabled={signingOut} className="flex items-center gap-3 rounded-xl px-3.5 py-3 text-left text-sm font-medium text-rose-800 transition hover:bg-rose-50 disabled:opacity-60"><LogOut aria-hidden="true" size={17} />{signingOut ? "Signing out…" : "Log out"}</button>
               {signOutError && <p role="alert" className="px-3.5 pb-2 text-xs text-destructive">Could not sign out. Please try again.</p>}
-            </> : <div className="mt-3 grid grid-cols-2 gap-3"><Link href="/login" onClick={closeMenus} className="rounded-full border border-rose-200 bg-white px-4 py-3 text-center text-sm font-semibold text-stone-700">Sign in</Link><Link href="/signup" onClick={closeMenus} className="rounded-full bg-rose-800 px-4 py-3 text-center text-sm font-semibold text-white">Create account</Link></div>}
+            </> : <div className="mt-3 grid grid-cols-2 gap-3"><Link href="/signin" onClick={closeMenus} className="rounded-full border border-rose-200 bg-white px-4 py-3 text-center text-sm font-semibold text-stone-700">Sign in</Link><Link href="/signup" onClick={closeMenus} className="rounded-full bg-rose-800 px-4 py-3 text-center text-sm font-semibold text-white">Create account</Link></div>}
           </div>
         </motion.div>}
       </AnimatePresence>
