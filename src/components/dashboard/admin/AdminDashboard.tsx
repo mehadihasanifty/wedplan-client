@@ -14,7 +14,9 @@ type AdminService = { _id?: string; id?: string; serviceName: string; category?:
 type AdminTransaction = { _id?: string; id?: string; vendorId?: string; vendor?: { name?: string; email?: string; businessName?: string }; plan?: string; planName?: string; subscriptionPlan?: string; amount?: number; paymentAmount?: number; amountCents?: number; currency?: string; status?: string; paymentStatus?: string; createdAt?: string; transactionDate?: string };
 
 async function requestJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, { ...init, credentials: "same-origin", headers: { "Content-Type": "application/json", ...init?.headers } });
+  const apiBase = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api").replace(/\/$/, "");
+  const endpoint = url.replace(/^\/api(?=\/)/, "");
+  const response = await fetch(`${apiBase}${endpoint}`, { ...init, credentials: "include", headers: { "Content-Type": "application/json", ...init?.headers } });
   const body = await response.json().catch(() => ({})) as T & { message?: string };
   if (!response.ok) throw new Error(body.message || "The request could not be completed.");
   return body;
