@@ -150,3 +150,4 @@ function Avatar({ name, image }: { name?: string | null; image?: string | null }
 function ProfileLink({ href, icon, label, active, onClick }: { href: string; icon: ReactNode; label: string; active: boolean; onClick: () => void }) {
   return <Link href={href} role="menuitem" onClick={onClick} className={`flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm transition-colors ${active ? "bg-rose-50 font-medium text-rose-900" : "text-stone-700 hover:bg-rose-50/70"}`}>{icon}{label}</Link>;
 }
+

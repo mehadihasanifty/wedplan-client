@@ -90,6 +90,9 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(ellipse at 0% 0%, rgb(246 226 220 / 0.32), transparent 42rem),
+      radial-gradient(ellipse at 100% 10%, rgb(239 229 203 / 0.24), transparent 38rem);
   }
   html {
     @apply font-sans;

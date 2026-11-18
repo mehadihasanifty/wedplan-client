@@ -17,3 +17,4 @@ export function Reveal({ children, className, delay = 0 }: { children: ReactNode
     </motion.div>
   );
 }
+

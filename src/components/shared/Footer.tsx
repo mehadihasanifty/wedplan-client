@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Camera, Heart, Mail, Phone, Play, UsersRound } from "lucide-react";
 
+const COPYRIGHT_YEAR = 2026;
+
 // Replace these editable placeholders with WedPlan's real contact details and profiles.
 const contact = {
   email: "hello@yourdomain.com",
@@ -83,7 +85,7 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col gap-3 border-t border-rose-200/70 py-5 text-xs text-stone-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} WedPlan. All rights reserved.</p>
+          <p>© {COPYRIGHT_YEAR} WedPlan. All rights reserved.</p>
           <p className="inline-flex items-center gap-1.5">Thoughtfully made for your next chapter <Heart aria-hidden="true" size={12} className="text-rose-700" /></p>
         </div>
       </div>
