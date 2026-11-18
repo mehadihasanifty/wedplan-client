@@ -23,7 +23,8 @@ export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileOpenPath, setMobileOpenPath] = useState<string | null>(null);
+  const mobileOpen = mobileOpenPath === pathname;
   const [signingOut, setSigningOut] = useState(false);
   const [signOutError, setSignOutError] = useState(false);
   const profileMenu = useRef<HTMLDetailsElement>(null);
@@ -35,7 +36,6 @@ export function Navbar() {
   const profileHref = user?.role ? `/dashboard/${user.role}/profile-settings` : "/dashboard/profile-settings";
 
   useEffect(() => {
-    setMobileOpen(false);
     profileMenu.current?.removeAttribute("open");
   }, [pathname]);
 
@@ -44,7 +44,7 @@ export function Navbar() {
     try {
       await authClient.signOut();
       setSignOutError(false);
-      setMobileOpen(false);
+      setMobileOpenPath(null);
       router.replace("/");
       router.refresh();
     } catch {
@@ -56,8 +56,8 @@ export function Navbar() {
 
   const primaryLinks = (
     <>
-      <Link href="/" aria-current={isActive("/") ? "page" : undefined} className={navLinkClass("/")} onClick={() => setMobileOpen(false)}>Home</Link>
-      <Link href="/services" aria-current={isActive("/services") ? "page" : undefined} className={navLinkClass("/services")} onClick={() => setMobileOpen(false)}>Browse Services</Link>
+      <Link href="/" aria-current={isActive("/") ? "page" : undefined} className={navLinkClass("/")} onClick={() => setMobileOpenPath(null)}>Home</Link>
+      <Link href="/services" aria-current={isActive("/services") ? "page" : undefined} className={navLinkClass("/services")} onClick={() => setMobileOpenPath(null)}>Browse Services</Link>
     </>
   );
 
@@ -102,7 +102,7 @@ export function Navbar() {
           )}
         </div>
 
-        <button type="button" aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"} aria-expanded={mobileOpen} onClick={() => setMobileOpen(open => !open)} className="inline-flex size-10 items-center justify-center rounded-full border border-border text-foreground transition hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 md:hidden">
+        <button type="button" aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"} aria-expanded={mobileOpen} onClick={() => setMobileOpenPath(mobileOpen ? null : pathname)} className="inline-flex size-10 items-center justify-center rounded-full border border-border text-foreground transition hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 md:hidden">
           {mobileOpen ? <X aria-hidden="true" size={19} /> : <Menu aria-hidden="true" size={19} />}
         </button>
       </nav>
@@ -111,11 +111,11 @@ export function Navbar() {
         <div className="mx-auto flex max-w-7xl flex-col gap-1 text-sm font-medium">{primaryLinks}
           {isPending ? <div aria-label="Checking account" className="mt-2 h-10 animate-pulse rounded-xl bg-muted" /> : user ? <>
             <div className="my-2 flex items-center gap-3 border-y py-3"><Avatar name={user.name} image={user.image} /><div className="min-w-0"><p className="truncate font-semibold">{user.name || "WedPlan member"}</p>{user.email && <p className="truncate text-xs text-muted-foreground">{user.email}</p>}</div></div>
-            <Link href={dashboardHref} onClick={() => setMobileOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-muted"><LayoutDashboard size={17} />Dashboard</Link>
-            <Link href={profileHref} onClick={() => setMobileOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-muted"><Settings size={17} />Profile Settings</Link>
+            <Link href={dashboardHref} onClick={() => setMobileOpenPath(null)} className="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-muted"><LayoutDashboard size={17} />Dashboard</Link>
+            <Link href={profileHref} onClick={() => setMobileOpenPath(null)} className="flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-muted"><Settings size={17} />Profile Settings</Link>
             <button type="button" onClick={handleSignOut} disabled={signingOut} className="flex items-center gap-3 rounded-xl px-3 py-3 text-left text-rose-700 hover:bg-rose-50 disabled:opacity-60 dark:text-rose-300 dark:hover:bg-rose-950/40"><LogOut size={17} />{signingOut ? "Signing out…" : "Log out"}</button>
             {signOutError && <p role="alert" className="px-3 pb-2 text-xs text-destructive">Could not sign out. Please try again.</p>}
-          </> : <div className="mt-2 grid grid-cols-2 gap-3"><Link href="/login" onClick={() => setMobileOpen(false)} className="rounded-full border px-4 py-2.5 text-center">Sign In</Link><Link href="/register" onClick={() => setMobileOpen(false)} className="rounded-full bg-rose-700 px-4 py-2.5 text-center font-semibold text-white dark:bg-rose-300 dark:text-rose-950">Sign Up</Link></div>}
+          </> : <div className="mt-2 grid grid-cols-2 gap-3"><Link href="/login" onClick={() => setMobileOpenPath(null)} className="rounded-full border px-4 py-2.5 text-center">Sign In</Link><Link href="/register" onClick={() => setMobileOpenPath(null)} className="rounded-full bg-rose-700 px-4 py-2.5 text-center font-semibold text-white dark:bg-rose-300 dark:text-rose-950">Sign Up</Link></div>}
         </div>
       </div>}
     </header>
