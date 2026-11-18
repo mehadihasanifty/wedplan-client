@@ -1,19 +1,29 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
-import { BadgeCheck, Check, Crown, Infinity as InfinityIcon, LoaderCircle, ShieldCheck, Sparkles } from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
+import { BadgeCheck, Check, Crown, Infinity as InfinityIcon, LoaderCircle, ShieldCheck, Sparkles, CreditCard } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
-import { createCheckoutSession } from "@/services/payment-api";
+import { createBillingPortalSession, createCheckoutSession, getSubscriptionInfo, type SubscriptionInfo } from "@/services/payment-api";
 
 type VendorUser = { plan?: string; subscriptionPlan?: string };
 
 export function VendorSubscription() {
   const { data: session } = authClient.useSession();
   const user = session?.user as VendorUser | undefined;
-  const currentPlan = user?.subscriptionPlan || user?.plan || "Free";
+  const userId = session?.user?.id;
+  const [subscription, setSubscription] = useState<SubscriptionInfo | null>(null);
+  const [subscriptionError, setSubscriptionError] = useState("");
+  const currentPlan = subscription?.plan || user?.subscriptionPlan || user?.plan || "Free";
   const premium = /premium/i.test(currentPlan);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!userId) return;
+    let active = true;
+    getSubscriptionInfo().then((info) => { if (active) setSubscription(info); }).catch((cause) => { if (active) setSubscriptionError(cause instanceof Error ? cause.message : "Could not load subscription status."); });
+    return () => { active = false; };
+  }, [userId]);
 
   async function upgrade() {
     setLoading(true); setError("");
@@ -27,13 +37,31 @@ export function VendorSubscription() {
     }
   }
 
+  async function manageBilling() {
+    setLoading(true); setError("");
+    try {
+      const portal = await createBillingPortalSession();
+      if (!portal.url) throw new Error("The billing portal link was not returned. Please try again.");
+      window.location.assign(portal.url);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not open billing settings.");
+      setLoading(false);
+    }
+  }
+
+  const premiumPrice = subscription?.price
+    ? `${new Intl.NumberFormat("en", { style: "currency", currency: subscription.price.currency.toUpperCase() }).format(subscription.price.unitAmount / 100)} / ${subscription.price.interval}`
+    : "Secure recurring checkout";
+
   return <div className="mx-auto max-w-5xl">
     <div className="mb-7"><p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-800">Your growth plan</p><h1 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-[#352321]">Subscription</h1><p className="mt-2 text-sm text-stone-600">Choose the plan that fits the way you want to grow.</p></div>
-    <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#eee3dc] bg-white px-4 py-4 shadow-sm sm:px-5"><div className="flex items-center gap-3"><span className={`flex size-10 items-center justify-center rounded-xl ${premium?"bg-amber-50 text-amber-800":"bg-rose-50 text-rose-800"}`}>{premium?<Crown size={19}/>:<ShieldCheck size={19}/>}</span><div><p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-stone-500">Current subscription</p><p className="mt-0.5 text-sm font-semibold capitalize text-stone-900">{currentPlan} plan</p></div></div><span className={`rounded-full px-3 py-1.5 text-[9px] font-semibold ${premium?"bg-amber-50 text-amber-800":"bg-stone-100 text-stone-600"}`}>{premium?"Premium member":"Free plan"}</span></div>
+    <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#eee3dc] bg-white px-4 py-4 shadow-sm sm:px-5"><div className="flex items-center gap-3"><span className={`flex size-10 items-center justify-center rounded-xl ${premium?"bg-amber-50 text-amber-800":"bg-rose-50 text-rose-800"}`}>{premium?<Crown size={19}/>:<ShieldCheck size={19}/>}</span><div><p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-stone-500">Current subscription</p><p className="mt-0.5 text-sm font-semibold capitalize text-stone-900">{currentPlan} plan</p>{subscription?.cancelAtPeriodEnd&&<p className="mt-1 text-[10px] font-medium text-amber-800">Cancellation scheduled at the end of this billing period</p>}</div></div><div className="flex items-center gap-2"><span className={`rounded-full px-3 py-1.5 text-[9px] font-semibold ${premium?"bg-amber-50 text-amber-800":"bg-stone-100 text-stone-600"}`}>{premium?"Premium member":"Free plan"}</span>{premium&&<button type="button" onClick={manageBilling} disabled={loading} className="inline-flex h-9 items-center gap-1.5 rounded-full border border-[#eadfd5] bg-white px-3 text-[10px] font-semibold text-stone-700 hover:bg-[#fffaf6] disabled:opacity-50"><CreditCard size={13}/>Manage billing</button>}</div></div>
     <div className="grid gap-5 lg:grid-cols-2">
       <PlanCard name="Free" subtitle="A thoughtful start for your business" price="Free" icon={ShieldCheck} current={!premium} features={["Up to 3 active services","Basic vendor dashboard","Booking request management"]}/>
-      <PlanCard name="Premium" subtitle="More room to reach your next clients" price="Premium" icon={Crown} current={premium} highlighted features={["Unlimited active services","Premium vendor badge","Everything in the Free plan"]} action={premium?<span className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-amber-200 bg-amber-50 text-xs font-semibold text-amber-900"><BadgeCheck size={16}/>Your current plan</span>:<button type="button" onClick={upgrade} disabled={loading} className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-rose-800 px-5 text-sm font-semibold text-white shadow-md shadow-rose-950/10 transition hover:-translate-y-0.5 hover:bg-rose-900 disabled:cursor-wait disabled:opacity-60">{loading?<><LoaderCircle size={16} className="animate-spin"/>Opening secure checkout…</>:<>Upgrade to Premium<Sparkles size={15}/></>}</button>}/>
+      <PlanCard name="Premium" subtitle="More room to reach your next clients" price={premiumPrice} icon={Crown} current={premium} highlighted features={["Unlimited active services","Premium vendor badge","Everything in the Free plan"]} action={premium?<span className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-amber-200 bg-amber-50 text-xs font-semibold text-amber-900"><BadgeCheck size={16}/>Your current plan</span>:<button type="button" onClick={upgrade} disabled={loading} className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-rose-800 px-5 text-sm font-semibold text-white shadow-md shadow-rose-950/10 transition hover:-translate-y-0.5 hover:bg-rose-900 disabled:cursor-wait disabled:opacity-60">{loading?<><LoaderCircle size={16} className="animate-spin"/>Opening secure checkout…</>:<>Upgrade to Premium<Sparkles size={15}/></>}</button>}/>
     </div>
+    <div className="mt-5 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-emerald-100 bg-emerald-50/70 px-4 py-3"><p className="text-[10px] leading-5 text-emerald-900">Payments are processed securely by Stripe. WedPlan uses Stripe Test Mode for this integration.</p><span className="rounded-full bg-white px-2.5 py-1 text-[9px] font-semibold uppercase tracking-wider text-emerald-800">Test mode</span></div>
+    {subscriptionError&&<p role="alert" className="mt-3 text-xs text-amber-800">{subscriptionError}</p>}
     {error&&<p role="alert" className="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-xs leading-5 text-rose-900">{error}</p>}
     <p className="mt-5 text-center text-[10px] leading-5 text-stone-400">You’ll continue to our secure checkout to complete your upgrade.</p>
   </div>;

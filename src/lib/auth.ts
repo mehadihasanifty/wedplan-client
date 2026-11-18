@@ -49,6 +49,15 @@ export const auth = betterAuth({
         defaultValue: false,
         input: false,
       },
+      subscriptionPlan: {
+        type: "string",
+        required: false,
+        defaultValue: "free",
+        input: false,
+      },
+      phoneNumber: { type: "string", required: false, input: false },
+      location: { type: "string", required: false, input: false },
+      bio: { type: "string", required: false, input: false },
     },
   },
   ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
