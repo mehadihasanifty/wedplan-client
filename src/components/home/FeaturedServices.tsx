@@ -1,0 +1,1 @@
+export function FeaturedServices() { return <section className="py-12"><h2 className="text-2xl font-semibold">Featured wedding services</h2><p className="mt-2 text-muted-foreground">Approved services will appear here when connected to the API.</p></section>; }

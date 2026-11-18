@@ -1,0 +1,1 @@
+export function HowItWorks() { return <section className="py-12"><h2 className="text-2xl font-semibold">How WedPlan works</h2><p className="mt-2 text-muted-foreground">Explore services, compare details, and send a booking request.</p></section>; }

@@ -1,0 +1,1 @@
+export function WhyChooseUs() { return <section className="py-12"><h2 className="text-2xl font-semibold">Why choose WedPlan?</h2><p className="mt-2 text-muted-foreground">Discover wedding professionals and manage your planning in one place.</p></section>; }

@@ -1,0 +1,2 @@
+const categories = ["Photography & Videography", "Wedding Venues", "Decoration & Florist", "Catering Services", "Makeup & Styling", "Wedding Fashion"];
+export function Categories() { return <section className="py-12"><h2 className="mb-5 text-2xl font-semibold">Explore by category</h2><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{categories.map(category => <div key={category} className="rounded-xl border p-5">{category}</div>)}</div></section>; }
