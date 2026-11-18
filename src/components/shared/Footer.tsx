@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Camera, Heart, Mail, MapPin, Phone, Play, UsersRound } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Camera, Heart, Mail, Phone, Play, UsersRound } from "lucide-react";
 
 // Replace these editable placeholders with WedPlan's real contact details and profiles.
 const contact = {
@@ -15,55 +15,76 @@ const socialLinks = [
 
 const navigation = [
   { label: "Home", href: "/" },
-  { label: "Browse Services", href: "/services" },
-  { label: "Sign In", href: "/login" },
-  { label: "Create an Account", href: "/register" },
+  { label: "Browse services", href: "/services" },
+  { label: "Sign in", href: "/login" },
+  { label: "Create an account", href: "/register" },
 ];
 
 export function Footer() {
   return (
-    <footer className="relative mt-auto overflow-hidden border-t border-rose-950/10 bg-[#24151d] text-white">
-      <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-36 size-80 rounded-full bg-rose-400/10 blur-3xl" />
-      <div className="relative mx-auto max-w-7xl px-5 pb-6 pt-14 sm:px-6 lg:px-8 lg:pt-16">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.35fr_0.8fr_1fr_0.9fr] lg:gap-12">
+    <footer className="relative mt-20 overflow-hidden bg-[#20151b] text-white sm:mt-24">
+      <div aria-hidden="true" className="pointer-events-none absolute -left-40 top-40 size-[28rem] rounded-full bg-rose-500/10 blur-[100px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -right-32 bottom-0 size-[30rem] rounded-full bg-amber-300/[0.06] blur-[110px]" />
+
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <section aria-labelledby="footer-cta-title" className="relative isolate -mt-8 overflow-hidden rounded-[2rem] border border-white/60 bg-[#f5e8df] px-6 py-8 text-[#342321] shadow-[0_25px_80px_-34px_rgba(9,3,6,0.45)] sm:px-10 sm:py-10 lg:-mt-10 lg:grid lg:grid-cols-[1fr_0.7fr] lg:items-center lg:px-14 lg:py-12">
+          <div aria-hidden="true" className="absolute -right-20 -top-24 -z-10 size-72 rounded-full bg-rose-200/60 blur-3xl" />
+          <div className="relative z-10 max-w-xl">
+            <p className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-rose-800"><span className="size-1.5 rounded-full bg-rose-700" />Your next chapter starts here</p>
+            <h2 id="footer-cta-title" className="mt-4 text-3xl font-semibold leading-tight tracking-[-0.035em] sm:text-4xl lg:text-[2.75rem]">Let the lovely details <span className="font-serif font-normal italic text-rose-800">come together.</span></h2>
+            <p className="mt-4 max-w-md text-sm leading-6 text-stone-600 sm:text-base sm:leading-7">Find the wedding professionals who understand your vision, then bring your plans to life one thoughtful choice at a time.</p>
+            <Link href="/services" className="group mt-6 inline-flex items-center gap-3 rounded-full bg-[#562d36] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-rose-950/15 transition duration-200 hover:-translate-y-0.5 hover:bg-[#43232b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-700 focus-visible:ring-offset-2">Explore wedding services<span className="flex size-7 items-center justify-center rounded-full bg-white/15 transition-transform group-hover:translate-x-0.5"><ArrowRight aria-hidden="true" size={15} /></span></Link>
+          </div>
+
+          <div aria-hidden="true" className="relative mx-auto mt-7 hidden h-48 w-full max-w-[360px] lg:mt-0 lg:block">
+            <div className="absolute inset-x-9 bottom-0 top-1 rounded-t-[12rem] border border-rose-300/70 bg-gradient-to-b from-white/50 to-rose-100/35" />
+            <div className="absolute inset-x-16 bottom-0 top-8 rounded-t-[10rem] border border-rose-300/50" />
+            <div className="absolute left-1/2 top-1/2 flex size-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white/60 text-rose-800 shadow-[0_12px_35px_-16px_rgba(96,44,53,0.38)] backdrop-blur-sm"><Heart size={31} strokeWidth={1.25} /></div>
+            <svg viewBox="0 0 360 190" className="absolute inset-0 h-full w-full" fill="none">
+              <path d="M15 180c20-48 28-93 30-144m-2 104c-16-13-25-26-28-43m33 19c14-11 22-23 27-39m243 103c-17-46-24-90-25-141m2 105c15-13 23-26 26-42m-32 18c-14-11-22-23-26-39" stroke="#8b9272" strokeWidth="2" strokeLinecap="round" />
+              <g fill="#c8817d"><circle cx="26" cy="98" r="7"/><circle cx="65" cy="77" r="6"/><circle cx="42" cy="45" r="5"/><circle cx="333" cy="96" r="7"/><circle cx="296" cy="75" r="6"/><circle cx="318" cy="43" r="5"/></g>
+              <g fill="#d9b29b"><circle cx="26" cy="98" r="2"/><circle cx="65" cy="77" r="2"/><circle cx="42" cy="45" r="1.7"/><circle cx="333" cy="96" r="2"/><circle cx="296" cy="75" r="2"/><circle cx="318" cy="43" r="1.7"/></g>
+              <path d="m180 16 2.5 7.5L190 26l-7.5 2.5L180 36l-2.5-7.5L170 26l7.5-2.5L180 16Z" fill="#b67769" opacity=".65"/>
+              <circle cx="112" cy="37" r="2.5" fill="#c78e7d"/><circle cx="249" cy="148" r="2.5" fill="#c78e7d"/>
+            </svg>
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/70 bg-white/75 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-rose-900 shadow-sm backdrop-blur">A celebration, beautifully yours</div>
+          </div>
+        </section>
+
+        <div className="grid gap-10 pb-10 pt-14 sm:grid-cols-2 lg:grid-cols-[1.35fr_0.8fr_1fr_0.85fr] lg:gap-12 lg:pb-14 lg:pt-16">
           <section aria-labelledby="footer-brand" className="max-w-sm">
-            <Link href="/" className="group inline-flex items-center gap-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#24151d]">
-              <span className="flex size-10 items-center justify-center rounded-full bg-rose-300/15 text-rose-200 transition-transform group-hover:scale-105"><Heart aria-hidden="true" size={18} /></span>
+            <Link href="/" className="group inline-flex items-center gap-3 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#20151b]">
+              <span className="flex size-11 items-center justify-center rounded-2xl border border-rose-100/15 bg-rose-100/[0.08] text-rose-200 transition duration-200 group-hover:rotate-[-6deg] group-hover:bg-rose-100/[0.14]"><Heart aria-hidden="true" size={19} strokeWidth={1.8} /></span>
               <span id="footer-brand" className="text-xl font-semibold tracking-tight">Wed<span className="text-rose-300">Plan</span></span>
             </Link>
-            <p className="mt-5 text-sm leading-7 text-rose-50/70">A little more joy in every wedding decision. Find trusted local professionals and bring your celebration together with confidence.</p>
-            <p className="mt-4 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.16em] text-rose-200/80"><Heart aria-hidden="true" size={13} /> Made for your forever</p>
+            <p className="mt-5 text-sm leading-7 text-rose-50/65">A thoughtful place to discover wedding professionals, shape your vision, and bring every meaningful detail together.</p>
+            <p className="mt-4 inline-flex items-center gap-2 text-xs font-medium text-rose-200/80"><Heart aria-hidden="true" size={13} /> Made for your forever</p>
           </section>
 
           <section aria-labelledby="footer-navigation">
-            <h2 id="footer-navigation" className="text-sm font-semibold tracking-wide">Explore WedPlan</h2>
-            <ul className="mt-5 space-y-3.5">
-              {navigation.map(item => <li key={item.href}><Link href={item.href} className="text-sm text-rose-50/70 transition-colors hover:text-white focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300">{item.label}</Link></li>)}
-            </ul>
+            <h2 id="footer-navigation" className="text-xs font-semibold uppercase tracking-[0.17em] text-white">Explore</h2>
+            <ul className="mt-5 space-y-3.5">{navigation.map(item => <li key={item.href}><Link href={item.href} className="group inline-flex items-center gap-1.5 text-sm text-rose-50/65 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300">{item.label}<ArrowUpRight aria-hidden="true" size={12} className="opacity-0 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-70" /></Link></li>)}</ul>
           </section>
 
           <section aria-labelledby="footer-contact">
-            <h2 id="footer-contact" className="text-sm font-semibold tracking-wide">Get in touch</h2>
-            <p className="mt-5 text-sm leading-6 text-rose-50/65">Questions about finding a vendor or listing your services? We’d love to hear from you.</p>
-            <ul className="mt-4 space-y-3.5">
-              <li><a href={`mailto:${contact.email}`} className="group inline-flex items-center gap-3 text-sm text-rose-50/80 transition-colors hover:text-white"><Mail aria-hidden="true" size={16} className="text-rose-300" />{contact.email}</a></li>
-              <li><a href={`tel:${contact.phone.replace(/[^+\d]/g, "")}`} className="group inline-flex items-center gap-3 text-sm text-rose-50/80 transition-colors hover:text-white"><Phone aria-hidden="true" size={16} className="text-rose-300" />{contact.phone}</a></li>
-              <li className="inline-flex items-center gap-3 text-sm text-rose-50/65"><MapPin aria-hidden="true" size={16} className="text-rose-300" />Here for couples everywhere</li>
+            <h2 id="footer-contact" className="text-xs font-semibold uppercase tracking-[0.17em] text-white">A note to us</h2>
+            <p className="mt-5 max-w-xs text-sm leading-6 text-rose-50/60">Need a hand finding the right fit? Our team is happy to help you get started.</p>
+            <ul className="mt-4 space-y-3">
+              <li><a href={`mailto:${contact.email}`} className="inline-flex items-center gap-3 text-sm text-rose-50/75 transition hover:text-white"><Mail aria-hidden="true" size={15} className="text-rose-300" />{contact.email}</a></li>
+              <li><a href={`tel:${contact.phone.replace(/[^+\d]/g, "")}`} className="inline-flex items-center gap-3 text-sm text-rose-50/75 transition hover:text-white"><Phone aria-hidden="true" size={15} className="text-rose-300" />{contact.phone}</a></li>
             </ul>
           </section>
 
           <section aria-labelledby="footer-social">
-            <h2 id="footer-social" className="text-sm font-semibold tracking-wide">Follow the inspiration</h2>
-            <p className="mt-5 text-sm leading-6 text-rose-50/65">Ideas, real celebrations, and lovely details for the days ahead.</p>
-            <div className="mt-5 flex flex-wrap gap-3">
-              {socialLinks.map(({ label, href, icon: Icon }) => <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={`WedPlan on ${label} (placeholder link)`} className="flex size-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-rose-100 transition hover:-translate-y-0.5 hover:border-rose-200/50 hover:bg-rose-200/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300"><Icon aria-hidden="true" size={17} /></a>)}
-            </div>
+            <h2 id="footer-social" className="text-xs font-semibold uppercase tracking-[0.17em] text-white">Stay inspired</h2>
+            <p className="mt-5 max-w-xs text-sm leading-6 text-rose-50/60">Follow along for thoughtful ideas and moments worth remembering.</p>
+            <div className="mt-5 flex gap-2.5">{socialLinks.map(({ label, href, icon: Icon }) => <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={`WedPlan on ${label} (placeholder link)`} className="group flex size-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-rose-100/80 transition duration-200 hover:-translate-y-1 hover:border-rose-200/40 hover:bg-rose-200/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300"><Icon aria-hidden="true" size={16} /></a>)}</div>
           </section>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-5 text-xs text-rose-50/55 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 border-t border-white/10 py-5 text-xs text-rose-50/45 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} WedPlan. All rights reserved.</p>
-          <p>Thoughtfully made for your next chapter <Heart aria-hidden="true" size={12} className="ml-1 inline text-rose-300" /></p>
+          <p className="inline-flex items-center gap-1.5">Thoughtfully made for your next chapter <Heart aria-hidden="true" size={12} className="text-rose-300" /></p>
         </div>
       </div>
     </footer>
