@@ -19,7 +19,7 @@ const navigation = [
   { label: "Home", href: "/" },
   { label: "Browse services", href: "/services" },
   { label: "Sign in", href: "/login" },
-  { label: "Create an account", href: "/register" },
+  { label: "Create an account", href: "/signup" },
 ];
 
 export function Footer() {

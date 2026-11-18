@@ -41,7 +41,7 @@ export default function ServiceDetailsPage({ params }: { params: Promise<{ id: s
   }, [serviceId]);
 
   useEffect(() => {
-    if (!sessionPending && !session) router.replace(`/SignIn?callbackURL=${encodeURIComponent(`/services/${serviceId}`)}`);
+    if (!sessionPending && !session) router.replace(`/login?callbackURL=${encodeURIComponent(`/services/${serviceId}`)}`);
   }, [session, sessionPending, serviceId, router]);
 
   if (sessionPending || !session) return <div className="py-10"><Loading label="Checking your account…" /></div>;

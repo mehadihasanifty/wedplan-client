@@ -24,7 +24,7 @@ export function BookingForm({ service }: { service: Service }) {
   const id = service.id ?? service._id;
   const vendorId = service.vendorId ?? service.vendor?.id ?? service.vendor?._id;
   const ownService = Boolean(user && vendorId && (user.id === vendorId || user._id === vendorId));
-  const signInHref = `/SignIn?callbackURL=${encodeURIComponent(`/services/${id ?? ""}`)}`;
+  const signInHref = `/login?callbackURL=${encodeURIComponent(`/services/${id ?? ""}`)}`;
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

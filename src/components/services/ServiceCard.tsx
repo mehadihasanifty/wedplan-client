@@ -11,7 +11,7 @@ export function ServiceCard({ service }: { service: Service }) {
   const { data: session } = authClient.useSession();
   const id = service.id ?? service._id;
   const detailPath = id ? `/services/${encodeURIComponent(id)}` : "/services";
-  const detailHref = session?.user ? detailPath : `/SignIn?callbackURL=${encodeURIComponent(detailPath)}`;
+  const detailHref = session?.user ? detailPath : `/login?callbackURL=${encodeURIComponent(detailPath)}`;
   const image = service.images?.[0] ?? service.serviceImage;
   const vendorName = service.vendor?.businessName || service.vendor?.name || service.businessName || service.vendorName || "Wedding professional";
   const vendorImage = service.vendor?.image;
