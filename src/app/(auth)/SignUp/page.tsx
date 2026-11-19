@@ -38,6 +38,7 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState<"email" | "google" | null>(null);
   const [error, setError] = useState("");
+  const [existingAccount, setExistingAccount] = useState(false);
   const [success, setSuccess] = useState("");
   const passwordValid = passwordRules.every(rule => rule.test(values.password));
   const dashboardPath = role === "vendor" ? "/dashboard/vendor" : "/dashboard/customer";
@@ -45,6 +46,7 @@ export default function SignUpPage() {
   function update(field: keyof FormValues, value: string) {
     setValues(current => ({ ...current, [field]: value }));
     if (error) setError("");
+    setExistingAccount(false);
     if (success) setSuccess("");
   }
 
@@ -77,6 +79,7 @@ export default function SignUpPage() {
   async function handleEmailSignUp(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
+    setExistingAccount(false);
     setSuccess("");
     if (!passwordValid) {
       setError("Please meet all password requirements before continuing.");
@@ -88,7 +91,19 @@ export default function SignUpPage() {
       const image = profileFile ? await uploadProfileImage(profileFile) : undefined;
       const payload = { name: values.name.trim(), email: values.email.trim(), password: values.password, callbackURL: dashboardPath, role, ...(image ? { image } : {}) };
       const result = await authClient.signUp.email(payload as Parameters<typeof authClient.signUp.email>[0]);
-      if (result.error) throw new Error(result.error.message || "We couldn’t create your account. Please try again.");
+      if (result.error) {
+        const authError = result.error as { code?: string; message?: string };
+        if (authError.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL" || authError.message?.toLowerCase().includes("user already exists")) {
+          setExistingAccount(true);
+          setError("An account already exists with this email. Sign in to your existing account, or use a different email to create a new one.");
+          return;
+        }
+        throw new Error(authError.message || "We couldn’t create your account. Please try again.");
+      }
+      const sessionResult = await authClient.getSession();
+      if (sessionResult.error || !sessionResult.data?.user) {
+        throw new Error(sessionResult.error?.message || "Your account was created, but sign-in was not completed. Please sign in to continue.");
+      }
       await syncApiToken();
       setSuccess("Your account is ready. Taking you to your WedPlan workspace…");
       router.replace(dashboardPath);
@@ -147,7 +162,7 @@ export default function SignUpPage() {
 
           <div><div className="mb-1.5 flex items-center justify-between"><p className="text-xs font-semibold text-stone-700">Profile image <span className="font-normal text-stone-400">Optional</span></p>{profileFile && <button type="button" onClick={removeProfileImage} className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-semibold text-rose-800 hover:bg-rose-50"><X size={12} />Remove</button>}</div><input ref={fileInputRef} type="file" accept="image/png,image/jpeg,image/webp" onChange={selectProfileImage} className="sr-only" aria-label="Upload profile image" />{preview ? <button type="button" onClick={() => fileInputRef.current?.click()} className="flex w-full items-center gap-3 rounded-xl border border-rose-100 bg-[#fffaf7] p-2.5 text-left transition hover:border-rose-200"><span role="img" aria-label="Selected profile image preview" className="size-12 shrink-0 rounded-lg bg-cover bg-center" style={{ backgroundImage: `url("${preview}")` }} /><span className="min-w-0 flex-1"><span className="block truncate text-xs font-semibold text-stone-800">{profileFile?.name}</span><span className="mt-1 block text-[10px] text-stone-500">Ready to upload · up to 5 MB</span></span><ImagePlus size={17} className="mr-2 shrink-0 text-rose-700" /></button> : <button type="button" onClick={() => fileInputRef.current?.click()} className="flex w-full items-center gap-3 rounded-xl border border-dashed border-[#e5d4c9] bg-[#fffdfa] px-4 py-3.5 text-left transition hover:border-rose-300 hover:bg-rose-50/40"><span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-800"><ImagePlus size={17} /></span><span><span className="block text-xs font-semibold text-stone-800">Choose a profile photo</span><span className="mt-1 block text-[10px] text-stone-500">JPG, PNG or WebP · up to 5 MB · uploaded securely to ImgBB</span></span></button>}</div>
 
-          {error && <p role="alert" className="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-3 text-xs leading-5 text-rose-900">{error}</p>}
+        {error && <div role="alert" className="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-3 text-xs leading-5 text-rose-900">{error}{existingAccount&&<Link href="/signin" className="ml-1 inline-flex items-center gap-1 font-semibold underline decoration-rose-300 underline-offset-2 hover:text-rose-950">Sign in<ArrowRight size={12}/></Link>}</div>}
           {success && <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-3 text-xs leading-5 text-emerald-900">{success}</p>}
           <button type="submit" disabled={submitting !== null || !values.name.trim() || !values.email.trim() || !passwordValid} className="group inline-flex h-12 items-center justify-center gap-2 rounded-full bg-rose-800 px-5 text-sm font-semibold text-white shadow-md shadow-rose-950/10 transition hover:-translate-y-0.5 hover:bg-rose-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-55">{submitting === "email" ? <><LoaderCircle size={17} className="animate-spin" />Creating your account…</> : <>Create account<ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" /></>}</button>
         </form>

@@ -10,7 +10,7 @@ api.interceptors.response.use(undefined, async (error) => {
   if (!request || status !== 401 || request._jwtRetried || /\/auth\/token(?:\?|$)/.test(url)) throw error;
 
   request._jwtRetried = true;
-  tokenRefresh ??= fetch(`${api.defaults.baseURL}/auth/token`, { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" } })
+  tokenRefresh ??= fetch("/api/auth/token", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, cache: "no-store" })
     .then(async (response) => {
       if (!response.ok) throw new Error("Your WedPlan session has expired. Please sign in again.");
     })

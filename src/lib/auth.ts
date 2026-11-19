@@ -17,7 +17,8 @@ if (process.env.NODE_ENV !== "production") {
   globalForMongo.wedPlanMongoClient = mongoClient;
 }
 
-export const authDb = mongoClient.db();
+// Keep Better Auth records beside the rest of WedPlan's MongoDB data.
+export const authDb = mongoClient.db("wedding_planning_platform");
 
 function idOptions(id: string) {
   const options: (string | ObjectId)[] = [id];
@@ -33,6 +34,8 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
+    // Keep this aligned with the signup form's password rules.
+    minPasswordLength: 6,
   },
   user: {
     additionalFields: {
