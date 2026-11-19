@@ -37,10 +37,25 @@ function ServiceGridContent({ initialCategory }: { initialCategory: string }) {
 
   const locations = useMemo(() => [...new Set(services.map(service => service.location).filter(Boolean))].sort((a, b) => a.localeCompare(b)), [services]);
   const filtered = useMemo(() => {
-    const needle = filters.search.trim().toLocaleLowerCase();
-    const result = services.filter(service => (!needle || service.serviceName.toLocaleLowerCase().includes(needle)) && (!filters.category || service.category === filters.category) && (!filters.location || service.location === filters.location));
-    if (filters.sort === "low") result.sort((a, b) => a.price - b.price);
-    if (filters.sort === "high") result.sort((a, b) => b.price - a.price);
+    const normalize = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase();
+    const terms = normalize(filters.search).trim().split(/\s+/).filter(Boolean);
+    const result = services.filter(service => {
+      const searchableText = normalize([
+        service.serviceName,
+        service.category,
+        service.description ?? "",
+        service.location,
+        service.vendorName ?? "",
+        service.businessName ?? "",
+        service.vendor?.name ?? "",
+        service.vendor?.businessName ?? "",
+      ].join(" "));
+      return terms.every(term => searchableText.includes(term))
+        && (!filters.category || service.category === filters.category)
+        && (!filters.location || service.location === filters.location);
+    });
+    if (filters.sort === "low") result.sort((a, b) => a.price - b.price || a.serviceName.localeCompare(b.serviceName));
+    if (filters.sort === "high") result.sort((a, b) => b.price - a.price || a.serviceName.localeCompare(b.serviceName));
     return result;
   }, [services, filters]);
   const pageCount = Math.ceil(filtered.length / PAGE_SIZE);
