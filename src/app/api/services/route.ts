@@ -32,7 +32,7 @@ export async function GET(request: Request) {
   }
 
   const limitParam = Number(url.searchParams.get("limit")) || 100;
-  const sortSpec = ["low", "price-asc"].includes(sort) ? { price: 1 as const, _id: 1 as const } : ["high", "price-desc"].includes(sort) ? { price: -1 as const, _id: 1 as const } : { createdAt: -1 as const, _id: -1 as const };
+  const sortSpec: Record<string, 1 | -1> = ["low", "price-asc"].includes(sort) ? { price: 1, _id: 1 } : ["high", "price-desc"].includes(sort) ? { price: -1, _id: 1 } : { createdAt: -1, _id: -1 };
   const services = await authDb.collection("services").find(filter).sort(sortSpec).limit(Math.max(1, Math.min(limitParam, 100))).toArray();
   const users = authDb.collection("user");
   const enriched = await Promise.all(services.map(async (service) => {
