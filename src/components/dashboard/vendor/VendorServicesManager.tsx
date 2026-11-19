@@ -11,6 +11,7 @@ import { ErrorState } from "@/components/shared/ErrorState";
 import { Loading } from "@/components/shared/Loading";
 import { VendorServiceForm } from "@/components/dashboard/vendor/VendorServiceForm";
 import { belongsToVendor, formatCurrency, serviceId } from "@/components/dashboard/vendor/constants";
+import { toast } from "sonner";
 
 type VendorUser = { id?: string; _id?: string; plan?: string; subscriptionPlan?: string };
 
@@ -48,8 +49,8 @@ export function VendorServicesManager() {
     const id = serviceId(editing);
     if (!id) throw new Error("Could not identify this service.");
     setBusyId(id);
-    try { await updateService(id, values); await refresh(); setEditing(null); setNotice("Service details updated."); }
-    catch (cause) { setError(cause instanceof Error ? cause.message : "Could not update this service."); throw cause; }
+    try { await updateService(id, values); await refresh(); setEditing(null); setNotice("Service details updated."); toast.success("Service details updated."); }
+    catch (cause) { const message = cause instanceof Error ? cause.message : "Could not update this service."; setError(message); toast.error("Service update failed", { description: message }); throw cause; }
     finally { setBusyId(""); }
   }
 
@@ -57,10 +58,10 @@ export function VendorServicesManager() {
     const id = serviceId(service);
     if (!id) return;
     const willBeActive = service.isActive !== true;
-    if (willBeActive && service.status === "approved" && !premium && activeCount >= 3) { setError("Your Free plan allows up to 3 active services. Upgrade to Premium or pause another listing first."); return; }
+    if (willBeActive && service.status === "approved" && !premium && activeCount >= 3) { const message = "Your Free plan allows up to 3 active services. Upgrade to Premium or pause another listing first."; setError(message); toast.error("Free plan limit reached", { description: message }); return; }
     setBusyId(id); setError(""); setNotice("");
-    try { await updateService(id, { isActive: willBeActive }); await refresh(); setNotice(willBeActive ? "Service marked available." : "Service paused and hidden from customers."); }
-    catch (cause) { setError(cause instanceof Error ? cause.message : "Could not change service availability."); }
+    try { await updateService(id, { isActive: willBeActive }); await refresh(); const message = willBeActive ? "Service marked available." : "Service paused and hidden from customers."; setNotice(message); toast.success(message); }
+    catch (cause) { const message = cause instanceof Error ? cause.message : "Could not change service availability."; setError(message); toast.error("Could not change availability", { description: message }); }
     finally { setBusyId(""); }
   }
 
@@ -68,8 +69,8 @@ export function VendorServicesManager() {
     const id = serviceId(service);
     if (!id || !window.confirm(`Delete “${service.serviceName}”? This action cannot be undone.`)) return;
     setBusyId(id); setError(""); setNotice("");
-    try { await deleteService(id); await refresh(); setNotice("Service deleted."); }
-    catch (cause) { setError(cause instanceof Error ? cause.message : "Could not delete this service."); }
+    try { await deleteService(id); await refresh(); setNotice("Service deleted."); toast.success("Service deleted."); }
+    catch (cause) { const message = cause instanceof Error ? cause.message : "Could not delete this service."; setError(message); toast.error("Could not delete service", { description: message }); }
     finally { setBusyId(""); }
   }
 

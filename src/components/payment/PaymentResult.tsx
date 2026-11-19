@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, BadgeCheck, CircleAlert, Clock3, RefreshCw, ShieldCheck } from "lucide-react";
 import { getCheckoutStatus, type CheckoutStatus } from "@/services/payment-api";
+import { toast } from "sonner";
 
 const maxChecks = 10;
 
@@ -15,6 +16,7 @@ export function PaymentResult() {
   const [error, setError] = useState("");
   const [checking, setChecking] = useState(true);
   const [attempt, setAttempt] = useState(0);
+  const notified = useRef("");
 
   const checkStatus = useCallback(async () => {
     if (!sessionId) { setError("We couldn’t find a checkout session for this return link."); setChecking(false); return; }
@@ -33,6 +35,18 @@ export function PaymentResult() {
 
   const confirmed = result?.confirmed === true;
   const waiting = checking || (result?.paymentStatus === "pending" && !error && attempt < maxChecks);
+  useEffect(() => {
+    if (confirmed && notified.current !== "confirmed") {
+      notified.current = "confirmed";
+      toast.success("Premium subscription confirmed.");
+    } else if ((result?.paymentStatus === "failed" || result?.paymentStatus === "expired") && notified.current !== result.paymentStatus) {
+      notified.current = result.paymentStatus;
+      toast.error(result.paymentStatus === "failed" ? "Payment was not completed." : "Checkout session expired.");
+    } else if (error && notified.current !== "error") {
+      notified.current = "error";
+      toast.error("We couldn’t verify this checkout", { description: error });
+    }
+  }, [confirmed, result?.paymentStatus, error]);
   return <main className="mx-auto flex min-h-[55vh] max-w-3xl items-center px-4 py-12 sm:px-6">
     <section className="relative w-full overflow-hidden rounded-[2rem] border border-[#eadfd5] bg-[linear-gradient(140deg,#fffdfa,#fff6f1_62%,#f9eee5)] p-7 shadow-[0_28px_75px_-55px_rgba(82,43,44,.52)] sm:p-11">
       <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-24 size-64 rounded-full border border-rose-200/70" />

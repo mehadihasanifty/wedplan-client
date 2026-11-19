@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { ArrowRight, Eye, EyeOff, KeyRound, LoaderCircle, Mail, Sparkles } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { syncApiToken } from "@/lib/api-auth";
+import { toast } from "sonner";
 
 type AppRole = "customer" | "vendor" | "admin";
 type UserWithRole = { role?: AppRole | null };
@@ -37,10 +38,13 @@ export default function SignInPage() {
       const user = sessionResult.data?.user as UserWithRole | undefined;
       await syncApiToken();
       setSuccess("You’re signed in. Taking you to your WedPlan workspace…");
+      toast.success("You’re signed in.");
       router.replace(dashboardForRole(user?.role));
       router.refresh();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "We couldn’t sign you in. Check your details and try again.");
+      const message = cause instanceof Error ? cause.message : "We couldn’t sign you in. Check your details and try again.";
+      setError(message);
+      toast.error("Sign in failed", { description: message });
     } finally {
       setSubmitting(null);
     }
@@ -54,7 +58,9 @@ export default function SignInPage() {
       const result = await authClient.signIn.social({ provider: "google", callbackURL: "/auth/redirect" });
       if (result.error) throw new Error(result.error.message || "Google sign-in could not be started. Please try again.");
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Google sign-in could not be started. Please try again.");
+      const message = cause instanceof Error ? cause.message : "Google sign-in could not be started. Please try again.";
+      setError(message);
+      toast.error("Google sign-in could not be started", { description: message });
       setSubmitting(null);
     }
   }

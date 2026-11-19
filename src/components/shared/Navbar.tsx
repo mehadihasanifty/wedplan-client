@@ -8,6 +8,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, ChevronDown, Flower2, LayoutDashboard, LogOut, Menu, Settings, X } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { clearApiToken, syncApiToken } from "@/lib/api-auth";
+import { toast } from "sonner";
 
 type AppRole = "admin" | "vendor" | "customer";
 type AuthUser = { name?: string | null; email?: string | null; image?: string | null; role?: AppRole | null };
@@ -62,12 +63,14 @@ export function Navbar() {
       // race where a concurrent 401 refresh could have issued another JWT.
       await clearApiToken().catch(() => undefined);
       setSignOutError(false);
+      toast.success("You’ve signed out.");
       setProfileOpenPath(null);
       setMobileOpenPath(null);
       router.replace("/");
       router.refresh();
     } catch {
       setSignOutError(true);
+      toast.error("Could not sign out", { description: "Please try again." });
     } finally {
       setSigningOut(false);
     }

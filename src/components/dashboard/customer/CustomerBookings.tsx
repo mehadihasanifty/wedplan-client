@@ -10,6 +10,7 @@ import { EmptyState } from "@/components/shared/EmptyState";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { Loading } from "@/components/shared/Loading";
 import { formatDate } from "./CustomerOverview";
+import { toast } from "sonner";
 
 const filters: { label: string; value: "all" | BookingStatus }[] = [
   { label: "All requests", value: "all" },
@@ -57,8 +58,11 @@ export function CustomerBookings() {
       setBookings((current) => current.map((item) => (item.id ?? item._id) === id && item.customerId === customerId && item.status === "pending" ? { ...item, status: "cancelled" } : item));
       setConfirmId("");
       setNotice("Your pending booking request has been cancelled.");
+      toast.success("Booking request cancelled.");
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "We couldn’t cancel this request. Please try again.");
+      const message = cause instanceof Error ? cause.message : "We couldn’t cancel this request. Please try again.";
+      setError(message);
+      toast.error("Could not cancel booking", { description: message });
     } finally {
       setBusyId("");
     }

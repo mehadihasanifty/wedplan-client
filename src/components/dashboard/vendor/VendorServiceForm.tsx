@@ -5,6 +5,7 @@ import { ImagePlus, LoaderCircle, MapPin, UploadCloud } from "lucide-react";
 import type { Service } from "@/types";
 import { uploadImageToImgbb } from "@/lib/upload-image";
 import { serviceCategories } from "@/components/dashboard/vendor/constants";
+import { toast } from "sonner";
 
 export type ServiceFormValues = Pick<Service, "serviceName" | "category" | "description" | "price" | "location" | "images" | "serviceImage" | "isActive">;
 
@@ -28,7 +29,9 @@ export function VendorServiceForm({ initial, submitLabel, onSubmit }: { initial?
       if (!image) throw new Error("Please choose a service image before submitting.");
       await onSubmit({ serviceName: serviceName.trim(), category, description: description.trim(), price: Number(price), location: location.trim(), isActive, images: image ? [image, ...(initial?.images?.slice(1) ?? [])] : [], serviceImage: image });
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Could not save your service. Please try again.");
+      const message = cause instanceof Error ? cause.message : "Could not save your service. Please try again.";
+      setError(message);
+      toast.error("Could not save service", { description: message });
     } finally { setSubmitting(false); }
   }
 

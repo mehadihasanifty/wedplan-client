@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { ArrowRight, Check, Eye, EyeOff, ImagePlus, LoaderCircle, LockKeyhole, Mail, Sparkles, Store, UserRound, UserRoundCheck, X } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { syncApiToken } from "@/lib/api-auth";
+import { toast } from "sonner";
 
 type AccountRole = "customer" | "vendor";
 type FormValues = { name: string; email: string; password: string };
@@ -83,6 +84,7 @@ export default function SignUpPage() {
     setSuccess("");
     if (!passwordValid) {
       setError("Please meet all password requirements before continuing.");
+      toast.error("Check your password", { description: "Use at least 6 characters with uppercase and lowercase letters." });
       return;
     }
 
@@ -96,6 +98,7 @@ export default function SignUpPage() {
         if (authError.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL" || authError.message?.toLowerCase().includes("user already exists")) {
           setExistingAccount(true);
           setError("An account already exists with this email. Sign in to your existing account, or use a different email to create a new one.");
+          toast.error("This email is already registered", { description: "Sign in to your existing account or use a different email." });
           return;
         }
         throw new Error(authError.message || "We couldn’t create your account. Please try again.");
@@ -106,10 +109,13 @@ export default function SignUpPage() {
       }
       await syncApiToken();
       setSuccess("Your account is ready. Taking you to your WedPlan workspace…");
+      toast.success("Your WedPlan account is ready.");
       router.replace(dashboardPath);
       router.refresh();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "We couldn’t create your account. Please try again.");
+      const message = cause instanceof Error ? cause.message : "We couldn’t create your account. Please try again.";
+      setError(message);
+      toast.error("We couldn’t create your account", { description: message });
     } finally {
       setSubmitting(null);
     }
@@ -124,7 +130,9 @@ export default function SignUpPage() {
       const result = await authClient.signIn.social({ provider: "google", callbackURL: "/auth/redirect", additionalData: { role, ...(image ? { image } : {}) } });
       if (result.error) throw new Error(result.error.message || "Google sign-up could not be started. Please try again.");
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Google sign-up could not be started. Please try again.");
+      const message = cause instanceof Error ? cause.message : "Google sign-up could not be started. Please try again.";
+      setError(message);
+      toast.error("Google sign-up could not be started", { description: message });
       setSubmitting(null);
     }
   }

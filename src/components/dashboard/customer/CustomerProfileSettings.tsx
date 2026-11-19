@@ -6,6 +6,8 @@ import { authClient } from "@/lib/auth-client";
 import { api } from "@/lib/api";
 import { uploadImageToImgbb, validateImageFile } from "@/lib/upload-image";
 import { PageHeader } from "@/components/shared/PageHeader";
+import { Loading } from "@/components/shared/Loading";
+import { toast } from "sonner";
 
 type ProfileUser = { name?: string | null; email?: string | null; image?: string | null; role?: string | null; phoneNumber?: string | null; location?: string | null; bio?: string | null };
 
@@ -31,7 +33,7 @@ export function CustomerProfileSettings({ role = "customer" }: { role?: "custome
     const file = event.target.files?.[0];
     if (!file) return;
     try { validateImageFile(file); setSelectedFile(file); setImage(URL.createObjectURL(file)); setError(""); setSuccess(""); }
-    catch (cause) { setError(cause instanceof Error ? cause.message : "Please choose a valid image."); }
+    catch (cause) { const message = cause instanceof Error ? cause.message : "Please choose a valid image."; setError(message); toast.error("Invalid profile image", { description: message }); }
   }
 
   async function saveProfile(event: FormEvent<HTMLFormElement>) {
@@ -43,13 +45,14 @@ export function CustomerProfileSettings({ role = "customer" }: { role?: "custome
       const uploadedImage = selectedFile ? await uploadImageToImgbb(selectedFile) : image;
       await api.patch("/profile", { name: cleanName, image: uploadedImage, phoneNumber: phone.trim(), location: location.trim(), bio: bio.trim() });
       await authClient.getSession();
-      setImage(uploadedImage || ""); setSelectedFile(null); setSuccess("Your profile has been updated successfully.");
-    } catch (cause) { setError(cause instanceof Error ? cause.message : "We couldn’t update your profile. Please try again."); }
+      setImage(uploadedImage || ""); setSelectedFile(null); setSuccess("Your profile has been updated successfully."); toast.success("Profile updated.");
+    } catch (cause) { const message = cause instanceof Error ? cause.message : "We couldn’t update your profile. Please try again."; setError(message); toast.error("Profile update failed", { description: message }); }
     finally { setSaving(false); }
   }
 
   const email = user?.email || "";
   const accountRoleLabel = role === "vendor" ? "Vendor" : "Customer";
+  if (isPending) return <div className="mx-auto max-w-4xl"><PageHeader title="Profile settings" description={`Keep your ${accountRoleLabel.toLowerCase()} profile and contact details up to date.`} /><Loading label="Loading your profile…" /></div>;
   return <div className="mx-auto max-w-4xl"><PageHeader title="Profile settings" description={`Keep your ${accountRoleLabel.toLowerCase()} profile and contact details up to date.`} />
     <section className="overflow-hidden rounded-[1.7rem] border border-[#eee3dc] bg-white shadow-[0_20px_55px_-42px_rgba(82,43,44,.4)]">
       <div className="relative overflow-hidden border-b border-[#f0e8e2] bg-[linear-gradient(115deg,#fffdfa,#fbf3ed)] px-5 py-6 sm:px-7"><div aria-hidden="true" className="absolute -right-10 -top-20 size-56 rounded-full border border-rose-200/60"/><div className="relative flex items-center gap-4"><div className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-[1.35rem] border border-white bg-gradient-to-br from-rose-100 to-amber-100 text-rose-900 shadow-sm">{image?<span aria-label="Profile photo preview" role="img" className="absolute inset-0 bg-cover bg-center" style={{backgroundImage:`url("${image}")`}}/>:<span className="text-xl font-semibold">{(name||"W").slice(0,1).toUpperCase()}</span>}<button type="button" onClick={()=>fileInput.current?.click()} aria-label="Change profile image" className="absolute inset-x-0 bottom-0 flex h-6 items-center justify-center bg-stone-900/55 text-white"><Camera size={13}/></button></div><div className="min-w-0"><p className="text-[9px] font-semibold uppercase tracking-[0.17em] text-rose-800">Your WedPlan identity</p><h2 className="mt-1 truncate text-lg font-semibold text-stone-900">{name||"Your profile"}</h2><p className="mt-1 truncate text-xs text-stone-500">{email}</p></div><span className="ml-auto hidden shrink-0 items-center gap-1.5 rounded-full border border-emerald-100 bg-white/85 px-3 py-1.5 text-[9px] font-semibold text-emerald-800 sm:inline-flex"><ShieldCheck size={13}/>{accountRoleLabel} account</span></div></div>

@@ -8,6 +8,7 @@ import { ArrowRight, CalendarDays, CheckCircle2, MapPin } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { createBooking } from "@/services/booking-api";
 import type { Service } from "@/types";
+import { toast } from "sonner";
 
 type SessionUser = { id?: string; _id?: string; role?: "admin" | "vendor" | "customer" };
 
@@ -32,9 +33,11 @@ export function BookingForm({ service }: { service: Service }) {
     setSubmitting(true); setError("");
     try {
       await createBooking({ serviceId: id, eventDate, eventLocation: eventLocation.trim(), message: message.trim() || undefined });
-      setSent(true); router.refresh();
+      setSent(true); toast.success("Booking request sent", { description: "You can follow its progress from your customer dashboard." }); router.refresh();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Your request could not be sent. Please check your details and try again.");
+      const message = cause instanceof Error ? cause.message : "Your request could not be sent. Please check your details and try again.";
+      setError(message);
+      toast.error("Booking request failed", { description: message });
     } finally { setSubmitting(false); }
   }
 

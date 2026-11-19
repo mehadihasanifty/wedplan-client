@@ -12,6 +12,7 @@ import { Loading } from "@/components/shared/Loading";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { VendorServiceForm } from "@/components/dashboard/vendor/VendorServiceForm";
 import { belongsToVendor } from "@/components/dashboard/vendor/constants";
+import { toast } from "sonner";
 
 type VendorUser = { id?: string; _id?: string; plan?: string; subscriptionPlan?: string };
 
@@ -42,6 +43,7 @@ export function AddServicePageClient() {
     setSaving(true);
     try {
       await createService({ ...values, status: "pending" });
+      toast.success("Service submitted", { description: "It will appear publicly after admin approval." });
       router.push("/dashboard/vendor/my-services"); router.refresh();
     } finally { setSaving(false); }
   }

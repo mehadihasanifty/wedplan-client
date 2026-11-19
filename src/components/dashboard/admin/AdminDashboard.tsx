@@ -7,6 +7,7 @@ import type { LucideIcon } from "lucide-react";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { Loading } from "@/components/shared/Loading";
 import type { ServiceStatus, UserRole } from "@/types";
+import { toast } from "sonner";
 
 type AdminStats = { totalUsers: number; vendors: number; customers: number; totalServices: number; pendingServices: number; totalTransactions: number };
 type AdminUser = { _id?: string; id?: string; name?: string; email?: string; role?: UserRole; image?: string; blocked?: boolean; createdAt?: string; businessName?: string };
@@ -87,7 +88,8 @@ export function AdminUsers() {
       await requestJson(`/api/admin/users/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ blocked }) });
       setUsers((current) => current.map((item) => itemId(item) === id ? { ...item, blocked } : item));
       setNotice(`${user.name || user.email || "User"} ${blocked ? "has been blocked" : "has been unblocked"}.`);
-    } catch (cause) { setError(cause instanceof Error ? cause.message : "Could not update user access."); }
+      toast.success(blocked ? "User blocked." : "User unblocked.");
+    } catch (cause) { const message = cause instanceof Error ? cause.message : "Could not update user access."; setError(message); toast.error("Could not update user access", { description: message }); }
     finally { setBusyId(""); }
   }
 
@@ -130,8 +132,11 @@ export function AdminServices() {
       const updated = await requestJson<AdminService>(`/api/admin/services/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ status: nextStatus }) });
       setServices((current) => current.map((item) => itemId(item) === id ? { ...item, ...updated } : item));
       setNotice(`${service.serviceName} is now ${nextStatus}.`);
+      toast.success(`Service ${nextStatus}.`);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Could not update service status.");
+      const message = cause instanceof Error ? cause.message : "Could not update service status.";
+      setError(message);
+      toast.error("Could not update service", { description: message });
     } finally {
       setBusyId("");
     }
@@ -145,8 +150,11 @@ export function AdminServices() {
       setServices((current) => current.filter((item) => itemId(item) !== id));
       setDeleteId("");
       setNotice(`${service.serviceName} was deleted.`);
+      toast.success("Service deleted.");
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Could not delete service.");
+      const message = cause instanceof Error ? cause.message : "Could not delete service.";
+      setError(message);
+      toast.error("Could not delete service", { description: message });
     } finally {
       setBusyId("");
     }
