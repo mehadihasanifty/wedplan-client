@@ -11,7 +11,7 @@ import { Loading } from "@/components/shared/Loading";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { belongsToVendor, formatCurrency } from "@/components/dashboard/vendor/constants";
 
-type VendorUser = { id?: string; _id?: string; name?: string; businessName?: string; plan?: string; subscriptionPlan?: string };
+type VendorUser = { id?: string; _id?: string; name?: string; businessName?: string; subscriptionPlan?: string };
 
 export function VendorOverview() {
   const { data: session } = authClient.useSession();
@@ -35,7 +35,7 @@ export function VendorOverview() {
   const activeServices = services.filter(item => item.status === "approved" && item.isActive === true).length;
   const pendingBookings = bookings.filter(item => item.status === "pending");
   const acceptedBookings = bookings.filter(item => item.status === "accepted").length;
-  const planName = user?.subscriptionPlan || user?.plan || "Free";
+  const planName = user?.subscriptionPlan || "Free";
   const premium = /premium/i.test(planName);
 
   return <div className="mx-auto max-w-7xl">

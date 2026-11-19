@@ -12,8 +12,8 @@ export function ServiceCard({ service }: { service: Service }) {
   const id = service.id ?? service._id;
   const detailPath = id ? `/services/${encodeURIComponent(id)}` : "/services";
   const detailHref = session?.user ? detailPath : `/signin?callbackURL=${encodeURIComponent(detailPath)}`;
-  const image = service.images?.[0] ?? service.serviceImage;
-  const vendorName = service.vendor?.businessName || service.vendor?.name || service.businessName || service.vendorName || "Wedding professional";
+  const image = service.images?.[0];
+  const vendorName = service.vendor?.businessName || service.vendor?.name || "Wedding professional";
   const vendorImage = service.vendor?.image;
   const vendorInitials = vendorName.split(/\s+/).slice(0, 2).map(part => part[0]).join("").toUpperCase();
   const price = service.currency

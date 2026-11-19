@@ -39,8 +39,8 @@ export async function GET(request: Request) {
 
     return {
       ...booking,
-      service: service ? { ...service, vendor: vendor ?? service.vendor ?? null } : booking.service ?? null,
-      vendor: vendor ?? booking.vendor ?? null,
+      service: service ? { ...service, vendor } : null,
+      vendor: vendor ?? null,
     };
   }));
 
@@ -92,8 +92,6 @@ export async function POST(request: Request) {
     return Response.json({ message: "There is already an active request for this service on that event date. Choose another date or contact the vendor." }, { status: 409 });
   }
 
-  const customer = await authDb.collection("user").findOne({ _id: { $in: idOptions(session.user.id) } } as never, { projection: { name: 1, email: 1, image: 1 } });
-  const vendor = await authDb.collection("user").findOne({ _id: { $in: idOptions(vendorId) } } as never, { projection: { name: 1, email: 1, image: 1, businessName: 1 } });
   const booking = {
     serviceId,
     vendorId,
@@ -104,9 +102,6 @@ export async function POST(request: Request) {
     status: "pending",
     createdAt: new Date(),
     updatedAt: new Date(),
-    service: { ...service, vendor: vendor ?? service.vendor ?? null },
-    customer: customer ?? { id: session.user.id, name: session.user.name, email: session.user.email },
-    vendor: vendor ?? service.vendor ?? null,
   };
 
   try {

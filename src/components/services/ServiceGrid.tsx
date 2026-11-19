@@ -45,8 +45,6 @@ function ServiceGridContent({ initialCategory }: { initialCategory: string }) {
         service.category,
         service.description ?? "",
         service.location,
-        service.vendorName ?? "",
-        service.businessName ?? "",
         service.vendor?.name ?? "",
         service.vendor?.businessName ?? "",
       ].join(" "));

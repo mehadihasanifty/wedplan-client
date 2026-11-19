@@ -14,14 +14,14 @@ import { VendorServiceForm } from "@/components/dashboard/vendor/VendorServiceFo
 import { belongsToVendor } from "@/components/dashboard/vendor/constants";
 import { toast } from "sonner";
 
-type VendorUser = { id?: string; _id?: string; plan?: string; subscriptionPlan?: string };
+type VendorUser = { id?: string; _id?: string; subscriptionPlan?: string };
 
 export function AddServicePageClient() {
   const router = useRouter();
   const { data: session } = authClient.useSession();
   const user = session?.user as VendorUser | undefined;
   const vendorId = user?.id ?? user?._id;
-  const premium = /premium/i.test(user?.subscriptionPlan || user?.plan || "");
+  const premium = /premium/i.test(user?.subscriptionPlan || "");
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);

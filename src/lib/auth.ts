@@ -46,7 +46,12 @@ export const auth = betterAuth({
         defaultValue: "customer",
         input: true,
       },
-      blocked: {
+      businessName: {
+        type: "string",
+        required: false,
+        input: true,
+      },
+      isBlocked: {
         type: "boolean",
         required: false,
         defaultValue: false,
@@ -56,6 +61,11 @@ export const auth = betterAuth({
         type: "string",
         required: false,
         defaultValue: "free",
+        input: false,
+      },
+      subscriptionExpiresAt: {
+        type: "date",
+        required: false,
         input: false,
       },
       phoneNumber: { type: "string", required: false, input: false },
@@ -86,7 +96,7 @@ export const auth = betterAuth({
       },
       update: {
         before: async (user) => {
-          if ("role" in user || "subscriptionPlan" in user || "blocked" in user) {
+          if ("role" in user || "subscriptionPlan" in user || "subscriptionExpiresAt" in user || "isBlocked" in user || "blocked" in user) {
             throw new APIError("FORBIDDEN", { message: "Account role, access, and subscription settings cannot be changed from profile updates." });
           }
           return { data: user };
@@ -97,7 +107,7 @@ export const auth = betterAuth({
       create: {
         before: async (session) => {
           const user = await authDb.collection("user").findOne({ _id: { $in: idOptions(session.userId) } } as never);
-          if (user?.blocked === true) {
+          if (user?.isBlocked === true || user?.blocked === true) {
             throw new APIError("FORBIDDEN", { message: "This account is blocked. Contact WedPlan support." });
           }
           return { data: session };

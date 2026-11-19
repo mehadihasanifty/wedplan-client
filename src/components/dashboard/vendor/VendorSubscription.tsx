@@ -7,7 +7,7 @@ import { createBillingPortalSession, createCheckoutSession, getSubscriptionInfo,
 import { toast } from "sonner";
 import { Loading } from "@/components/shared/Loading";
 
-type VendorUser = { plan?: string; subscriptionPlan?: string };
+type VendorUser = { subscriptionPlan?: string };
 
 export function VendorSubscription() {
   const { data: session, isPending: sessionPending } = authClient.useSession();
@@ -16,7 +16,7 @@ export function VendorSubscription() {
   const [subscription, setSubscription] = useState<SubscriptionInfo | null>(null);
   const [subscriptionError, setSubscriptionError] = useState("");
   const [subscriptionPending, setSubscriptionPending] = useState(true);
-  const currentPlan = subscription?.plan || user?.subscriptionPlan || user?.plan || "Free";
+  const currentPlan = subscription?.plan || user?.subscriptionPlan || "Free";
   const premium = /premium/i.test(currentPlan);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

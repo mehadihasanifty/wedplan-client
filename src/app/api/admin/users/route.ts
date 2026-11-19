@@ -17,8 +17,8 @@ export async function GET(request: Request) {
   }
   const collection = authDb.collection("user");
   const [users, total] = await Promise.all([
-    collection.find(filter).project({ name: 1, email: 1, role: 1, image: 1, blocked: 1, createdAt: 1, businessName: 1 }).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit).toArray(),
+    collection.find(filter).project({ name: 1, email: 1, role: 1, image: 1, isBlocked: 1, blocked: 1, createdAt: 1, businessName: 1 }).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit).toArray(),
     collection.countDocuments(filter),
   ]);
-  return Response.json({ users, total, page, limit });
+  return Response.json({ users: users.map(({ blocked, ...user }) => ({ ...user, isBlocked: user.isBlocked ?? blocked ?? false })), total, page, limit });
 }

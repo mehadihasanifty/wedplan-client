@@ -49,9 +49,9 @@ export default function ServiceDetailsPage({ params }: { params: Promise<{ id: s
   if (failed) return <div className="py-8"><ErrorState message="We couldn’t load this service. Please try again in a moment." /><Link href="/services" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-rose-800"><ArrowLeft size={16} />Back to services</Link></div>;
   if (notFound || !service) return <div className="py-8"><EmptyState title="Service unavailable" description="This service may no longer exist, or it is not currently approved and active." /><div className="mt-5 text-center"><Link href="/services" className="inline-flex items-center gap-2 rounded-full bg-rose-800 px-5 py-3 text-sm font-semibold text-white"><ArrowLeft size={16} />Browse available services</Link></div></div>;
 
-  const images = [...new Set([...(service.images ?? []), ...(service.serviceImage ? [service.serviceImage] : [])])];
+  const images = [...new Set(service.images ?? [])];
   const selected = images[selectedImage];
-  const vendorName = service.vendor?.businessName || service.vendor?.name || service.businessName || service.vendorName || "Wedding professional";
+  const vendorName = service.vendor?.businessName || service.vendor?.name || "Wedding professional";
   const price = service.currency ? new Intl.NumberFormat("en", { style: "currency", currency: service.currency, maximumFractionDigits: 0 }).format(service.price) : service.price.toLocaleString("en");
 
   return (

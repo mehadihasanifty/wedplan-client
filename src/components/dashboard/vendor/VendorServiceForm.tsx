@@ -7,7 +7,7 @@ import { uploadImageToImgbb } from "@/lib/upload-image";
 import { serviceCategories } from "@/components/dashboard/vendor/constants";
 import { toast } from "sonner";
 
-export type ServiceFormValues = Pick<Service, "serviceName" | "category" | "description" | "price" | "location" | "images" | "serviceImage" | "isActive">;
+export type ServiceFormValues = Pick<Service, "serviceName" | "category" | "description" | "price" | "location" | "images" | "isActive">;
 
 export function VendorServiceForm({ initial, submitLabel, onSubmit }: { initial?: Partial<Service>; submitLabel: string; onSubmit: (values: ServiceFormValues) => Promise<void> }) {
   const [serviceName, setServiceName] = useState(initial?.serviceName ?? "");
@@ -17,7 +17,7 @@ export function VendorServiceForm({ initial, submitLabel, onSubmit }: { initial?
   const [location, setLocation] = useState(initial?.location ?? "");
   const [isActive, setIsActive] = useState(initial?.isActive ?? true);
   const [file, setFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState(initial?.images?.[0] ?? initial?.serviceImage ?? "");
+  const [preview, setPreview] = useState(initial?.images?.[0] ?? "");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -25,9 +25,9 @@ export function VendorServiceForm({ initial, submitLabel, onSubmit }: { initial?
     event.preventDefault(); setError(""); setSubmitting(true);
     try {
       const uploadedImage = file ? await uploadImageToImgbb(file) : undefined;
-      const image = uploadedImage ?? initial?.images?.[0] ?? initial?.serviceImage;
+      const image = uploadedImage ?? initial?.images?.[0];
       if (!image) throw new Error("Please choose a service image before submitting.");
-      await onSubmit({ serviceName: serviceName.trim(), category, description: description.trim(), price: Number(price), location: location.trim(), isActive, images: image ? [image, ...(initial?.images?.slice(1) ?? [])] : [], serviceImage: image });
+      await onSubmit({ serviceName: serviceName.trim(), category, description: description.trim(), price: Number(price), location: location.trim(), isActive, images: image ? [image, ...(initial?.images?.slice(1) ?? [])] : [] });
     } catch (cause) {
       const message = cause instanceof Error ? cause.message : "Could not save your service. Please try again.";
       setError(message);

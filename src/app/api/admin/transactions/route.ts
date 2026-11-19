@@ -4,7 +4,7 @@ import { idOptions, requireAdmin } from "@/lib/admin-api";
 export async function GET(request: Request) {
   const access = await requireAdmin(request);
   if (access.response) return access.response;
-  const transactions = await authDb.collection("transactions").find({}).project({ vendorId: 1, vendor: 1, plan: 1, planName: 1, subscriptionPlan: 1, amount: 1, paymentAmount: 1, amountCents: 1, currency: 1, status: 1, paymentStatus: 1, createdAt: 1, transactionDate: 1 }).sort({ createdAt: -1 }).limit(300).toArray();
+  const transactions = await authDb.collection("transactions").find({}).project({ vendorId: 1, plan: 1, amount: 1, currency: 1, stripeSessionId: 1, stripeSubscriptionId: 1, stripeInvoiceId: 1, status: 1, createdAt: 1 }).sort({ createdAt: -1 }).limit(300).toArray();
   const users = authDb.collection("user");
   const enriched = await Promise.all(transactions.map(async (transaction) => {
     const vendorId = transaction.vendorId ? String(transaction.vendorId) : "";

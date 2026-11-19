@@ -11,7 +11,7 @@ export type SubscriptionInfo = {
   plan: string;
   status: string;
   cancelAtPeriodEnd: boolean;
-  currentPeriodEnd?: string | null;
+  subscriptionExpiresAt?: string | null;
   price?: { unitAmount: number; currency: string; interval: string } | null;
 };
 

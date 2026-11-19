@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     const customer = customerId
       ? await users.findOne({ _id: { $in: idOptions(customerId) } } as never, { projection: { name: 1, email: 1, image: 1 } })
       : null;
-    return { ...booking, service: service ?? booking.service ?? null, customer: customer ?? booking.customer ?? null };
+    return { ...booking, service: service ?? null, customer: customer ?? null };
   }));
 
   return Response.json(enriched);
