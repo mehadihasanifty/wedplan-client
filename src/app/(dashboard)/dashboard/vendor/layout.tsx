@@ -16,11 +16,25 @@ export default function VendorLayout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (isPending) return;
-    if (!session) router.replace(`/signin?callbackURL=${encodeURIComponent(window.location.pathname)}`);
-    else if (user?.role && user.role !== "vendor") router.replace(`/dashboard/${user.role}`);
+    if (!session)
+      router.replace(
+        `/signin?callbackURL=${encodeURIComponent(window.location.pathname)}`,
+      );
+    else if (user?.role && user.role !== "vendor")
+      router.replace(`/dashboard/${user.role}`);
     else if (!user?.role) router.replace("/dashboard");
   }, [isPending, router, session, user?.role]);
 
-  if (isPending || !session || user?.role !== "vendor") return <div className="py-12"><Loading label="Preparing your vendor workspace…" /></div>;
-  return <div className="grid min-h-[calc(100vh-72px)] lg:grid-cols-[258px_minmax(0,1fr)]"><DashboardSidebar role="vendor" /><main className="min-w-0 bg-[#fbf8f5] p-4 sm:p-6 lg:p-9">{children}</main></div>;
+  if (isPending || !session || user?.role !== "vendor")
+    return (
+      <div className="py-12">
+        <Loading label="Preparing your vendor workspace…" />
+      </div>
+    );
+  return (
+    <div className="grid min-h-[calc(100vh-72px)] lg:grid-cols-[258px_minmax(0,1fr)]">
+      <DashboardSidebar role="vendor" />
+      <main className="min-w-0 bg-[#fbf8f5] p-4 sm:p-6 lg:p-9">{children}</main>
+    </div>
+  );
 }

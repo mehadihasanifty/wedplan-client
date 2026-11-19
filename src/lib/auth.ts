@@ -12,7 +12,8 @@ const globalForMongo = globalThis as typeof globalThis & {
   wedPlanMongoClient?: MongoClient;
 };
 
-const mongoClient = globalForMongo.wedPlanMongoClient ?? new MongoClient(mongoUrl);
+const mongoClient =
+  globalForMongo.wedPlanMongoClient ?? new MongoClient(mongoUrl);
 if (process.env.NODE_ENV !== "production") {
   globalForMongo.wedPlanMongoClient = mongoClient;
 }
@@ -22,7 +23,11 @@ export const authDb = mongoClient.db("wedding_planning_platform");
 
 function idOptions(id: string) {
   const options: (string | ObjectId)[] = [id];
-  if (ObjectId.isValid(id) && new ObjectId(id).toHexString() === id.toLowerCase()) options.push(new ObjectId(id));
+  if (
+    ObjectId.isValid(id) &&
+    new ObjectId(id).toHexString() === id.toLowerCase()
+  )
+    options.push(new ObjectId(id));
   return options;
 }
 
@@ -89,15 +94,26 @@ export const auth = betterAuth({
         before: async (user) => {
           const role = user.role ?? "customer";
           if (role !== "customer" && role !== "vendor") {
-            throw new APIError("BAD_REQUEST", { message: "Public accounts can only be customers or vendors." });
+            throw new APIError("BAD_REQUEST", {
+              message: "Public accounts can only be customers or vendors.",
+            });
           }
           return { data: { ...user, role } };
         },
       },
       update: {
         before: async (user) => {
-          if ("role" in user || "subscriptionPlan" in user || "subscriptionExpiresAt" in user || "isBlocked" in user || "blocked" in user) {
-            throw new APIError("FORBIDDEN", { message: "Account role, access, and subscription settings cannot be changed from profile updates." });
+          if (
+            "role" in user ||
+            "subscriptionPlan" in user ||
+            "subscriptionExpiresAt" in user ||
+            "isBlocked" in user ||
+            "blocked" in user
+          ) {
+            throw new APIError("FORBIDDEN", {
+              message:
+                "Account role, access, and subscription settings cannot be changed from profile updates.",
+            });
           }
           return { data: user };
         },
@@ -106,9 +122,13 @@ export const auth = betterAuth({
     session: {
       create: {
         before: async (session) => {
-          const user = await authDb.collection("user").findOne({ _id: { $in: idOptions(session.userId) } } as never);
+          const user = await authDb
+            .collection("user")
+            .findOne({ _id: { $in: idOptions(session.userId) } } as never);
           if (user?.isBlocked === true || user?.blocked === true) {
-            throw new APIError("FORBIDDEN", { message: "This account is blocked. Contact WedPlan support." });
+            throw new APIError("FORBIDDEN", {
+              message: "This account is blocked. Contact WedPlan support.",
+            });
           }
           return { data: session };
         },

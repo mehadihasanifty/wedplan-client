@@ -16,13 +16,19 @@ export function AdminAccessGuard({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (isPending) return;
-    if (!session) router.replace(`/signin?callbackURL=${encodeURIComponent(pathname)}`);
-    else if (user?.role && user.role !== "admin") router.replace(`/dashboard/${user.role}`);
+    if (!session)
+      router.replace(`/signin?callbackURL=${encodeURIComponent(pathname)}`);
+    else if (user?.role && user.role !== "admin")
+      router.replace(`/dashboard/${user.role}`);
     else if (!user?.role) router.replace("/dashboard");
   }, [isPending, pathname, router, session, user?.role]);
 
   if (isPending || !session || user?.role !== "admin") {
-    return <div className="py-12"><Loading label="Verifying admin access…" /></div>;
+    return (
+      <div className="py-12">
+        <Loading label="Verifying admin access…" />
+      </div>
+    );
   }
   return children;
 }

@@ -6,12 +6,14 @@ import { HowItWorks } from "@/components/home/HowItWorks";
 import { ScrollProgress } from "@/components/home/ScrollProgress";
 
 export default function HomePage() {
-  return <>
-  <ScrollProgress />
-  <Hero />
-  <FeaturedServices />
-  <Categories />
-  <WhyChooseUs />
-  <HowItWorks />
-  </>;
+  return (
+    <>
+      <ScrollProgress />
+      <Hero />
+      <FeaturedServices />
+      <Categories />
+      <WhyChooseUs />
+      <HowItWorks />
+    </>
+  );
 }

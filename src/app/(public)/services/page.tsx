@@ -1,21 +1,147 @@
 "use client";
 
 import { Suspense } from "react";
-import { ArrowDown, ArrowUpRight, Flower2, Heart, Sparkles } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUpRight,
+  Flower2,
+  Heart,
+  Sparkles,
+} from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ServiceGrid } from "@/components/services/ServiceGrid";
 import { Loading } from "@/components/shared/Loading";
 
 export default function ServicesPage() {
   const reduceMotion = useReducedMotion();
-  return <div className="pb-12">
-    <header className="relative mb-9 overflow-hidden rounded-[2rem] border border-[#e8d9ce] bg-[linear-gradient(118deg,#fffaf6_0%,#f8eee6_55%,#f2e4dc_100%)] px-6 py-9 shadow-[0_28px_75px_-58px_rgba(82,43,44,.5)] sm:px-10 sm:py-12 lg:px-14 lg:py-14">
-      <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-24 size-[27rem] rounded-full border border-rose-900/[.07]" /><div aria-hidden="true" className="pointer-events-none absolute -right-2 -top-10 size-[21rem] rounded-full border border-rose-900/[.06]" /><div aria-hidden="true" className="pointer-events-none absolute right-[8%] top-[12%] size-72 rounded-full bg-rose-200/30 blur-3xl" />
-      <div className="relative grid items-center gap-8 lg:grid-cols-[1fr_0.7fr] lg:gap-12">
-        <div className="max-w-3xl"><span className="inline-flex items-center gap-2 rounded-full border border-rose-200/80 bg-white/75 px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-800 shadow-sm"><Flower2 size={13} aria-hidden="true" />Made for your day</span><h1 className="mt-5 text-balance text-4xl font-semibold leading-[1.08] tracking-[-0.05em] text-[#352321] sm:text-5xl lg:text-[3.65rem]">Find the details that feel <span className="font-serif font-normal italic text-rose-700">like you.</span></h1><p className="mt-5 max-w-2xl text-sm leading-7 text-stone-600 sm:text-base sm:leading-8">The right people make every part of the celebration feel more personal. Explore wedding professionals, compare the details, and find the ones who understand your vision.</p><a href="#service-results" className="group mt-7 inline-flex items-center gap-2.5 rounded-full bg-[#5b303a] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-rose-950/15 transition hover:-translate-y-0.5 hover:bg-[#48262e]">Explore the collection<ArrowDown aria-hidden="true" size={15} className="transition-transform group-hover:translate-y-0.5" /></a></div>
-        <div aria-label="Wedding planning thoughtfully brought together" className="relative mx-auto hidden w-full max-w-[340px] lg:block"><div className="relative flex aspect-square items-center justify-center rounded-full border border-white/70 bg-[radial-gradient(circle_at_50%_45%,rgba(255,255,255,.9),rgba(246,228,218,.4)_58%,transparent_59%)]"><div className="absolute inset-[12%] rounded-full border border-dashed border-rose-300/70" /><div className="absolute inset-[22%] rounded-full border border-white/90" /><div role="img" aria-label="Newlyweds sharing a romantic garden moment" className="relative h-[12rem] w-[10rem] overflow-hidden rounded-[2.5rem] border-[5px] border-white/90 bg-cover bg-center shadow-[0_22px_55px_-22px_rgba(91,48,54,.3)] ring-1 ring-rose-950/5" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1617202000199-15fab1b09935?auto=format&fit=crop&crop=faces&w=800&q=85")', backgroundPosition: "center 42%" }}><span aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-rose-950/20 via-transparent to-white/5" /><span className="absolute -right-1 -top-1 flex size-9 items-center justify-center rounded-xl bg-rose-800 text-white shadow-md"><Sparkles aria-hidden="true" size={16} /></span></div><motion.div className="absolute left-0 top-[19%] z-20 flex items-center gap-2 rounded-2xl border border-white/80 bg-white/90 px-3 py-2.5 shadow-lg shadow-rose-950/10" animate={reduceMotion ? undefined : { y: [0, -4, 0] }} transition={{ duration: reduceMotion ? 0 : 7, delay: reduceMotion ? 0 : 0.15, repeat: Infinity, ease: "easeInOut" }}><span className="flex size-8 items-center justify-center rounded-xl bg-rose-50 text-rose-700"><Heart aria-hidden="true" size={15} /></span><span><span className="block text-[9px] font-semibold uppercase tracking-wider text-stone-500">Your vision</span><span className="block text-xs font-semibold text-stone-800">Your kind of magic</span></span></motion.div><motion.div className="absolute bottom-[16%] right-0 z-20 flex items-center gap-2 rounded-2xl border border-white/80 bg-white/90 px-3.5 py-3 shadow-lg shadow-rose-950/10" animate={reduceMotion ? undefined : { y: [0, 4, 0] }} transition={{ duration: reduceMotion ? 0 : 8, delay: reduceMotion ? 0 : 0.45, repeat: Infinity, ease: "easeInOut" }}><span className="text-xs font-semibold text-stone-800">Thoughtfully together</span><span className="flex size-7 items-center justify-center rounded-full bg-amber-100 text-amber-800"><ArrowUpRight aria-hidden="true" size={14} /></span></motion.div></div><p className="mt-1 text-center font-serif text-sm italic tracking-wide text-rose-900/70">A celebration that feels like you</p><a href="https://unsplash.com/photos/man-in-black-jacket-kissing-woman-in-white-wedding-dress-KKvXIWSZnWs" target="_blank" rel="noreferrer" className="mt-1 block text-center text-[9px] text-rose-900/45 transition hover:text-rose-800">Photo via Unsplash</a></div>
+  return (
+    <div className="pb-12">
+      <header className="relative mb-9 overflow-hidden rounded-[2rem] border border-[#e8d9ce] bg-[linear-gradient(118deg,#fffaf6_0%,#f8eee6_55%,#f2e4dc_100%)] px-6 py-9 shadow-[0_28px_75px_-58px_rgba(82,43,44,.5)] sm:px-10 sm:py-12 lg:px-14 lg:py-14">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-16 -top-24 size-[27rem] rounded-full border border-rose-900/[.07]"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-2 -top-10 size-[21rem] rounded-full border border-rose-900/[.06]"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute right-[8%] top-[12%] size-72 rounded-full bg-rose-200/30 blur-3xl"
+        />
+        <div className="relative grid items-center gap-8 lg:grid-cols-[1fr_0.7fr] lg:gap-12">
+          <div className="max-w-3xl">
+            <span className="inline-flex items-center gap-2 rounded-full border border-rose-200/80 bg-white/75 px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-800 shadow-sm">
+              <Flower2 size={13} aria-hidden="true" />
+              Made for your day
+            </span>
+            <h1 className="mt-5 text-balance text-4xl font-semibold leading-[1.08] tracking-[-0.05em] text-[#352321] sm:text-5xl lg:text-[3.65rem]">
+              Find the details that feel{" "}
+              <span className="font-serif font-normal italic text-rose-700">
+                like you.
+              </span>
+            </h1>
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-stone-600 sm:text-base sm:leading-8">
+              The right people make every part of the celebration feel more
+              personal. Explore wedding professionals, compare the details, and
+              find the ones who understand your vision.
+            </p>
+            <a
+              href="#service-results"
+              className="group mt-7 inline-flex items-center gap-2.5 rounded-full bg-[#5b303a] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-rose-950/15 transition hover:-translate-y-0.5 hover:bg-[#48262e]"
+            >
+              Explore the collection
+              <ArrowDown
+                aria-hidden="true"
+                size={15}
+                className="transition-transform group-hover:translate-y-0.5"
+              />
+            </a>
+          </div>
+          <div
+            aria-label="Wedding planning thoughtfully brought together"
+            className="relative mx-auto hidden w-full max-w-[340px] lg:block"
+          >
+            <div className="relative flex aspect-square items-center justify-center rounded-full border border-white/70 bg-[radial-gradient(circle_at_50%_45%,rgba(255,255,255,.9),rgba(246,228,218,.4)_58%,transparent_59%)]">
+              <div className="absolute inset-[12%] rounded-full border border-dashed border-rose-300/70" />
+              <div className="absolute inset-[22%] rounded-full border border-white/90" />
+              <div
+                role="img"
+                aria-label="Newlyweds sharing a romantic garden moment"
+                className="relative h-[12rem] w-[10rem] overflow-hidden rounded-[2.5rem] border-[5px] border-white/90 bg-cover bg-center shadow-[0_22px_55px_-22px_rgba(91,48,54,.3)] ring-1 ring-rose-950/5"
+                style={{
+                  backgroundImage:
+                    'url("https://images.unsplash.com/photo-1617202000199-15fab1b09935?auto=format&fit=crop&crop=faces&w=800&q=85")',
+                  backgroundPosition: "center 42%",
+                }}
+              >
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-gradient-to-t from-rose-950/20 via-transparent to-white/5"
+                />
+                <span className="absolute -right-1 -top-1 flex size-9 items-center justify-center rounded-xl bg-rose-800 text-white shadow-md">
+                  <Sparkles aria-hidden="true" size={16} />
+                </span>
+              </div>
+              <motion.div
+                className="absolute left-0 top-[19%] z-20 flex items-center gap-2 rounded-2xl border border-white/80 bg-white/90 px-3 py-2.5 shadow-lg shadow-rose-950/10"
+                animate={reduceMotion ? undefined : { y: [0, -4, 0] }}
+                transition={{
+                  duration: reduceMotion ? 0 : 7,
+                  delay: reduceMotion ? 0 : 0.15,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                <span className="flex size-8 items-center justify-center rounded-xl bg-rose-50 text-rose-700">
+                  <Heart aria-hidden="true" size={15} />
+                </span>
+                <span>
+                  <span className="block text-[9px] font-semibold uppercase tracking-wider text-stone-500">
+                    Your vision
+                  </span>
+                  <span className="block text-xs font-semibold text-stone-800">
+                    Your kind of magic
+                  </span>
+                </span>
+              </motion.div>
+              <motion.div
+                className="absolute bottom-[16%] right-0 z-20 flex items-center gap-2 rounded-2xl border border-white/80 bg-white/90 px-3.5 py-3 shadow-lg shadow-rose-950/10"
+                animate={reduceMotion ? undefined : { y: [0, 4, 0] }}
+                transition={{
+                  duration: reduceMotion ? 0 : 8,
+                  delay: reduceMotion ? 0 : 0.45,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                <span className="text-xs font-semibold text-stone-800">
+                  Thoughtfully together
+                </span>
+                <span className="flex size-7 items-center justify-center rounded-full bg-amber-100 text-amber-800">
+                  <ArrowUpRight aria-hidden="true" size={14} />
+                </span>
+              </motion.div>
+            </div>
+            <p className="mt-1 text-center font-serif text-sm italic tracking-wide text-rose-900/70">
+              A celebration that feels like you
+            </p>
+            <a
+              href="https://unsplash.com/photos/man-in-black-jacket-kissing-woman-in-white-wedding-dress-KKvXIWSZnWs"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-1 block text-center text-[9px] text-rose-900/45 transition hover:text-rose-800"
+            >
+              Photo via Unsplash
+            </a>
+          </div>
+        </div>
+      </header>
+      <div id="service-results">
+        <Suspense fallback={<Loading label="Preparing wedding services…" />}>
+          <ServiceGrid />
+        </Suspense>
       </div>
-    </header>
-    <div id="service-results"><Suspense fallback={<Loading label="Preparing wedding services…" />}><ServiceGrid /></Suspense></div>
-  </div>;
+    </div>
+  );
 }

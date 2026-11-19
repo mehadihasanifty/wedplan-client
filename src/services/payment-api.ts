@@ -16,12 +16,16 @@ export type SubscriptionInfo = {
 };
 
 export async function createCheckoutSession() {
-  const { data } = await api.post<{ url: string }>("/payments/create-checkout-session");
+  const { data } = await api.post<{ url: string }>(
+    "/payments/create-checkout-session",
+  );
   return data;
 }
 
 export async function getCheckoutStatus(sessionId: string) {
-  const { data } = await api.get<CheckoutStatus>(`/payments/checkout-session/${encodeURIComponent(sessionId)}`);
+  const { data } = await api.get<CheckoutStatus>(
+    `/payments/checkout-session/${encodeURIComponent(sessionId)}`,
+  );
   return data;
 }
 
@@ -31,6 +35,8 @@ export async function getSubscriptionInfo() {
 }
 
 export async function createBillingPortalSession() {
-  const { data } = await api.post<{ url: string }>("/payments/create-portal-session");
+  const { data } = await api.post<{ url: string }>(
+    "/payments/create-portal-session",
+  );
   return data;
 }

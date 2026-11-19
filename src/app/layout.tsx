@@ -15,7 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "WedPlan | Wedding Planning Platform",
-  description: "Discover wedding services and plan your celebration with WedPlan.",
+  description:
+    "Discover wedding services and plan your celebration with WedPlan.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -24,7 +25,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col"><AppToaster />{children}</body>
+      <body className="min-h-full flex flex-col">
+        <AppToaster />
+        {children}
+      </body>
     </html>
   );
 }
