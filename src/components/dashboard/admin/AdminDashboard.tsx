@@ -24,7 +24,6 @@ import { ErrorState } from "@/components/shared/ErrorState";
 import { Loading } from "@/components/shared/Loading";
 import type { ServiceStatus, UserRole } from "@/types";
 import { toast } from "sonner";
-import { normalizeApiBase } from "@/lib/api-base";
 
 type AdminStats = {
   totalUsers: number;
@@ -73,7 +72,7 @@ type AdminTransaction = {
 };
 
 async function requestJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const apiBase = normalizeApiBase(process.env.NEXT_PUBLIC_API_URL);
+  const apiBase = "/api/backend";
   const endpoint = url.replace(/^\/api(?=\/)/, "");
   const response = await fetch(`${apiBase}${endpoint}`, {
     ...init,

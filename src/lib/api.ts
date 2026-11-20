@@ -1,8 +1,9 @@
 import axios from "axios";
-import { normalizeApiBase } from "@/lib/api-base";
 
 export const api = axios.create({
-  baseURL: normalizeApiBase(process.env.NEXT_PUBLIC_API_URL),
+  // Keep API requests on the client host so its HttpOnly JWT cookie can be
+  // forwarded by the same-origin backend proxy to the Express server.
+  baseURL: "/api/backend",
   withCredentials: true,
   headers: { "Content-Type": "application/json" },
 });
