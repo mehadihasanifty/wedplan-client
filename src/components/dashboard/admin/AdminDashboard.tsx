@@ -99,6 +99,30 @@ function shortDate(value?: string) {
   }).format(new Date(value));
 }
 
+function transactionStatusClass(status: string) {
+  const value = status.toLowerCase();
+  if (["succeeded", "success", "paid", "complete", "completed"].includes(value)) {
+    return "bg-emerald-50 text-emerald-800";
+  }
+  if (["failed", "canceled", "cancelled", "expired"].includes(value)) {
+    return "bg-rose-50 text-rose-800";
+  }
+  return "bg-amber-50 text-amber-800";
+}
+
+function formatTransactionAmount(amount?: number, currency?: string) {
+  const value = Number(amount);
+  if (!Number.isFinite(value)) return "—";
+  try {
+    return new Intl.NumberFormat("en", {
+      style: "currency",
+      currency: (currency || "USD").toUpperCase(),
+    }).format(value);
+  } catch {
+    return value.toFixed(2) + " " + (currency || "USD");
+  }
+}
+
 export function AdminOverview() {
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [recentServices, setRecentServices] = useState<AdminService[]>([]);
@@ -140,7 +164,16 @@ export function AdminOverview() {
         }}
       />
       {error ? (
-        <ErrorState message={error} />
+        <div className="space-y-3">
+          <ErrorState message={error} />
+          <button
+            type="button"
+            onClick={() => setReloadCount((count) => count + 1)}
+            className="rounded-full border border-[#eadfd5] bg-white px-4 py-2 text-xs font-semibold text-stone-700 hover:bg-[#fbf8f5]"
+          >
+            Try again
+          </button>
+        </div>
       ) : !stats ? (
         <Loading label="Loading platform overview…" />
       ) : (
@@ -964,8 +997,11 @@ export function AdminTransactions() {
   const [transactions, setTransactions] = useState<AdminTransaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [reloadCount, setReloadCount] = useState(0);
   useEffect(() => {
     let active = true;
+    setLoading(true);
+    setError("");
     requestJson<AdminTransaction[]>("/api/admin/transactions")
       .then((items) => {
         if (active) setTransactions(items);
@@ -984,7 +1020,7 @@ export function AdminTransactions() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [reloadCount]);
   return (
     <div className="mx-auto max-w-7xl">
       <Header
@@ -993,7 +1029,16 @@ export function AdminTransactions() {
         description="Review subscription payments recorded by the payment provider. These records are read-only here."
       />
       {error ? (
-        <ErrorState message={error} />
+        <div className="space-y-3">
+          <ErrorState message={error} />
+          <button
+            type="button"
+            onClick={() => setReloadCount((count) => count + 1)}
+            className="rounded-full border border-[#eadfd5] bg-white px-4 py-2 text-xs font-semibold text-stone-700 hover:bg-[#fbf8f5]"
+          >
+            Try again
+          </button>
+        </div>
       ) : loading ? (
         <Loading label="Loading transactions…" />
       ) : transactions.length === 0 ? (
@@ -1042,13 +1087,10 @@ export function AdminTransactions() {
                     {transaction.plan || "Subscription"}
                   </p>
                   <p className="text-xs font-semibold text-stone-800">
-                    {new Intl.NumberFormat("en", {
-                      style: "currency",
-                      currency: transaction.currency || "USD",
-                    }).format(rawAmount)}
+                    {formatTransactionAmount(rawAmount, transaction.currency)}
                   </p>
                   <span
-                    className={`w-fit rounded-full px-3 py-1.5 text-[10px] font-semibold capitalize ${/success|paid|complete/i.test(status) ? "bg-emerald-50 text-emerald-800" : /fail|cancel/i.test(status) ? "bg-rose-50 text-rose-800" : "bg-amber-50 text-amber-800"}`}
+                    className={`w-fit rounded-full px-3 py-1.5 text-[10px] font-semibold capitalize ${transactionStatusClass(status)}`}
                   >
                     {status}
                   </span>
