@@ -1,10 +1,10 @@
 import type { NextRequest } from "next/server";
+import { normalizeApiBase } from "@/lib/api-base";
 
-const apiBase = (
+const apiBase = normalizeApiBase(
   process.env.WEDPLAN_API_INTERNAL_URL ||
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:5000/api"
-).replace(/\/$/, "");
+  process.env.NEXT_PUBLIC_API_URL,
+);
 
 async function proxyTokenRequest(
   request: NextRequest,
