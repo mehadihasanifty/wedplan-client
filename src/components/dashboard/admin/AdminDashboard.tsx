@@ -164,16 +164,7 @@ export function AdminOverview() {
         }}
       />
       {error ? (
-        <div className="space-y-3">
-          <ErrorState message={error} />
-          <button
-            type="button"
-            onClick={() => setReloadCount((count) => count + 1)}
-            className="rounded-full border border-[#eadfd5] bg-white px-4 py-2 text-xs font-semibold text-stone-700 hover:bg-[#fbf8f5]"
-          >
-            Try again
-          </button>
-        </div>
+        <ErrorState message={error} />
       ) : !stats ? (
         <Loading label="Loading platform overview…" />
       ) : (
