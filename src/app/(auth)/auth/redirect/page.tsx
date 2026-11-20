@@ -21,14 +21,17 @@ export default function AuthRedirectPage() {
     }
     let active = true;
     const user = session.user as UserWithRole;
-    syncApiToken()
-      .then(() => {
+    // The Better Auth cookie is the source of truth for app navigation. The
+    // Express JWT bridge can recover on the next API request if the server is
+    // temporarily unavailable, so it must not send an authenticated user back
+    // to sign-in.
+    void syncApiToken()
+      .catch(() => undefined)
+      .finally(() => {
         if (!active) return;
-        router.replace(user.role ? `/dashboard/${user.role}` : "/dashboard");
-        router.refresh();
-      })
-      .catch(() => {
-        if (active) router.replace("/signin?error=api-session");
+        window.location.replace(
+          user.role ? `/dashboard/${user.role}` : "/dashboard",
+        );
       });
     return () => {
       active = false;

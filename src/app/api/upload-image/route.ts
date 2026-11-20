@@ -4,8 +4,6 @@ const UPLOAD_LIMIT = 12;
 const UPLOAD_WINDOW_MS = 10 * 60 * 1000;
 const attempts = new Map<string, { count: number; expiresAt: number }>();
 
-export const runtime = "nodejs";
-
 export async function POST(request: Request) {
   const apiKey = process.env.IMGBB_API_KEY?.trim();
   if (!apiKey) {

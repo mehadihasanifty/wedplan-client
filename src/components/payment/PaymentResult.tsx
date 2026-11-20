@@ -47,7 +47,8 @@ export function PaymentResult() {
   }, [sessionId]);
 
   useEffect(() => {
-    void checkStatus();
+    const timer = window.setTimeout(() => void checkStatus(), 0);
+    return () => window.clearTimeout(timer);
   }, [checkStatus, attempt]);
   useEffect(() => {
     if (

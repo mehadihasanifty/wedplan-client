@@ -2,7 +2,6 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   ArrowRight,
   Eye,
@@ -24,7 +23,6 @@ function dashboardForRole(role?: AppRole | null) {
 }
 
 export default function SignInPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -49,18 +47,18 @@ export default function SignInPage() {
           result.error.message ||
             "We couldn’t sign you in. Check your details and try again.",
         );
-      const sessionResult = await authClient.getSession();
-      if (sessionResult.error)
-        throw new Error(
-          sessionResult.error.message ||
-            "Signed in, but we couldn’t load your account. Please try again.",
-        );
-      const user = sessionResult.data?.user as UserWithRole | undefined;
-      await syncApiToken();
+      // Better Auth has established the browser session once signIn resolves.
+      // Keep the Express JWT bridge best-effort so an API outage cannot strand
+      // an already authenticated user on the sign-in page.
+      let user = result.data?.user as UserWithRole | undefined;
+      if (!user?.role) {
+        const sessionResult = await authClient.getSession();
+        user = sessionResult.data?.user as UserWithRole | undefined;
+      }
+      await syncApiToken().catch(() => undefined);
       setSuccess("You’re signed in. Taking you to your WedPlan workspace…");
       toast.success("You’re signed in.");
-      router.replace(dashboardForRole(user?.role));
-      router.refresh();
+      window.location.assign(dashboardForRole(user?.role));
     } catch (cause) {
       const message =
         cause instanceof Error

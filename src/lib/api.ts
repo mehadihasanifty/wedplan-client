@@ -7,7 +7,20 @@ export const api = axios.create({
 
 let tokenRefresh: Promise<void> | null = null;
 
-api.interceptors.response.use(undefined, async (error) => {
+function throwApiError(error: unknown): never {
+  if (axios.isAxiosError(error)) {
+    const responseMessage = (
+      error.response?.data as { message?: unknown } | undefined
+    )?.message;
+    if (typeof responseMessage === "string" && responseMessage.trim()) {
+      error.message = responseMessage;
+    }
+  }
+  throw error;
+}
+
+api.interceptors.response.use(undefined, async (error: unknown) => {
+  if (!axios.isAxiosError(error)) throw error;
   const request = error.config as
     (typeof error.config & { _jwtRetried?: boolean }) | undefined;
   const status = error.response?.status;
@@ -18,7 +31,7 @@ api.interceptors.response.use(undefined, async (error) => {
     request._jwtRetried ||
     /\/auth\/token(?:\?|$)/.test(url)
   )
-    throw error;
+    return throwApiError(error);
 
   request._jwtRetried = true;
   tokenRefresh ??= fetch("/api/auth/token", {

@@ -16,10 +16,22 @@ export type SubscriptionInfo = {
 };
 
 export async function createCheckoutSession() {
-  const { data } = await api.post<{ url: string }>(
-    "/payments/create-checkout-session",
-  );
-  return data;
+  const response = await fetch("/api/checkout-session", {
+    method: "POST",
+    credentials: "same-origin",
+    headers: { "Content-Type": "application/json" },
+    body: "{}",
+    cache: "no-store",
+  });
+  const data = (await response.json().catch(() => ({}))) as {
+    url?: string;
+    message?: string;
+  };
+  if (!response.ok) {
+    throw new Error(data.message || "Could not start secure Stripe checkout.");
+  }
+  if (!data.url) throw new Error("Stripe did not return a checkout URL.");
+  return { url: data.url };
 }
 
 export async function getCheckoutStatus(sessionId: string) {
