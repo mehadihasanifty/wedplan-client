@@ -3,6 +3,40 @@ import { APIError } from "better-auth/api";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 import { MongoClient, ObjectId } from "mongodb";
 
+function toOrigin(value?: string) {
+  const candidate = value?.trim();
+  if (!candidate) return undefined;
+  if (candidate.includes("*")) return candidate;
+  try {
+    return new URL(candidate).origin;
+  } catch {
+    return undefined;
+  }
+}
+
+const vercelDeploymentURL =
+  process.env.VERCEL_ENV === "production"
+    ? process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL
+    : process.env.VERCEL_URL || process.env.VERCEL_BRANCH_URL;
+const authBaseURL =
+  toOrigin(process.env.NEXT_PUBLIC_APP_URL) ||
+  (vercelDeploymentURL ? toOrigin(`https://${vercelDeploymentURL}`) : undefined) ||
+  toOrigin(process.env.BETTER_AUTH_URL) ||
+  "http://localhost:3000";
+const trustedOrigins = [
+  authBaseURL,
+  toOrigin(process.env.BETTER_AUTH_URL),
+  toOrigin(process.env.NEXT_PUBLIC_APP_URL),
+  ...(process.env.BETTER_AUTH_TRUSTED_ORIGINS || "")
+    .split(",")
+    .map(toOrigin),
+  ...[
+    process.env.VERCEL_PROJECT_PRODUCTION_URL,
+    process.env.VERCEL_URL,
+    process.env.VERCEL_BRANCH_URL,
+  ].map((host) => (host ? toOrigin(`https://${host}`) : undefined)),
+].filter((origin): origin is string => Boolean(origin));
+
 const mongoUrl = process.env.MONGODB_URL?.trim();
 if (!mongoUrl) {
   throw new Error("MONGODB_URL must be set to enable authentication.");
@@ -33,7 +67,8 @@ function idOptions(id: string) {
 
 export const auth = betterAuth({
   appName: "WedPlan",
-  baseURL: process.env.BETTER_AUTH_URL?.trim() || "http://localhost:3000",
+  baseURL: authBaseURL,
+  trustedOrigins: [...new Set(trustedOrigins)],
   secret: process.env.BETTER_AUTH_SECRET,
   database: mongodbAdapter(authDb, { client: mongoClient }),
   emailAndPassword: {

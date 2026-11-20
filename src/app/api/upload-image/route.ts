@@ -97,10 +97,24 @@ export async function POST(request: Request) {
 function isAllowedOrigin(request: Request) {
   const origin = request.headers.get("origin");
   if (!origin) return true;
-  const configuredOrigins = [process.env.CLIENT_URL, process.env.BETTER_AUTH_URL]
+  const configuredOrigins = [
+    process.env.CLIENT_URL,
+    process.env.BETTER_AUTH_URL,
+    process.env.BETTER_AUTH_TRUSTED_ORIGINS,
+  ]
     .filter(Boolean)
     .flatMap((value) => String(value).split(","))
     .map((value) => value.trim().replace(/\/$/, ""));
+  for (const host of [
+    process.env.VERCEL_PROJECT_PRODUCTION_URL,
+    process.env.VERCEL_URL,
+    process.env.VERCEL_BRANCH_URL,
+  ]) {
+    if (host) configuredOrigins.push(`https://${host}`);
+  }
+  if (process.env.NEXT_PUBLIC_APP_URL) {
+    configuredOrigins.push(process.env.NEXT_PUBLIC_APP_URL.trim().replace(/\/$/, ""));
+  }
   return configuredOrigins.length === 0 || configuredOrigins.includes(origin.replace(/\/$/, ""));
 }
 
