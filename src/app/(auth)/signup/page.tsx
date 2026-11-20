@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { syncApiToken } from "@/lib/api-auth";
+import { uploadImageToImgbb } from "@/lib/upload-image";
 import { toast } from "sonner";
 
 type AccountRole = "customer" | "vendor";
@@ -47,29 +48,15 @@ const passwordRules = [
 ];
 
 async function uploadProfileImage(file: File) {
-  const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
-  if (!apiKey)
+  try {
+    return await uploadImageToImgbb(file);
+  } catch (cause) {
     throw new Error(
-      "Profile image uploads are not configured yet. You can remove the optional image or set NEXT_PUBLIC_IMGBB_API_KEY.",
+      cause instanceof Error
+        ? cause.message
+        : "We couldn’t upload that image. Please try another file.",
     );
-
-  const payload = new FormData();
-  payload.append("image", file);
-  const response = await fetch(
-    `https://api.imgbb.com/1/upload?key=${encodeURIComponent(apiKey)}`,
-    { method: "POST", body: payload },
-  );
-  const result = (await response.json()) as {
-    success?: boolean;
-    data?: { url?: string };
-    error?: { message?: string };
-  };
-  if (!response.ok || !result.success || !result.data?.url)
-    throw new Error(
-      result.error?.message ||
-        "We couldn’t upload that image. Please try another file.",
-    );
-  return result.data.url;
+  }
 }
 
 export default function SignUpPage() {

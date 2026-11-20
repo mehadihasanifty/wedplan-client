@@ -2,6 +2,7 @@
 
 import { CalendarCheck, Check, Heart, Sparkles } from "lucide-react";
 import { useRef } from "react";
+import Image from "next/image";
 import {
   motion,
   useReducedMotion,
@@ -9,7 +10,6 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import { WeddingIllustration } from "@/components/home/WeddingIllustration";
 
 export function HeroArtwork() {
   const reduceMotion = useReducedMotion();
@@ -57,9 +57,21 @@ export function HeroArtwork() {
       </motion.div>
       <motion.div
         style={{ y: reduceMotion ? 0 : artworkDepth }}
-        className="relative z-10 overflow-hidden rounded-[1.75rem] border-[5px] border-white/80 bg-[#f7ece5] shadow-[0_32px_90px_-48px_rgba(91,48,54,0.56)] ring-1 ring-rose-950/[.06]"
+        className="relative z-10 aspect-[14/15] overflow-hidden rounded-[1.75rem] border-[5px] border-white/85 bg-[#f7ece5] shadow-[0_32px_90px_-48px_rgba(91,48,54,0.56)] ring-1 ring-rose-950/[.06]"
       >
-        <WeddingIllustration />
+        <Image
+          src="/wedplan.png"
+          alt="A couple celebrating beneath a flower-covered wedding arch"
+          fill
+          fetchPriority="high"
+          loading="eager"
+          sizes="(min-width: 1024px) 44vw, 100vw"
+          className="object-cover object-[100%_center]"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#4c2426]/15 via-transparent to-white/5"
+        />
       </motion.div>
       <motion.div
         className="absolute -left-1 top-[17%] z-20 hidden max-w-[220px] items-center gap-3 rounded-2xl border border-white/85 bg-white/90 px-3.5 py-3 shadow-xl shadow-rose-950/10 backdrop-blur-md sm:flex sm:-left-7"

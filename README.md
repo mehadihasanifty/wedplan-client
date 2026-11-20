@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WedPlan — Wedding Planning Platform
 
-## Getting Started
+WedPlan helps couples find wedding professionals and request bookings. Vendors manage service listings, booking requests, and Premium subscriptions. Admins review users, listings, and payment records.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Responsive public homepage and searchable service directory with category/location filters and price sorting.
+- Service details, ImgBB-hosted images, and customer booking requests.
+- Better Auth email/password and Google authentication with Customer, Vendor, and Admin role-aware dashboards.
+- Vendor listing management and approval states; public listings show only approved, active services.
+- Customer booking management, vendor accept/reject workflow, and admin user/service moderation.
+- Stripe Checkout subscription flow with server-verified webhook updates.
+- Loading, empty, and error states with toast feedback; animated homepage sections respect reduced-motion preferences.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technology
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Next.js 16 App Router, React 19, TypeScript, Tailwind CSS, ShadCN components, Better Auth, MongoDB, Express.js API, Stripe Checkout, ImgBB, and Framer Motion.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Repositories and deployment
 
-## Learn More
+- Client: [github.com/mehadihasanifty/wedplan-client](https://github.com/mehadihasanifty/wedplan-client)
+- Server: [github.com/mehadihasanifty/wedplan-server](https://github.com/mehadihasanifty/wedplan-server)
+- Live website: Not deployed yet. Add the deployed URL here before submission.
 
-To learn more about Next.js, take a look at the following resources:
+## Run locally
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The client and API server are separate repositories and both need to run.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Install Node.js and MongoDB Atlas or a local MongoDB instance.
+2. In the client repository, copy `.env.example` to `.env`, fill in the values below, then run:
 
-## Deploy on Vercel
+   ```bash
+   npm install
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. In the server repository, copy its `.env.example` to `.env`. Use the same `MONGODB_URL`, `BETTER_AUTH_SECRET`, and `BETTER_AUTH_URL` as the client, then run:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+4. Open `http://localhost:3000`. The API health endpoint is `http://localhost:5000/api/health`.
+
+## Client environment variables
+
+| Variable | Purpose |
+| --- | --- |
+| `MONGODB_URL` | MongoDB connection URL used by server-side Better Auth and Next.js routes. Use the same database URL in the Express server. |
+| `BETTER_AUTH_SECRET` | Shared Better Auth signing secret. Keep it identical in client and server environments. |
+| `BETTER_AUTH_URL` | The client origin, such as `http://localhost:3000`. |
+| `NEXT_PUBLIC_API_URL` | Browser-visible Express API base URL, such as `http://localhost:5000/api`; it is not a credential. |
+| `IMGBB_API_KEY` | ImgBB key used only by the Next.js image upload route. Do not rename it to a `NEXT_PUBLIC_` variable. |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Optional Google OAuth credentials; keep server-side. |
+
+Set `PORT`, `CLIENT_URL`, `JWT_SECRET`, `JWT_ACCESS_TTL`, and Stripe variables in the server `.env`. Configure a Stripe Test Mode webhook to the server's `/api/payments/webhook` endpoint. See the server README for required Stripe events.
+
+## Deployment checklist
+
+- Set all environment variables in the hosting providers; never upload `.env` files.
+- Set the client `BETTER_AUTH_URL` to the deployed client origin and server `CLIENT_URL` to the allowed client origin(s).
+- Set `NEXT_PUBLIC_API_URL` to the deployed API base URL and enable credentialed CORS for the client origin.
+- Keep MongoDB, Better Auth, Google OAuth, ImgBB, JWT, and Stripe credentials in server-side environment settings. Only the API URL is public.
+- Register the production Stripe webhook URL and signing secret; Premium access is granted only after a verified webhook.
+- Smoke-test direct navigation/reload for public, auth, payment, and role-protected routes; test signup, bookings, vendor approval, and Stripe Test Mode.

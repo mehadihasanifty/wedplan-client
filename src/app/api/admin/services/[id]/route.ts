@@ -28,6 +28,46 @@ export async function PATCH(
   if (!current)
     return Response.json({ message: "Service not found." }, { status: 404 });
   const status = body.status as "pending" | "approved" | "rejected";
+  if (status === "approved") {
+    const vendorId = current.vendorId ? String(current.vendorId) : "";
+    if (!vendorId) {
+      return Response.json(
+        { message: "This service has no vendor reference and cannot be approved." },
+        { status: 409 },
+      );
+    }
+    const vendor = await authDb
+      .collection("user")
+      .findOne({ _id: { $in: idOptions(vendorId) } } as never, {
+        projection: { subscriptionPlan: 1 },
+      });
+    if (!vendor) {
+      return Response.json(
+        { message: "The service vendor could not be found." },
+        { status: 409 },
+      );
+    }
+    const premium = ["premium", "pro"].includes(
+      String(vendor.subscriptionPlan || "").toLowerCase(),
+    );
+    if (!premium) {
+      const activeCount = await services.countDocuments({
+        vendorId: { $in: idOptions(vendorId) },
+        status: "approved",
+        isActive: true,
+        _id: { $ne: current._id },
+      } as never);
+      if (activeCount >= 3) {
+        return Response.json(
+          {
+            message:
+              "This vendor has reached the Free plan limit of 3 active services.",
+          },
+          { status: 409 },
+        );
+      }
+    }
+  }
   const update: Record<string, unknown> = {
     status,
     moderatedAt: new Date(),

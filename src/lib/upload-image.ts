@@ -9,26 +9,19 @@ export function validateImageFile(file: File) {
 
 export async function uploadImageToImgbb(file: File) {
   validateImageFile(file);
-  const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
-  if (!apiKey)
-    throw new Error(
-      "Image uploads are not configured. Add NEXT_PUBLIC_IMGBB_API_KEY and restart the app.",
-    );
-
   const body = new FormData();
   body.append("image", file);
-  const response = await fetch(
-    `https://api.imgbb.com/1/upload?key=${encodeURIComponent(apiKey)}`,
-    { method: "POST", body },
-  );
-  const result = (await response.json()) as {
-    success?: boolean;
-    data?: { url?: string };
-    error?: { message?: string };
+  const response = await fetch("/api/upload-image", {
+    method: "POST",
+    body,
+    credentials: "same-origin",
+    cache: "no-store",
+  });
+  const result = (await response.json().catch(() => ({}))) as {
+    url?: string;
+    message?: string;
   };
-  if (!response.ok || !result.success || !result.data?.url)
-    throw new Error(
-      result.error?.message || "Image upload failed. Please try another image.",
-    );
-  return result.data.url;
+  if (!response.ok || !result.url)
+    throw new Error(result.message || "Image upload failed. Please try again.");
+  return result.url;
 }
