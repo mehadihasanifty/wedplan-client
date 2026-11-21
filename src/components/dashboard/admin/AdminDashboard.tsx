@@ -13,6 +13,8 @@ import {
   Clock3,
   Eye,
   Filter,
+  LoaderCircle,
+  RefreshCw,
   Search,
   Store,
   Trash2,
@@ -989,6 +991,7 @@ export function AdminTransactions() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [reloadCount, setReloadCount] = useState(0);
+  const [syncing, setSyncing] = useState(false);
   useEffect(() => {
     let active = true;
     setLoading(true);
@@ -1012,6 +1015,34 @@ export function AdminTransactions() {
       active = false;
     };
   }, [reloadCount]);
+
+  async function syncPendingTransactions() {
+    setSyncing(true);
+    try {
+      const result = await requestJson<{
+        checked: number;
+        confirmed: number;
+        expired: number;
+        stillPending: number;
+        unverified: number;
+      }>("/api/admin/transactions/reconcile", {
+        method: "POST",
+        body: "{}",
+      });
+      toast.success("Stripe status check complete", {
+        description: `${result.confirmed} payment(s) confirmed, ${result.expired} expired, ${result.stillPending} still pending, ${result.unverified} could not be verified.`,
+      });
+      setReloadCount((count) => count + 1);
+    } catch (cause) {
+      const message = cause instanceof Error
+        ? cause.message
+        : "Could not verify pending Stripe transactions.";
+      toast.error("Stripe status check failed", { description: message });
+    } finally {
+      setSyncing(false);
+    }
+  }
+
   return (
     <div className="mx-auto max-w-7xl">
       <Header
@@ -1019,6 +1050,20 @@ export function AdminTransactions() {
         title="Transactions"
         description="Review subscription payments recorded by the payment provider. These records are read-only here."
       />
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#eee3dc] bg-white px-4 py-3 shadow-sm">
+        <p className="text-xs leading-5 text-stone-600">
+          Recheck pending records against Stripe. Only Stripe-confirmed payments can become successful.
+        </p>
+        <button
+          type="button"
+          onClick={syncPendingTransactions}
+          disabled={syncing}
+          className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-full bg-rose-800 px-4 text-xs font-semibold text-white shadow-sm transition hover:bg-rose-900 disabled:cursor-wait disabled:opacity-60"
+        >
+          {syncing ? <LoaderCircle size={15} className="animate-spin" /> : <RefreshCw size={15} />}
+          {syncing ? "Checking Stripe…" : "Sync with Stripe"}
+        </button>
+      </div>
       {error ? (
         <div className="space-y-3">
           <ErrorState message={error} />
