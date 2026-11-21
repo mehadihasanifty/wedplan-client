@@ -16,6 +16,7 @@ import {
   createBillingPortalSession,
   createCheckoutSession,
   getSubscriptionInfo,
+  type PremiumPlan,
   type SubscriptionInfo,
 } from "@/services/payment-api";
 import { toast } from "sonner";
@@ -34,8 +35,9 @@ export function VendorSubscription() {
   const [subscriptionRequestUserId, setSubscriptionRequestUserId] = useState<string | null>(null);
   const subscriptionPending =
     sessionPending || (!!userId && subscriptionRequestUserId !== userId);
-  const currentPlan = subscription?.plan || user?.subscriptionPlan || "Free";
+  const currentPlan = (subscription?.plan || user?.subscriptionPlan || "free").toLowerCase();
   const premium = /premium/i.test(currentPlan);
+  const planLabel = currentPlan === "premium_plus" ? "Premium Plus" : currentPlan === "premium_pro" ? "Premium Pro" : premium ? "Premium" : "Free";
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -68,11 +70,11 @@ export function VendorSubscription() {
     };
   }, [userId, sessionPending]);
 
-  async function upgrade() {
+  async function upgrade(plan: PremiumPlan = "premium") {
     setLoading(true);
     setError("");
     try {
-      const checkout = await createCheckoutSession();
+      const checkout = await createCheckoutSession(plan);
       if (!checkout.url)
         throw new Error(
           "The checkout link was not returned. Please try again.",
@@ -146,7 +148,7 @@ export function VendorSubscription() {
                 Current subscription
               </p>
               <p className="mt-0.5 text-sm font-semibold capitalize text-stone-900">
-                {currentPlan} plan
+                {planLabel} plan
               </p>
               {subscription?.cancelAtPeriodEnd && (
                 <p className="mt-1 text-[10px] font-medium text-amber-800">
@@ -193,7 +195,7 @@ export function VendorSubscription() {
           subtitle="More room to reach your next clients"
           price={premiumPrice}
           icon={Crown}
-          current={premium}
+          current={currentPlan === "premium"}
           highlighted
           features={[
             "Unlimited active services",
@@ -201,7 +203,7 @@ export function VendorSubscription() {
             "Everything in the Free plan",
           ]}
           action={
-            premium ? (
+            currentPlan === "premium" ? (
               <span className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-amber-200 bg-amber-50 text-xs font-semibold text-amber-900">
                 <BadgeCheck size={16} />
                 Your current plan
@@ -209,7 +211,7 @@ export function VendorSubscription() {
             ) : (
               <button
                 type="button"
-                onClick={upgrade}
+                onClick={() => premium ? manageBilling() : upgrade("premium")}
                 disabled={loading || subscriptionPending}
                 className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-rose-800 px-5 text-sm font-semibold text-white shadow-md shadow-rose-950/10 transition hover:-translate-y-0.5 hover:bg-rose-900 disabled:cursor-wait disabled:opacity-60"
               >
@@ -220,7 +222,7 @@ export function VendorSubscription() {
                   </>
                 ) : (
                   <>
-                    Upgrade to Premium
+                    {premium ? "Manage plan" : "Upgrade to Premium"}
                     <Sparkles size={15} />
                   </>
                 )}
@@ -228,14 +230,17 @@ export function VendorSubscription() {
             )
           }
         />
-        {["premium-option-2", "premium-option-3"].map((option) => (
+        {([
+          { id: "premium_plus", name: "Premium Plus", price: formatTierPrice(200, subscription?.price?.currency, subscription?.price?.interval) },
+          { id: "premium_pro", name: "Premium Pro", price: formatTierPrice(300, subscription?.price?.currency, subscription?.price?.interval) },
+        ] as const).map((option) => (
           <PlanCard
-            key={option}
-            name="Premium"
+            key={option.id}
+            name={option.name}
             subtitle="More room to reach your next clients"
-            price={premiumPrice}
+            price={option.price}
             icon={Crown}
-            current={premium}
+            current={currentPlan === option.id}
             highlighted
             features={[
               "Unlimited active services",
@@ -243,7 +248,7 @@ export function VendorSubscription() {
               "Everything in the Free plan",
             ]}
             action={
-              premium ? (
+              currentPlan === option.id ? (
                 <span className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-amber-200 bg-amber-50 text-xs font-semibold text-amber-900">
                   <BadgeCheck size={16} />
                   Your current plan
@@ -251,7 +256,7 @@ export function VendorSubscription() {
               ) : (
                 <button
                   type="button"
-                  onClick={upgrade}
+                  onClick={() => premium ? manageBilling() : upgrade(option.id)}
                   disabled={loading || subscriptionPending}
                   className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-rose-800 px-5 text-sm font-semibold text-white shadow-md shadow-rose-950/10 transition hover:-translate-y-0.5 hover:bg-rose-900 disabled:cursor-wait disabled:opacity-60"
                 >
@@ -262,7 +267,7 @@ export function VendorSubscription() {
                     </>
                   ) : (
                     <>
-                      Upgrade to Premium
+                      {premium ? "Manage plan" : `Upgrade to ${option.name}`}
                       <Sparkles size={15} />
                     </>
                   )}
@@ -299,6 +304,14 @@ export function VendorSubscription() {
       </p>
     </div>
   );
+}
+
+function formatTierPrice(amount: number, currency = "USD", interval = "month") {
+  const formattedAmount = new Intl.NumberFormat("en", {
+    style: "currency",
+    currency: currency.toUpperCase(),
+  }).format(amount);
+  return `${formattedAmount} / ${interval}`;
 }
 
 function PlanCard({
@@ -360,7 +373,7 @@ function PlanCard({
               <span
                 className={`flex size-5 items-center justify-center rounded-full ${highlighted ? "bg-rose-100 text-rose-800" : "bg-emerald-50 text-emerald-700"}`}
               >
-                {index === 0 && name === "Premium" ? (
+                {index === 0 && name.startsWith("Premium") ? (
                   <InfinityIcon size={12} />
                 ) : (
                   <Check size={12} />

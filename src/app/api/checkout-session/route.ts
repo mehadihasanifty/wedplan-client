@@ -39,6 +39,11 @@ function getSetCookieHeaders(headers: Headers) {
 
 export async function POST(request: NextRequest) {
   try {
+    const body = (await request.json().catch(() => ({}))) as { plan?: unknown };
+    const allowedPlans = ["premium", "premium_plus", "premium_pro"] as const;
+    const plan = allowedPlans.includes(body.plan as (typeof allowedPlans)[number])
+      ? (body.plan as (typeof allowedPlans)[number])
+      : "premium";
     const session = await auth.api.getSession({ headers: request.headers });
     if (!session) {
       return NextResponse.json(
@@ -92,7 +97,7 @@ export async function POST(request: NextRequest) {
           origin,
           "content-type": "application/json",
         },
-        body: "{}",
+        body: JSON.stringify({ plan }),
         cache: "no-store",
       },
     );

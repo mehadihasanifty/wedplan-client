@@ -15,12 +15,14 @@ export type SubscriptionInfo = {
   price?: { unitAmount: number; currency: string; interval: string } | null;
 };
 
-export async function createCheckoutSession() {
+export type PremiumPlan = "premium" | "premium_plus" | "premium_pro";
+
+export async function createCheckoutSession(plan: PremiumPlan = "premium") {
   const response = await fetch("/api/checkout-session", {
     method: "POST",
     credentials: "same-origin",
     headers: { "Content-Type": "application/json" },
-    body: "{}",
+    body: JSON.stringify({ plan }),
     cache: "no-store",
   });
   const data = (await response.json().catch(() => ({}))) as {

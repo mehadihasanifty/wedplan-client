@@ -1075,7 +1075,7 @@ export function AdminTransactions() {
                     </p>
                   </div>
                   <p className="text-xs text-stone-700">
-                    {transaction.plan || "Subscription"}
+                    {transaction.plan === "premium_plus" ? "Premium Plus" : transaction.plan === "premium_pro" ? "Premium Pro" : transaction.plan === "premium" ? "Premium" : transaction.plan || "Subscription"}
                   </p>
                   <p className="text-xs font-semibold text-stone-800">
                     {formatTransactionAmount(rawAmount, transaction.currency)}
