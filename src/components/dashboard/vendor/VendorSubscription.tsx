@@ -38,7 +38,7 @@ export function VendorSubscription() {
   const currentPlan = (subscription?.plan || user?.subscriptionPlan || "free").toLowerCase();
   const premium = /premium/i.test(currentPlan);
   const planLabel = currentPlan === "premium_plus" ? "Premium Plus" : currentPlan === "premium_pro" ? "Premium Pro" : premium ? "Premium" : "Free";
-  const [loading, setLoading] = useState(false);
+  const [loadingAction, setLoadingAction] = useState<string | null>(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export function VendorSubscription() {
   }, [userId, sessionPending]);
 
   async function upgrade(plan: PremiumPlan = "premium") {
-    setLoading(true);
+    setLoadingAction(plan);
     setError("");
     try {
       const checkout = await createCheckoutSession(plan);
@@ -88,12 +88,12 @@ export function VendorSubscription() {
           : "Could not start checkout. Please try again.";
       setError(message);
       toast.error("Could not start checkout", { description: message });
-      setLoading(false);
+      setLoadingAction(null);
     }
   }
 
-  async function manageBilling() {
-    setLoading(true);
+  async function manageBilling(actionKey = "billing") {
+    setLoadingAction(actionKey);
     setError("");
     try {
       const portal = await createBillingPortalSession();
@@ -110,7 +110,7 @@ export function VendorSubscription() {
           : "Could not open billing settings.";
       setError(message);
       toast.error("Could not open billing settings", { description: message });
-      setLoading(false);
+      setLoadingAction(null);
     }
   }
 
@@ -166,8 +166,8 @@ export function VendorSubscription() {
             {premium && (
               <button
                 type="button"
-                onClick={manageBilling}
-                disabled={loading || subscriptionPending}
+                onClick={() => manageBilling()}
+                disabled={loadingAction === "billing" || subscriptionPending}
                 className="inline-flex h-9 items-center gap-1.5 rounded-full border border-[#eadfd5] bg-white px-3 text-[10px] font-semibold text-stone-700 hover:bg-[#fffaf6] disabled:opacity-50"
               >
                 <CreditCard size={13} />
@@ -211,11 +211,11 @@ export function VendorSubscription() {
             ) : (
               <button
                 type="button"
-                onClick={() => premium ? manageBilling() : upgrade("premium")}
-                disabled={loading || subscriptionPending}
+                onClick={() => premium ? manageBilling("premium") : upgrade("premium")}
+                disabled={loadingAction === "premium" || subscriptionPending}
                 className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-rose-800 px-5 text-sm font-semibold text-white shadow-md shadow-rose-950/10 transition hover:-translate-y-0.5 hover:bg-rose-900 disabled:cursor-wait disabled:opacity-60"
               >
-                {loading ? (
+                {loadingAction === "premium" ? (
                   <>
                     <LoaderCircle size={16} className="animate-spin" />
                     Opening secure checkout…
@@ -256,11 +256,11 @@ export function VendorSubscription() {
               ) : (
                 <button
                   type="button"
-                  onClick={() => premium ? manageBilling() : upgrade(option.id)}
-                  disabled={loading || subscriptionPending}
+                  onClick={() => premium ? manageBilling(option.id) : upgrade(option.id)}
+                  disabled={loadingAction === option.id || subscriptionPending}
                   className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-rose-800 px-5 text-sm font-semibold text-white shadow-md shadow-rose-950/10 transition hover:-translate-y-0.5 hover:bg-rose-900 disabled:cursor-wait disabled:opacity-60"
                 >
-                  {loading ? (
+                  {loadingAction === option.id ? (
                     <>
                       <LoaderCircle size={16} className="animate-spin" />
                       Opening secure checkout…
