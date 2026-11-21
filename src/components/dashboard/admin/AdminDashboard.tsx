@@ -24,6 +24,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { Loading } from "@/components/shared/Loading";
+import { api } from "@/lib/api";
 import type { ServiceStatus, UserRole } from "@/types";
 import { toast } from "sonner";
 
@@ -74,19 +75,15 @@ type AdminTransaction = {
 };
 
 async function requestJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const apiBase = "/api/backend";
+  // Route admin calls through the shared client so the 401 -> token refresh
+  // interceptor can renew the short-lived server JWT before retrying.
   const endpoint = url.replace(/^\/api(?=\/)/, "");
-  const response = await fetch(`${apiBase}${endpoint}`, {
-    ...init,
-    credentials: "include",
-    headers: { "Content-Type": "application/json", ...init?.headers },
+  const { data } = await api.request<T>({
+    url: endpoint,
+    method: init?.method ?? "GET",
+    data: init?.body ?? undefined,
   });
-  const body = (await response.json().catch(() => ({}))) as T & {
-    message?: string;
-  };
-  if (!response.ok)
-    throw new Error(body.message || "The request could not be completed.");
-  return body;
+  return data;
 }
 
 function itemId(item: { _id?: string; id?: string }) {
@@ -994,8 +991,6 @@ export function AdminTransactions() {
   const [syncing, setSyncing] = useState(false);
   useEffect(() => {
     let active = true;
-    setLoading(true);
-    setError("");
     requestJson<AdminTransaction[]>("/api/admin/transactions")
       .then((items) => {
         if (active) setTransactions(items);
@@ -1032,6 +1027,7 @@ export function AdminTransactions() {
       toast.success("Stripe status check complete", {
         description: `${result.confirmed} payment(s) confirmed, ${result.expired} expired, ${result.stillPending} still pending, ${result.unverified} could not be verified.`,
       });
+      setLoading(true);
       setReloadCount((count) => count + 1);
     } catch (cause) {
       const message = cause instanceof Error
@@ -1069,7 +1065,11 @@ export function AdminTransactions() {
           <ErrorState message={error} />
           <button
             type="button"
-            onClick={() => setReloadCount((count) => count + 1)}
+            onClick={() => {
+              setError("");
+              setLoading(true);
+              setReloadCount((count) => count + 1);
+            }}
             className="rounded-full border border-[#eadfd5] bg-white px-4 py-2 text-xs font-semibold text-stone-700 hover:bg-[#fbf8f5]"
           >
             Try again

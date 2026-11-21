@@ -53,6 +53,8 @@ export function CustomerProfileSettings({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  // Better Auth can refresh profile fields after this form has mounted.
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     setName(user?.name || "");
     setPhone(user?.phoneNumber || "");
@@ -60,6 +62,7 @@ export function CustomerProfileSettings({
     setBio(user?.bio || "");
     setImage(user?.image || "");
   }, [user?.name, user?.phoneNumber, user?.location, user?.bio, user?.image]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   function selectImage(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];

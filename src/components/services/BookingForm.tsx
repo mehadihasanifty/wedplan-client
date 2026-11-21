@@ -128,6 +128,9 @@ export function BookingForm({ service }: { service: Service }) {
                 required
                 type="date"
                 value={eventDate}
+                onFocus={(event) => {
+                  event.currentTarget.min = new Date().toISOString().slice(0, 10);
+                }}
                 onChange={(event) => setEventDate(event.target.value)}
                 className="h-12 w-full rounded-xl border border-[#eadfd5] bg-white pl-10 pr-3 text-sm font-normal outline-none transition focus:border-rose-400 focus:ring-4 focus:ring-rose-100"
               />

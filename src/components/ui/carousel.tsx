@@ -93,6 +93,8 @@ function Carousel({
     setApi(api);
   }, [api, setApi]);
 
+  // Read the external carousel's initial navigation state and keep it in sync.
+  /* eslint-disable react-hooks/set-state-in-effect */
   React.useEffect(() => {
     if (!api) return;
     onSelect(api);
@@ -103,6 +105,7 @@ function Carousel({
       api?.off("select", onSelect);
     };
   }, [api, onSelect]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   return (
     <CarouselContext.Provider

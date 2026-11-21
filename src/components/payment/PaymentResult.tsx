@@ -16,6 +16,13 @@ import { toast } from "sonner";
 
 const maxChecks = 10;
 
+function planLabel(plan?: string) {
+  const value = (plan || "").toLowerCase();
+  if (value === "premium_plus") return "Premium Plus";
+  if (value === "premium_pro") return "Premium Pro";
+  return "Premium";
+}
+
 export function PaymentResult() {
   const params = useSearchParams();
   const sessionId = params.get("session_id") || "";
@@ -69,13 +76,16 @@ export function PaymentResult() {
   }, [sessionId, result, error, attempt, checking]);
 
   const confirmed = result?.confirmed === true;
+  const confirmedPlan = planLabel(result?.subscriptionPlan);
   const waiting =
     checking ||
     (result?.paymentStatus === "pending" && !error && attempt < maxChecks);
   useEffect(() => {
     if (confirmed && notified.current !== "confirmed") {
       notified.current = "confirmed";
-      toast.success("Premium subscription confirmed.");
+      toast.success(
+        `${planLabel(result?.subscriptionPlan)} subscription confirmed.`,
+      );
     } else if (
       (result?.paymentStatus === "failed" ||
         result?.paymentStatus === "expired") &&
@@ -91,7 +101,7 @@ export function PaymentResult() {
       notified.current = "error";
       toast.error("We couldn’t verify this checkout", { description: error });
     }
-  }, [confirmed, result?.paymentStatus, error]);
+  }, [confirmed, result?.paymentStatus, result?.subscriptionPlan, error]);
   return (
     <main className="mx-auto flex min-h-[55vh] max-w-3xl items-center px-4 py-12 sm:px-6">
       <section className="relative w-full overflow-hidden rounded-[2rem] border border-[#eadfd5] bg-[linear-gradient(140deg,#fffdfa,#fff6f1_62%,#f9eee5)] p-7 shadow-[0_28px_75px_-55px_rgba(82,43,44,.52)] sm:p-11">
@@ -122,7 +132,7 @@ export function PaymentResult() {
           </p>
           <h1 className="mt-2 text-3xl font-semibold tracking-[-0.045em] text-[#352321] sm:text-4xl">
             {confirmed
-              ? "You’re Premium"
+              ? `You’re ${confirmedPlan}`
               : result?.paymentStatus === "failed"
                 ? "Payment wasn’t completed"
                 : result?.paymentStatus === "expired"
@@ -135,7 +145,7 @@ export function PaymentResult() {
           </h1>
           <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-stone-600">
             {confirmed
-              ? "Stripe confirmed your subscription. Your Premium features are now available, including unlimited active services."
+              ? `Stripe confirmed your subscription. Your ${confirmedPlan} features are now available, including unlimited active services.`
               : result?.paymentStatus === "failed"
                 ? "No Premium access was added. You can return to your subscription page and try checkout again."
                 : result?.paymentStatus === "expired"

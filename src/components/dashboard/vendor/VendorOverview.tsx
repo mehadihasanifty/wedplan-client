@@ -76,7 +76,16 @@ export function VendorOverview() {
     (item) => item.status === "accepted",
   ).length;
   const planName = user?.subscriptionPlan || "Free";
+  const normalizedPlan = planName.toLowerCase();
   const premium = /premium/i.test(planName);
+  const planLabel =
+    normalizedPlan === "premium_plus"
+      ? "Premium Plus"
+      : normalizedPlan === "premium_pro"
+        ? "Premium Pro"
+        : premium
+          ? "Premium"
+          : "Free";
 
   return (
     <div className="mx-auto max-w-7xl">
@@ -152,7 +161,7 @@ export function VendorOverview() {
             />
             <MetricCard
               label="Current plan"
-              value={premium ? "Premium" : "Free"}
+              value={planLabel}
               note={
                 premium
                   ? "Unlimited listings"

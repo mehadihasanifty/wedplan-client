@@ -7,6 +7,8 @@ export function useIsMobile() {
     undefined,
   );
 
+  // Initialize and subscribe to the browser's media-query state.
+  /* eslint-disable react-hooks/set-state-in-effect */
   React.useEffect(() => {
     const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
     const onChange = () => {
@@ -16,6 +18,7 @@ export function useIsMobile() {
     setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
     return () => mql.removeEventListener("change", onChange);
   }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   return !!isMobile;
 }
