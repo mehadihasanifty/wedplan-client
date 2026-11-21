@@ -14,8 +14,8 @@ const COPYRIGHT_YEAR = 2026;
 
 // Replace these editable placeholders with WedPlan's real contact details and profiles.
 const contact = {
-  email: "hello@yourdomain.com",
-  phone: "+1 (555) 010-1234",
+  email: "mh3915287@gmail.com.com",
+  phone: "+880 1812-684611",
 };
 
 const socialLinks = [
