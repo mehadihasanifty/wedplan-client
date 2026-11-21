@@ -1,12 +1,8 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import Link from "next/link";
 import {
-  ArrowRight,
   BadgeCheck,
-  BriefcaseBusiness,
-  CalendarDays,
   Check,
   Crown,
   Infinity as InfinityIcon,
@@ -232,46 +228,50 @@ export function VendorSubscription() {
             )
           }
         />
+        {["premium-option-2", "premium-option-3"].map((option) => (
+          <PlanCard
+            key={option}
+            name="Premium"
+            subtitle="More room to reach your next clients"
+            price={premiumPrice}
+            icon={Crown}
+            current={premium}
+            highlighted
+            features={[
+              "Unlimited active services",
+              "Premium vendor badge",
+              "Everything in the Free plan",
+            ]}
+            action={
+              premium ? (
+                <span className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-amber-200 bg-amber-50 text-xs font-semibold text-amber-900">
+                  <BadgeCheck size={16} />
+                  Your current plan
+                </span>
+              ) : (
+                <button
+                  type="button"
+                  onClick={upgrade}
+                  disabled={loading || subscriptionPending}
+                  className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-rose-800 px-5 text-sm font-semibold text-white shadow-md shadow-rose-950/10 transition hover:-translate-y-0.5 hover:bg-rose-900 disabled:cursor-wait disabled:opacity-60"
+                >
+                  {loading ? (
+                    <>
+                      <LoaderCircle size={16} className="animate-spin" />
+                      Opening secure checkout…
+                    </>
+                  ) : (
+                    <>
+                      Upgrade to Premium
+                      <Sparkles size={15} />
+                    </>
+                  )}
+                </button>
+              )
+            }
+          />
+        ))}
       </div>
-      <section className="mt-8" aria-labelledby="vendor-tools-heading">
-        <div className="mb-4">
-          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-rose-800">
-            Included with your account
-          </p>
-          <h2
-            id="vendor-tools-heading"
-            className="mt-1 text-lg font-semibold text-[#352321]"
-          >
-            Tools for your vendor workspace
-          </h2>
-        </div>
-        <div className="grid gap-5 lg:grid-cols-2">
-          <VendorToolCard
-            icon={BriefcaseBusiness}
-            title="Service management"
-            description="Keep your wedding service listings polished and up to date."
-            features={[
-              "Review approval status",
-              "Update availability",
-              "Manage service details",
-            ]}
-            href="/dashboard/vendor/my-services"
-            actionLabel="Manage my services"
-          />
-          <VendorToolCard
-            icon={CalendarDays}
-            title="Booking requests"
-            description="Stay on top of customer requests and upcoming celebrations."
-            features={[
-              "Review event details",
-              "Respond to pending requests",
-              "Track booking status",
-            ]}
-            href="/dashboard/vendor/booking-requests"
-            actionLabel="View booking requests"
-          />
-        </div>
-      </section>
       <div className="mt-5 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-emerald-100 bg-emerald-50/70 px-4 py-3">
         <p className="text-[10px] leading-5 text-emerald-900">
           Payments are processed securely by Stripe. WedPlan uses Stripe Test
@@ -301,64 +301,6 @@ export function VendorSubscription() {
   );
 }
 
-function VendorToolCard({
-  icon: Icon,
-  title,
-  description,
-  features,
-  href,
-  actionLabel,
-}: {
-  icon: typeof ShieldCheck;
-  title: string;
-  description: string;
-  features: string[];
-  href: string;
-  actionLabel: string;
-}) {
-  return (
-    <article className="relative overflow-hidden rounded-[1.7rem] border border-[#eee3dc] bg-white p-6 shadow-[0_18px_50px_-40px_rgba(82,43,44,.42)] sm:p-7">
-      <div
-        aria-hidden="true"
-        className="absolute -right-10 -top-16 size-52 rounded-full border border-rose-200/60"
-      />
-      <div className="relative">
-        <div className="flex items-start justify-between gap-3">
-          <span className="flex size-11 items-center justify-center rounded-2xl bg-[#f7f0eb] text-rose-800">
-            <Icon size={20} />
-          </span>
-          <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[9px] font-semibold text-emerald-800">
-            Included
-          </span>
-        </div>
-        <h3 className="mt-5 text-xl font-semibold text-stone-900">{title}</h3>
-        <p className="mt-1 min-h-10 text-xs leading-5 text-stone-500">
-          {description}
-        </p>
-        <ul className="mt-5 grid gap-3 border-t border-[#eadfd5] pt-5">
-          {features.map((feature) => (
-            <li
-              key={feature}
-              className="flex items-center gap-2.5 text-xs text-stone-700"
-            >
-              <span className="flex size-5 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
-                <Check size={12} />
-              </span>
-              {feature}
-            </li>
-          ))}
-        </ul>
-        <Link
-          href={href}
-          className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-rose-200 bg-[#fffaf6] px-5 text-sm font-semibold text-rose-900 transition hover:-translate-y-0.5 hover:bg-rose-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-700 focus-visible:ring-offset-2"
-        >
-          {actionLabel}
-          <ArrowRight size={15} />
-        </Link>
-      </div>
-    </article>
-  );
-}
 function PlanCard({
   name,
   subtitle,
