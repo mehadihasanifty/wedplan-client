@@ -129,7 +129,7 @@ export function Navbar() {
             <span className="block text-[1.2rem] font-semibold leading-none tracking-[-0.04em] text-stone-900">
               Wed<span className="text-rose-800">Plan</span>
             </span>
-            <span className="mt-1.5 hidden text-[9px] font-semibold uppercase tracking-[0.2em] text-stone-500 sm:block">
+            <span className="mt-1.5 hidden text-xs font-semibold uppercase tracking-[0.2em] text-stone-500 sm:block">
               Wedding planning, thoughtfully
             </span>
           </span>

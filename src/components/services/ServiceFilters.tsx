@@ -52,7 +52,7 @@ export function ServiceFilters({
             <SlidersHorizontal aria-hidden="true" size={16} />
           </span>
           <div>
-            <h2 className="text-sm font-semibold text-stone-900">
+            <h2 className="text-base font-semibold text-stone-900">
               Find your fit
             </h2>
             <p className="mt-0.5 text-xs text-stone-500">
@@ -67,7 +67,7 @@ export function ServiceFilters({
           <button
             type="button"
             onClick={onReset}
-            className="inline-flex items-center gap-1.5 rounded-full border border-rose-100 bg-white px-3 py-2 text-xs font-semibold text-rose-800 transition hover:border-rose-200 hover:bg-rose-50"
+            className="inline-flex items-center gap-1.5 rounded-full border border-rose-100 bg-white px-3.5 py-2 text-sm font-semibold text-rose-800 transition hover:border-rose-200 hover:bg-rose-50"
           >
             <X size={13} />
             Clear filters
@@ -127,12 +127,12 @@ export function ServiceFilters({
             </select>
           </label>
         </div>
-        <p className="mt-2 text-[10px] leading-4 text-stone-500">
+        <p className="mt-2 text-sm leading-6 text-stone-500">
           Search across service names, categories, descriptions, locations, and
           vendor names. Multiple words can be combined.
         </p>
         <div className="mt-5">
-          <p className="mb-2.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-500">
+          <p className="mb-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
             Explore a category
           </p>
           <div className="flex gap-2 overflow-x-auto pb-1.5 sm:flex-wrap sm:overflow-visible">
@@ -146,7 +146,7 @@ export function ServiceFilters({
                   onClick={() =>
                     onChange({ ...values, category: active ? "" : name })
                   }
-                  className={`inline-flex shrink-0 items-center gap-2 rounded-full border px-3.5 py-2.5 text-xs font-semibold transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 focus-visible:ring-offset-2 ${active ? "border-rose-800 bg-rose-800 text-white shadow-md shadow-rose-950/10" : "border-[#eee4dd] bg-[#fffdfa] text-stone-600 hover:-translate-y-0.5 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-900"}`}
+                  className={`inline-flex shrink-0 items-center gap-2 rounded-full border px-3.5 py-2.5 text-sm font-semibold transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 focus-visible:ring-offset-2 ${active ? "border-rose-800 bg-rose-800 text-white shadow-md shadow-rose-950/10" : "border-[#eee4dd] bg-[#fffdfa] text-stone-600 hover:-translate-y-0.5 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-900"}`}
                 >
                   <Icon aria-hidden="true" size={14} strokeWidth={1.8} />
                   {name}

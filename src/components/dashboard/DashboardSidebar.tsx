@@ -80,7 +80,7 @@ export function DashboardSidebar({ role }: { role: UserRole }) {
           <CircleUserRound size={19} />
         </span>
         <div>
-          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-stone-500">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
             Your workspace
           </p>
           <p className="mt-0.5 text-sm font-semibold capitalize text-stone-900">
@@ -88,7 +88,7 @@ export function DashboardSidebar({ role }: { role: UserRole }) {
           </p>
         </div>
       </div>
-      <p className="mb-2 px-3 text-[9px] font-semibold uppercase tracking-[0.17em] text-stone-400">
+      <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-[0.17em] text-stone-400">
         Manage
       </p>
       <nav
@@ -134,7 +134,7 @@ export function DashboardSidebar({ role }: { role: UserRole }) {
           </p>
           <Link
             href="/dashboard/vendor/subscription"
-            className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-rose-800 hover:text-rose-950"
+            className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-rose-800 hover:text-rose-950"
           >
             Explore Premium
             <ChartNoAxesCombined size={14} />

@@ -125,7 +125,7 @@ export function PaymentResult() {
               <ShieldCheck size={27} />
             )}
           </span>
-          <p className="mt-6 text-[10px] font-semibold uppercase tracking-[0.2em] text-rose-800">
+          <p className="mt-6 text-xs font-semibold uppercase tracking-[0.2em] text-rose-800">
             {confirmed
               ? "A lovely next chapter"
               : "Secure payment confirmation"}
@@ -202,7 +202,7 @@ export function PaymentResult() {
               </>
             )}
           </div>
-          <p className="mt-6 text-[10px] leading-5 text-stone-500">
+          <p className="mt-6 text-xs leading-5 text-stone-500">
             Your plan changes only after a verified Stripe webhook confirms
             payment.
           </p>

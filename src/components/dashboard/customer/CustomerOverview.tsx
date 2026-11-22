@@ -72,18 +72,18 @@ export function CustomerOverview() {
         />
         <div className="relative grid grid-cols-[minmax(0,1fr)_4.25rem] items-center gap-3 sm:grid-cols-[minmax(0,1fr)_7rem] sm:gap-6">
           <div className="min-w-0">
-            <p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-rose-800 sm:text-[10px] sm:tracking-[0.19em]">
+            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-rose-800 sm:tracking-[0.19em]">
               Your celebration, thoughtfully planned
             </p>
-            <h1 className="mt-2 text-2xl font-semibold tracking-[-0.045em] text-[#352321] sm:text-4xl">
+            <h1 className="mt-2 text-3xl font-semibold tracking-[-0.045em] text-[#352321] sm:text-4xl">
               Welcome, {firstName}.
             </h1>
-            <p className="mt-2 max-w-xl text-xs leading-5 text-stone-600 sm:text-sm sm:leading-6">
+            <p className="mt-2 max-w-xl text-sm leading-6 text-stone-600">
               Keep every conversation and booking request in one lovely place.
             </p>
             <Link
               href="/services"
-              className="mt-4 inline-flex items-center gap-2 rounded-full bg-rose-800 px-4 py-2.5 text-xs font-semibold text-white shadow-md shadow-rose-950/10 transition hover:-translate-y-0.5 hover:bg-rose-900 sm:mt-5 sm:py-3"
+              className="mt-4 inline-flex items-center gap-2 rounded-full bg-rose-800 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-rose-950/10 transition hover:-translate-y-0.5 hover:bg-rose-900 sm:mt-5 sm:py-3"
             >
               <Compass size={15} />
               Explore services
@@ -166,7 +166,7 @@ export function CustomerOverview() {
             <section className="rounded-[1.6rem] border border-[#eee3dc] bg-white p-5 shadow-[0_16px_42px_-35px_rgba(82,43,44,.36)] sm:p-6">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.17em] text-rose-800">
+                  <p className="text-xs font-semibold uppercase tracking-[0.17em] text-rose-800">
                     Your activity
                   </p>
                   <h2 className="mt-1 text-lg font-semibold tracking-tight text-stone-900">
@@ -175,7 +175,7 @@ export function CustomerOverview() {
                 </div>
                 <Link
                   href="/dashboard/customer/my-bookings"
-                  className="inline-flex items-center gap-1 rounded-full px-3 py-2 text-xs font-semibold text-rose-800 transition hover:bg-rose-50"
+                  className="inline-flex items-center gap-1 rounded-full px-3 py-2 text-sm font-semibold text-rose-800 transition hover:bg-rose-50"
                 >
                   View all
                   <ArrowRight size={14} />
@@ -209,7 +209,7 @@ export function CustomerOverview() {
                   </p>
                   <Link
                     href="/services"
-                    className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-rose-800 hover:text-rose-950"
+                    className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-rose-800 hover:text-rose-950"
                   >
                     Browse wedding services
                     <ArrowRight size={13} />
@@ -218,7 +218,7 @@ export function CustomerOverview() {
               )}
             </section>
             <section className="rounded-[1.6rem] border border-[#eee3dc] bg-white p-5 shadow-[0_16px_42px_-35px_rgba(82,43,44,.36)] sm:p-6">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.17em] text-rose-800">
+              <p className="text-xs font-semibold uppercase tracking-[0.17em] text-rose-800">
                 A little inspiration
               </p>
               <h2 className="mt-1 text-lg font-semibold tracking-tight text-stone-900">
@@ -282,13 +282,13 @@ function Metric({
       >
         <Icon aria-hidden="true" size={18} />
       </span>
-      <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-stone-500">
+      <p className="mt-4 text-xs font-semibold uppercase tracking-[0.12em] text-stone-500">
         {label}
       </p>
       <p className="mt-1 text-2xl font-semibold tracking-tight text-stone-900">
         {value}
       </p>
-      <p className="mt-1 text-[10px] leading-4 text-stone-500">{note}</p>
+      <p className="mt-1 text-xs leading-4 text-stone-500">{note}</p>
     </article>
   );
 }
@@ -312,7 +312,7 @@ function RecentBooking({ booking }: { booking: Booking }) {
         </p>
       </div>
       <span
-        className={`rounded-full px-3 py-1.5 text-[10px] font-semibold capitalize ${statusTone[booking.status]}`}
+        className={`rounded-full px-3 py-1.5 text-xs font-semibold capitalize ${statusTone[booking.status]}`}
       >
         {booking.status}
       </span>
@@ -343,7 +343,7 @@ function QuickLink({
         <span className="block text-xs font-semibold text-stone-800">
           {title}
         </span>
-        <span className="mt-1 block truncate text-[10px] text-stone-500">
+        <span className="mt-1 block truncate text-xs text-stone-500">
           {text}
         </span>
       </span>

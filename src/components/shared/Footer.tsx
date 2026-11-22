@@ -65,7 +65,7 @@ export function Footer() {
             className="absolute -right-20 -top-24 -z-10 size-72 rounded-full bg-rose-200/60 blur-3xl"
           />
           <div className="relative z-10 max-w-xl">
-            <p className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-rose-800">
+            <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-rose-800">
               <span className="size-1.5 rounded-full bg-rose-700" />
               Your next chapter starts here
             </p>
@@ -137,7 +137,7 @@ export function Footer() {
               <circle cx="112" cy="37" r="2.5" fill="#c78e7d" />
               <circle cx="249" cy="148" r="2.5" fill="#c78e7d" />
             </svg>
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/70 bg-white/75 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-rose-900 shadow-sm backdrop-blur">
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/70 bg-white/75 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-rose-900 shadow-sm backdrop-blur">
               A celebration, beautifully yours
             </div>
           </div>

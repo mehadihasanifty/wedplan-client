@@ -8,7 +8,7 @@ export default function NotFound() {
         <span className="mx-auto flex size-14 items-center justify-center rounded-2xl border border-rose-100 bg-white text-rose-800 shadow-sm">
           <Flower2 size={23} />
         </span>
-        <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.2em] text-rose-800">
+        <p className="mt-5 text-xs font-semibold uppercase tracking-[0.2em] text-rose-800">
           A little detour
         </p>
         <h1 className="mt-2 text-3xl font-semibold tracking-[-0.045em] text-[#352321]">

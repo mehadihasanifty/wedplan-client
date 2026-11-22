@@ -117,7 +117,7 @@ export default function SignInPage() {
         <div className="absolute right-8 top-8 -z-10 size-48 rounded-full border border-white/20 sm:size-64" />
         <div className="absolute right-14 top-14 -z-10 size-36 rounded-full border border-white/15 sm:size-52" />
         <div>
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/15 px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.17em] text-white shadow-sm backdrop-blur-md">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/15 px-3.5 py-2 text-xs font-semibold uppercase tracking-[0.17em] text-white shadow-sm backdrop-blur-md">
             <Sparkles aria-hidden="true" size={13} />
             Welcome back
           </span>
@@ -136,7 +136,7 @@ export default function SignInPage() {
             Sign in to pick up where you left off and keep your celebration
             moving forward.
           </p>
-          <div className="mt-8 flex items-center gap-3 border-t border-white/25 pt-5 text-[10px] font-medium uppercase tracking-[0.13em] text-white/85">
+          <div className="mt-8 flex items-center gap-3 border-t border-white/25 pt-5 text-xs font-medium uppercase tracking-[0.13em] text-white/85">
             <span className="size-1.5 rounded-full bg-[#f0c6ad]" />
             Your WedPlan workspace
           </div>
@@ -145,7 +145,7 @@ export default function SignInPage() {
           href="https://unsplash.com/photos/man-in-black-jacket-kissing-woman-in-white-wedding-dress-KKvXIWSZnWs"
           target="_blank"
           rel="noreferrer"
-          className="absolute bottom-3 right-5 text-[9px] text-white/55 transition hover:text-white/90"
+          className="absolute bottom-3 right-5 text-xs text-white/55 transition hover:text-white/90"
         >
           Photo via Unsplash
         </a>
@@ -153,7 +153,7 @@ export default function SignInPage() {
 
       <div className="flex flex-col justify-center px-5 py-8 sm:px-9 sm:py-10 lg:px-12 lg:py-12">
         <div className="mb-7">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-rose-800">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-800">
             Your account
           </p>
           <h1 className="mt-2 text-3xl font-semibold tracking-[-0.045em] text-[#352321]">
@@ -167,7 +167,7 @@ export default function SignInPage() {
         {error && (
           <p
             role="alert"
-            className="mb-4 rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-3 text-xs leading-5 text-rose-900"
+            className="mb-4 rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-3 text-sm leading-5 text-rose-900"
           >
             {error}
           </p>
@@ -182,7 +182,7 @@ export default function SignInPage() {
         )}
 
         <form onSubmit={handleCredentialSignIn} className="grid gap-4">
-          <label className="grid gap-1.5 text-xs font-semibold text-stone-700">
+          <label className="grid gap-1.5 text-sm font-medium text-stone-700">
             Email address
             <span className="relative">
               <Mail
@@ -205,7 +205,7 @@ export default function SignInPage() {
               />
             </span>
           </label>
-          <label className="grid gap-1.5 text-xs font-semibold text-stone-700">
+          <label className="grid gap-1.5 text-sm font-medium text-stone-700">
             Password
             <span className="relative">
               <KeyRound
@@ -260,7 +260,7 @@ export default function SignInPage() {
 
         <div className="my-5 flex items-center gap-3">
           <span className="h-px flex-1 bg-[#eee5df]" />
-          <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-stone-400">
+          <span className="text-xs font-medium uppercase tracking-[0.12em] text-stone-400">
             or continue another way
           </span>
           <span className="h-px flex-1 bg-[#eee5df]" />

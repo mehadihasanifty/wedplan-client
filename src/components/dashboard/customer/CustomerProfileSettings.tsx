@@ -167,7 +167,7 @@ export function CustomerProfileSettings({
               </button>
             </div>
             <div className="min-w-0">
-              <p className="text-[9px] font-semibold uppercase tracking-[0.17em] text-rose-800">
+              <p className="text-xs font-semibold uppercase tracking-[0.17em] text-rose-800">
                 Your WedPlan identity
               </p>
               <h2 className="mt-1 truncate text-lg font-semibold text-stone-900">
@@ -175,7 +175,7 @@ export function CustomerProfileSettings({
               </h2>
               <p className="mt-1 truncate text-xs text-stone-500">{email}</p>
             </div>
-            <span className="ml-auto hidden shrink-0 items-center gap-1.5 rounded-full border border-emerald-100 bg-white/85 px-3 py-1.5 text-[9px] font-semibold text-emerald-800 sm:inline-flex">
+            <span className="ml-auto hidden shrink-0 items-center gap-1.5 rounded-full border border-emerald-100 bg-white/85 px-3 py-1.5 text-xs font-semibold text-emerald-800 sm:inline-flex">
               <ShieldCheck size={13} />
               {accountRoleLabel} account
             </span>
@@ -198,13 +198,13 @@ export function CustomerProfileSettings({
               <button
                 type="button"
                 onClick={() => fileInput.current?.click()}
-                className="inline-flex h-10 items-center gap-2 rounded-full border border-[#eadfd5] bg-[#fffdfa] px-4 text-xs font-semibold text-stone-700 transition hover:border-rose-200 hover:bg-rose-50"
+                className="inline-flex h-10 items-center gap-2 rounded-full border border-[#eadfd5] bg-[#fffdfa] px-4 text-sm font-semibold text-stone-700 transition hover:border-rose-200 hover:bg-rose-50"
               >
                 <ImagePlus size={15} className="text-rose-800" />
                 {selectedFile ? "Choose another photo" : "Upload profile photo"}
               </button>
               {selectedFile && (
-                <span className="flex min-w-0 items-center gap-1.5 text-[10px] text-stone-500">
+                <span className="flex min-w-0 items-center gap-1.5 text-xs text-stone-500">
                   <span className="max-w-52 truncate">{selectedFile.name}</span>
                   <button
                     type="button"
@@ -220,12 +220,12 @@ export function CustomerProfileSettings({
                   </button>
                 </span>
               )}
-              <span className="text-[10px] text-stone-400">
+              <span className="text-xs text-stone-400">
                 JPG, PNG or WebP · up to 5 MB
               </span>
             </div>
           </div>
-          <label className="grid gap-1.5 text-xs font-semibold text-stone-700">
+          <label className="grid gap-1.5 text-sm font-medium text-stone-700">
             Full name
             <span className="relative">
               <CircleUserRound
@@ -243,7 +243,7 @@ export function CustomerProfileSettings({
               />
             </span>
           </label>
-          <label className="grid gap-1.5 text-xs font-semibold text-stone-700">
+          <label className="grid gap-1.5 text-sm font-medium text-stone-700">
             Email address
             <span className="relative">
               <Mail
@@ -257,14 +257,14 @@ export function CustomerProfileSettings({
                 className="h-12 w-full rounded-xl border border-[#e9ded6] bg-stone-50 pl-11 pr-4 text-sm font-normal text-stone-600 outline-none"
               />
             </span>
-            <span className="text-[10px] font-normal text-stone-500">
+            <span className="text-xs font-normal text-stone-500">
               Email is managed through account verification.
             </span>
           </label>
           <div className="grid gap-4 sm:grid-cols-2">
-            <label className="grid gap-1.5 text-xs font-semibold text-stone-700">
+            <label className="grid gap-1.5 text-sm font-medium text-stone-700">
               Phone number{" "}
-              <span className="text-[10px] font-normal text-stone-400">
+              <span className="text-xs font-normal text-stone-400">
                 Optional
               </span>
               <input
@@ -277,9 +277,9 @@ export function CustomerProfileSettings({
                 className="h-12 rounded-xl border border-[#e9ded6] px-3.5 text-sm font-normal text-stone-800 outline-none focus:border-rose-400 focus:ring-4 focus:ring-rose-100/80"
               />
             </label>
-            <label className="grid gap-1.5 text-xs font-semibold text-stone-700">
+            <label className="grid gap-1.5 text-sm font-medium text-stone-700">
               Location{" "}
-              <span className="text-[10px] font-normal text-stone-400">
+              <span className="text-xs font-normal text-stone-400">
                 Optional
               </span>
               <input
@@ -292,9 +292,9 @@ export function CustomerProfileSettings({
               />
             </label>
           </div>
-          <label className="grid gap-1.5 text-xs font-semibold text-stone-700">
+          <label className="grid gap-1.5 text-sm font-medium text-stone-700">
             About you{" "}
-            <span className="text-[10px] font-normal text-stone-400">
+            <span className="text-xs font-normal text-stone-400">
               Optional
             </span>
             <textarea
@@ -306,19 +306,19 @@ export function CustomerProfileSettings({
               placeholder="Share a little about the celebration you’re planning…"
               className="resize-y rounded-xl border border-[#e9ded6] px-3.5 py-3 text-sm font-normal leading-6 text-stone-800 outline-none focus:border-rose-400 focus:ring-4 focus:ring-rose-100/80"
             />
-            <span className="text-right text-[10px] font-normal text-stone-400">
+            <span className="text-right text-xs font-normal text-stone-400">
               {bio.length}/500
             </span>
           </label>
           <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#f0e8e2] pt-5">
-            <p className="text-[10px] leading-5 text-stone-500">
+            <p className="text-xs leading-5 text-stone-500">
               Your role and subscription plan are protected account settings and
               cannot be changed here.
             </p>
             <button
               type="submit"
               disabled={saving || isPending || !name.trim()}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-rose-800 px-5 text-xs font-semibold text-white shadow-sm transition hover:bg-rose-900 disabled:cursor-not-allowed disabled:opacity-55"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-rose-800 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-900 disabled:cursor-not-allowed disabled:opacity-55"
             >
               {saving ? (
                 <LoaderCircle size={15} className="animate-spin" />
@@ -331,7 +331,7 @@ export function CustomerProfileSettings({
           {error && (
             <p
               role="alert"
-              className="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-3 text-xs leading-5 text-rose-900"
+              className="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-3 text-sm leading-5 text-rose-900"
             >
               {error}
             </p>

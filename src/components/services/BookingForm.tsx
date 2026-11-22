@@ -70,7 +70,7 @@ export function BookingForm({ service }: { service: Service }) {
       aria-labelledby="booking-title"
       className="rounded-[1.7rem] border border-[#eee1d7] bg-white p-5 shadow-[0_18px_55px_-40px_rgba(82,43,44,.4)] sm:p-6"
     >
-      <p className="text-[10px] font-semibold uppercase tracking-[0.19em] text-rose-800">
+      <p className="text-xs font-semibold uppercase tracking-[0.19em] text-rose-800">
         Make it yours
       </p>
       <h2

@@ -47,7 +47,7 @@ export function FeaturedServices() {
       <section aria-labelledby="featured-title" className="py-16 sm:py-20">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose-800">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-800">
               A thoughtful place to begin
             </p>
             <h2

@@ -225,7 +225,7 @@ export function AdminOverview() {
           <section className="mt-7 overflow-hidden rounded-[1.6rem] border border-[#eee3dc] bg-white shadow-[0_16px_42px_-35px_rgba(82,43,44,.36)]">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#f0e8e2] bg-[linear-gradient(110deg,#fffdfa,#fbf6f1)] px-5 py-4 sm:px-6">
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-rose-800">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-rose-800">
                   Review queue
                 </p>
                 <h2 className="mt-1 text-lg font-semibold text-stone-900">
@@ -234,7 +234,7 @@ export function AdminOverview() {
               </div>
               <Link
                 href="/dashboard/admin/services?status=pending"
-                className="inline-flex items-center gap-1 rounded-full px-3 py-2 text-xs font-semibold text-rose-800 hover:bg-rose-50"
+                className="inline-flex items-center gap-1 rounded-full px-3 py-2 text-sm font-semibold text-rose-800 hover:bg-rose-50"
               >
                 View queue
                 <ArrowRight size={14} />
@@ -259,7 +259,7 @@ export function AdminOverview() {
                         · {shortDate(service.createdAt)}
                       </p>
                     </div>
-                    <span className="rounded-full bg-amber-50 px-3 py-1.5 text-[10px] font-semibold text-amber-800">
+                    <span className="rounded-full bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-800">
                       Pending
                     </span>
                   </div>
@@ -463,7 +463,7 @@ export function AdminUsers() {
       ) : users.length === 0 ? (
         <div className="rounded-[1.5rem] border border-dashed border-[#eadfd5] bg-white p-10 text-center">
           <Users size={24} className="mx-auto text-rose-700" />
-          <h2 className="mt-3 text-sm font-semibold text-stone-800">
+          <h2 className="mt-3 text-base font-semibold text-stone-800">
             No users match this search
           </h2>
           <p className="mt-1 text-xs text-stone-500">
@@ -472,7 +472,7 @@ export function AdminUsers() {
         </div>
       ) : (
         <div className="overflow-hidden rounded-[1.5rem] border border-[#eee3dc] bg-white shadow-sm">
-          <div className="hidden grid-cols-[minmax(220px,1.5fr)_1fr_130px_150px] gap-4 border-b border-[#f0e8e2] bg-[#fbf8f5] px-5 py-3 text-[9px] font-semibold uppercase tracking-[0.15em] text-stone-500 md:grid">
+          <div className="hidden grid-cols-[minmax(220px,1.5fr)_1fr_130px_150px] gap-4 border-b border-[#f0e8e2] bg-[#fbf8f5] px-5 py-3 text-xs font-semibold uppercase tracking-[0.15em] text-stone-500 md:grid">
             <span>Account</span>
             <span>Role</span>
             <span>Status</span>
@@ -496,11 +496,11 @@ export function AdminUsers() {
                         </p>
                       </div>
                     </div>
-                    <span className="w-fit rounded-full bg-[#f6eee8] px-3 py-1.5 text-[10px] font-semibold capitalize text-stone-700">
+                    <span className="w-fit rounded-full bg-[#f6eee8] px-3 py-1.5 text-xs font-semibold capitalize text-stone-700">
                       {user.role || "unknown"}
                     </span>
                     <span
-                      className={`w-fit rounded-full px-3 py-1.5 text-[10px] font-semibold ${blocked ? "bg-rose-50 text-rose-800" : "bg-emerald-50 text-emerald-800"}`}
+                      className={`w-fit rounded-full px-3 py-1.5 text-xs font-semibold ${blocked ? "bg-rose-50 text-rose-800" : "bg-emerald-50 text-emerald-800"}`}
                     >
                       {blocked ? "Blocked" : "Active"}
                     </span>
@@ -511,7 +511,7 @@ export function AdminUsers() {
                           onClick={() =>
                             setExpanded((current) => (current === id ? "" : id))
                           }
-                          className="inline-flex h-9 items-center gap-1.5 rounded-full border border-[#eadfd5] px-3 text-[10px] font-semibold text-stone-700 hover:bg-[#fbf8f5]"
+                          className="inline-flex h-9 items-center gap-1.5 rounded-full border border-[#eadfd5] px-3 text-sm font-semibold text-stone-700 hover:bg-[#fbf8f5]"
                         >
                           <Eye size={13} />
                           Details
@@ -521,7 +521,7 @@ export function AdminUsers() {
                             type="button"
                             onClick={() => setBlocked(user, !blocked)}
                             disabled={busyId === id}
-                            className={`inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-[10px] font-semibold disabled:opacity-50 ${blocked ? "border border-emerald-200 text-emerald-800 hover:bg-emerald-50" : "border border-rose-200 text-rose-800 hover:bg-rose-50"}`}
+                            className={`inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-sm font-semibold disabled:opacity-50 ${blocked ? "border border-emerald-200 text-emerald-800 hover:bg-emerald-50" : "border border-rose-200 text-rose-800 hover:bg-rose-50"}`}
                           >
                             {busyId === id ? (
                               <Clock3 size={13} className="animate-spin" />
@@ -539,7 +539,7 @@ export function AdminUsers() {
                           type="button"
                           onClick={() => setDeleteTarget(user)}
                           disabled={busyId === id}
-                          className="inline-flex h-9 items-center gap-1.5 rounded-full border border-rose-200 px-3 text-[10px] font-semibold text-rose-800 transition hover:bg-rose-50 disabled:opacity-50"
+                          className="inline-flex h-9 items-center gap-1.5 rounded-full border border-rose-200 px-3 text-sm font-semibold text-rose-800 transition hover:bg-rose-50 disabled:opacity-50"
                         >
                           <Trash2 size={13} />
                           Delete
@@ -550,15 +550,15 @@ export function AdminUsers() {
                   {expanded === id && (
                     <div className="mt-4 grid gap-3 rounded-xl bg-[#fbf8f5] p-4 text-xs sm:grid-cols-3">
                       <div>
-                        <p className="text-[9px] font-semibold uppercase tracking-wider text-stone-500">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">
                           Account ID
                         </p>
-                        <p className="mt-1 break-all font-mono text-[10px] text-stone-700">
+                        <p className="mt-1 break-all font-mono text-xs text-stone-700">
                           {id}
                         </p>
                       </div>
                       <div>
-                        <p className="text-[9px] font-semibold uppercase tracking-wider text-stone-500">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">
                           Joined
                         </p>
                         <p className="mt-1 text-stone-700">
@@ -566,7 +566,7 @@ export function AdminUsers() {
                         </p>
                       </div>
                       <div>
-                        <p className="text-[9px] font-semibold uppercase tracking-wider text-stone-500">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">
                           Business
                         </p>
                         <p className="mt-1 text-stone-700">
@@ -580,7 +580,7 @@ export function AdminUsers() {
             })}
           </div>
           <div className="flex items-center justify-between border-t border-[#f0e8e2] px-4 py-3 sm:px-5">
-            <p className="text-[10px] text-stone-500">
+            <p className="text-xs text-stone-500">
               {total} registered {total === 1 ? "user" : "users"}
             </p>
             <div className="flex items-center gap-2">
@@ -588,18 +588,18 @@ export function AdminUsers() {
                 type="button"
                 disabled={page <= 1}
                 onClick={() => setPage((value) => value - 1)}
-                className="rounded-full border border-[#eadfd5] px-3 py-1.5 text-[10px] font-semibold disabled:opacity-40"
+                className="rounded-full border border-[#eadfd5] px-3.5 py-2 text-sm font-semibold disabled:opacity-40"
               >
                 Previous
               </button>
-              <span className="text-[10px] text-stone-600">
+              <span className="text-xs text-stone-600">
                 {page} / {pages}
               </span>
               <button
                 type="button"
                 disabled={page >= pages}
                 onClick={() => setPage((value) => value + 1)}
-                className="rounded-full border border-[#eadfd5] px-3 py-1.5 text-[10px] font-semibold disabled:opacity-40"
+                className="rounded-full border border-[#eadfd5] px-3.5 py-2 text-sm font-semibold disabled:opacity-40"
               >
                 Next
               </button>
@@ -655,7 +655,7 @@ export function AdminUsers() {
                 type="button"
                 onClick={() => setDeleteTarget(null)}
                 disabled={busyId === itemId(deleteTarget)}
-                className="rounded-full border border-[#eadfd5] px-4 py-2.5 text-xs font-semibold text-stone-700 transition hover:bg-[#fbf8f5] disabled:opacity-50"
+                className="rounded-full border border-[#eadfd5] px-4 py-2.5 text-sm font-semibold text-stone-700 transition hover:bg-[#fbf8f5] disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -663,7 +663,7 @@ export function AdminUsers() {
                 type="button"
                 onClick={() => deleteUser(deleteTarget)}
                 disabled={busyId === itemId(deleteTarget)}
-                className="inline-flex items-center gap-2 rounded-full bg-rose-800 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-rose-900 disabled:cursor-wait disabled:opacity-60"
+                className="inline-flex items-center gap-2 rounded-full bg-rose-800 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-rose-900 disabled:cursor-wait disabled:opacity-60"
               >
                 {busyId === itemId(deleteTarget) ? (
                   <Clock3 size={14} className="animate-spin" />
@@ -835,7 +835,7 @@ export function AdminServices() {
       ) : services.length === 0 ? (
         <div className="rounded-[1.5rem] border border-dashed border-[#eadfd5] bg-white p-10 text-center">
           <Store size={24} className="mx-auto text-rose-700" />
-          <h2 className="mt-3 text-sm font-semibold text-stone-800">
+          <h2 className="mt-3 text-base font-semibold text-stone-800">
             No services in this view
           </h2>
           <p className="mt-1 text-xs text-stone-500">
@@ -868,7 +868,7 @@ export function AdminServices() {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-start justify-between gap-2">
                       <div>
-                        <h2 className="text-sm font-semibold text-stone-900">
+                        <h2 className="text-base font-semibold text-stone-900">
                           {service.serviceName}
                         </h2>
                         <p className="mt-1 text-xs text-stone-500">
@@ -877,12 +877,12 @@ export function AdminServices() {
                         </p>
                       </div>
                       <span
-                        className={`rounded-full px-3 py-1.5 text-[10px] font-semibold capitalize ${service.status === "approved" ? "bg-emerald-50 text-emerald-800" : service.status === "rejected" ? "bg-rose-50 text-rose-800" : "bg-amber-50 text-amber-800"}`}
+                        className={`rounded-full px-3 py-1.5 text-xs font-semibold capitalize ${service.status === "approved" ? "bg-emerald-50 text-emerald-800" : service.status === "rejected" ? "bg-rose-50 text-rose-800" : "bg-amber-50 text-amber-800"}`}
                       >
                         {service.status || "pending"}
                       </span>
                     </div>
-                    <p className="mt-3 text-xs font-semibold text-stone-800">
+                    <p className="mt-3 text-sm font-semibold text-stone-800">
                       {service.vendor?.businessName ||
                         service.vendor?.name ||
                         "Vendor"}
@@ -890,7 +890,7 @@ export function AdminServices() {
                         {service.vendor?.email || ""}
                       </span>
                     </p>
-                    <p className="mt-1 text-[10px] text-stone-500">
+                    <p className="mt-1 text-xs text-stone-500">
                       {typeof service.price === "number"
                         ? new Intl.NumberFormat("en", {
                             style: "currency",
@@ -910,7 +910,7 @@ export function AdminServices() {
                         type="button"
                         disabled={busyId === id}
                         onClick={() => moderate(service, "approved")}
-                        className="inline-flex h-9 items-center gap-1.5 rounded-full bg-emerald-700 px-3.5 text-[10px] font-semibold text-white hover:bg-emerald-800 disabled:opacity-50"
+                        className="inline-flex h-9 items-center gap-1.5 rounded-full bg-emerald-700 px-3.5 text-sm font-semibold text-white hover:bg-emerald-800 disabled:opacity-50"
                       >
                         <Check size={13} />
                         Approve
@@ -919,14 +919,14 @@ export function AdminServices() {
                         type="button"
                         disabled={busyId === id}
                         onClick={() => moderate(service, "rejected")}
-                        className="inline-flex h-9 items-center gap-1.5 rounded-full border border-rose-200 px-3.5 text-[10px] font-semibold text-rose-800 hover:bg-rose-50 disabled:opacity-50"
+                        className="inline-flex h-9 items-center gap-1.5 rounded-full border border-rose-200 px-3.5 text-sm font-semibold text-rose-800 hover:bg-rose-50 disabled:opacity-50"
                       >
                         <X size={13} />
                         Reject
                       </button>
                     </div>
                   ) : (
-                    <label className="flex items-center gap-2 text-[10px] font-semibold text-stone-600">
+                    <label className="flex items-center gap-2 text-sm font-medium text-stone-600">
                       Change status
                       <select
                         value={service.status || "pending"}
@@ -934,7 +934,7 @@ export function AdminServices() {
                         onChange={(event) =>
                           moderate(service, event.target.value as ServiceStatus)
                         }
-                        className="h-9 rounded-full border border-[#eadfd5] bg-white px-3 text-[10px] capitalize text-stone-700 disabled:opacity-50"
+                        className="h-9 rounded-full border border-[#eadfd5] bg-white px-3 text-xs capitalize text-stone-700 disabled:opacity-50"
                       >
                         <option value="pending">Pending</option>
                         <option value="approved">Approved</option>
@@ -944,13 +944,13 @@ export function AdminServices() {
                   )}
                   {deleteId === id ? (
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] text-rose-800">
+                      <span className="text-xs text-rose-800">
                         Delete permanently?
                       </span>
                       <button
                         type="button"
                         onClick={() => setDeleteId("")}
-                        className="rounded-full px-2 py-1.5 text-[10px] font-semibold text-stone-600"
+                        className="rounded-full px-2 py-1.5 text-xs font-semibold text-stone-600"
                       >
                         Keep
                       </button>
@@ -958,7 +958,7 @@ export function AdminServices() {
                         type="button"
                         disabled={busyId === id}
                         onClick={() => remove(service)}
-                        className="rounded-full bg-rose-800 px-3 py-1.5 text-[10px] font-semibold text-white disabled:opacity-50"
+                        className="rounded-full bg-rose-800 px-3.5 py-2 text-sm font-semibold text-white disabled:opacity-50"
                       >
                         Delete
                       </button>
@@ -967,7 +967,7 @@ export function AdminServices() {
                     <button
                       type="button"
                       onClick={() => setDeleteId(id)}
-                      className="inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-[10px] font-semibold text-rose-800 hover:bg-rose-50"
+                      className="inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-rose-800 hover:bg-rose-50"
                     >
                       <Trash2 size={13} />
                       Delete
@@ -1054,7 +1054,7 @@ export function AdminTransactions() {
           type="button"
           onClick={syncPendingTransactions}
           disabled={syncing}
-          className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-full bg-rose-800 px-4 text-xs font-semibold text-white shadow-sm transition hover:bg-rose-900 disabled:cursor-wait disabled:opacity-60"
+          className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-full bg-rose-800 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-900 disabled:cursor-wait disabled:opacity-60"
         >
           {syncing ? <LoaderCircle size={15} className="animate-spin" /> : <RefreshCw size={15} />}
           {syncing ? "Checking Stripe…" : "Sync with Stripe"}
@@ -1070,7 +1070,7 @@ export function AdminTransactions() {
               setLoading(true);
               setReloadCount((count) => count + 1);
             }}
-            className="rounded-full border border-[#eadfd5] bg-white px-4 py-2 text-xs font-semibold text-stone-700 hover:bg-[#fbf8f5]"
+            className="rounded-full border border-[#eadfd5] bg-white px-4 py-2 text-sm font-semibold text-stone-700 hover:bg-[#fbf8f5]"
           >
             Try again
           </button>
@@ -1080,7 +1080,7 @@ export function AdminTransactions() {
       ) : transactions.length === 0 ? (
         <div className="rounded-[1.5rem] border border-dashed border-[#eadfd5] bg-white p-10 text-center">
           <CircleDollarSign size={25} className="mx-auto text-rose-700" />
-          <h2 className="mt-3 text-sm font-semibold text-stone-800">
+          <h2 className="mt-3 text-base font-semibold text-stone-800">
             No transactions recorded
           </h2>
           <p className="mt-1 text-xs text-stone-500">
@@ -1090,7 +1090,7 @@ export function AdminTransactions() {
         </div>
       ) : (
         <div className="overflow-hidden rounded-[1.5rem] border border-[#eee3dc] bg-white shadow-sm">
-          <div className="hidden grid-cols-[1.3fr_1fr_130px_130px_130px] gap-4 border-b border-[#f0e8e2] bg-[#fbf8f5] px-5 py-3 text-[9px] font-semibold uppercase tracking-[0.15em] text-stone-500 md:grid">
+          <div className="hidden grid-cols-[1.3fr_1fr_130px_130px_130px] gap-4 border-b border-[#f0e8e2] bg-[#fbf8f5] px-5 py-3 text-xs font-semibold uppercase tracking-[0.15em] text-stone-500 md:grid">
             <span>Vendor</span>
             <span>Plan</span>
             <span>Amount</span>
@@ -1109,12 +1109,12 @@ export function AdminTransactions() {
                   className="grid gap-2 px-4 py-4 md:grid-cols-[1.3fr_1fr_130px_130px_130px] md:items-center md:gap-4 md:px-5"
                 >
                   <div>
-                    <p className="text-xs font-semibold text-stone-800">
+                    <p className="text-sm font-semibold text-stone-800">
                       {transaction.vendor?.businessName ||
                         transaction.vendor?.name ||
                         "Vendor"}
                     </p>
-                    <p className="mt-1 text-[10px] text-stone-500">
+                    <p className="mt-1 text-xs text-stone-500">
                       {transaction.vendor?.email ||
                         "Vendor details unavailable"}
                     </p>
@@ -1122,22 +1122,22 @@ export function AdminTransactions() {
                   <p className="text-xs text-stone-700">
                     {transaction.plan === "premium_plus" ? "Premium Plus" : transaction.plan === "premium_pro" ? "Premium Pro" : transaction.plan === "premium" ? "Premium" : transaction.plan || "Subscription"}
                   </p>
-                  <p className="text-xs font-semibold text-stone-800">
+                  <p className="text-sm font-semibold text-stone-800">
                     {formatTransactionAmount(rawAmount, transaction.currency)}
                   </p>
                   <span
-                    className={`w-fit rounded-full px-3 py-1.5 text-[10px] font-semibold capitalize ${transactionStatusClass(status)}`}
+                    className={`w-fit rounded-full px-3 py-1.5 text-xs font-semibold capitalize ${transactionStatusClass(status)}`}
                   >
                     {status}
                   </span>
-                  <p className="text-[10px] text-stone-500">
+                  <p className="text-xs text-stone-500">
                     {shortDate(transaction.createdAt)}
                   </p>
                 </article>
               );
             })}
           </div>
-          <div className="border-t border-[#f0e8e2] bg-[#fbf8f5] px-5 py-3 text-[10px] text-stone-500">
+          <div className="border-t border-[#f0e8e2] bg-[#fbf8f5] px-5 py-3 text-xs text-stone-500">
             Payment status is supplied by the payment provider. This screen does
             not include manual payment-status controls.
           </div>
@@ -1166,7 +1166,7 @@ function Header({
       />
       <div className="relative flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-800">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-rose-800">
             {eyebrow}
           </p>
           <h1 className="mt-2 text-3xl font-semibold tracking-[-0.045em] text-[#352321]">
@@ -1179,7 +1179,7 @@ function Header({
         {action && (
           <Link
             href={action.href}
-            className="inline-flex items-center gap-2 rounded-full bg-rose-800 px-4 py-3 text-xs font-semibold text-white shadow-sm transition hover:bg-rose-900"
+            className="inline-flex items-center gap-2 rounded-full bg-rose-800 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-900"
           >
             {action.label}
             <ArrowRight size={14} />
@@ -1222,13 +1222,13 @@ function Metric({
       >
         <Icon aria-hidden="true" size={18} />
       </span>
-      <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-stone-500">
+      <p className="mt-4 text-xs font-semibold uppercase tracking-[0.12em] text-stone-500">
         {label}
       </p>
       <p className="mt-1 text-2xl font-semibold tracking-tight text-stone-900">
         {value}
       </p>
-      <p className="mt-1 flex items-center justify-between gap-2 text-[10px] leading-4 text-stone-500">
+      <p className="mt-1 flex items-center justify-between gap-2 text-xs leading-4 text-stone-500">
         {note}
         <ArrowRight
           size={12}

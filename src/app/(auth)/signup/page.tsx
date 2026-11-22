@@ -245,11 +245,11 @@ export default function SignUpPage() {
         <div className="absolute right-8 top-8 -z-10 size-48 rounded-full border border-white/20 sm:size-64" />
         <div className="absolute right-14 top-14 -z-10 size-36 rounded-full border border-white/15 sm:size-52" />
         <div className="flex items-center justify-between gap-4">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/15 px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.17em] text-white shadow-sm backdrop-blur-md">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/15 px-3.5 py-2 text-xs font-semibold uppercase tracking-[0.17em] text-white shadow-sm backdrop-blur-md">
             <Sparkles aria-hidden="true" size={13} />
             Make room for magic
           </span>
-          <span className="hidden rounded-full border border-white/30 bg-white/15 px-3 py-2 text-[10px] font-medium text-white/90 backdrop-blur-md sm:inline-flex">
+          <span className="hidden rounded-full border border-white/30 bg-white/15 px-3 py-2 text-xs font-medium text-white/90 backdrop-blur-md sm:inline-flex">
             A more personal way to plan
           </span>
         </div>
@@ -267,7 +267,7 @@ export default function SignUpPage() {
             Meet the people and find the details that make your celebration feel
             unmistakably yours.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-white/25 pt-5 text-[10px] font-medium uppercase tracking-[0.13em] text-white/85">
+          <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-white/25 pt-5 text-xs font-medium uppercase tracking-[0.13em] text-white/85">
             <span className="inline-flex items-center gap-2">
               <span className="size-1.5 rounded-full bg-[#f0c6ad]" />
               Discover
@@ -286,7 +286,7 @@ export default function SignUpPage() {
           href="https://unsplash.com/photos/man-in-black-jacket-kissing-woman-in-white-wedding-dress-KKvXIWSZnWs"
           target="_blank"
           rel="noreferrer"
-          className="absolute bottom-3 right-5 text-[9px] text-white/55 transition hover:text-white/90"
+          className="absolute bottom-3 right-5 text-xs text-white/55 transition hover:text-white/90"
         >
           Photo via Unsplash
         </a>
@@ -294,7 +294,7 @@ export default function SignUpPage() {
 
       <div className="px-5 py-7 sm:px-9 sm:py-9 lg:px-10 lg:py-10">
         <div className="mb-6">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-rose-800">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-800">
             Join WedPlan
           </p>
           <h1 className="mt-2 text-3xl font-semibold tracking-[-0.045em] text-[#352321]">
@@ -308,7 +308,7 @@ export default function SignUpPage() {
           disabled={submitting !== null}
           className="min-w-0 border-0 p-0"
         >
-          <legend className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-stone-600">
+          <legend className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-stone-600">
             I’m joining as a
           </legend>
           <div
@@ -336,7 +336,7 @@ export default function SignUpPage() {
         </fieldset>
 
         <form onSubmit={handleEmailSignUp} className="mt-5 grid gap-3.5">
-          <label className="grid gap-1.5 text-xs font-semibold text-stone-700">
+          <label className="grid gap-1.5 text-sm font-medium text-stone-700">
             Full name
             <span className="relative">
               <UserRound
@@ -355,7 +355,7 @@ export default function SignUpPage() {
               />
             </span>
           </label>
-          <label className="grid gap-1.5 text-xs font-semibold text-stone-700">
+          <label className="grid gap-1.5 text-sm font-medium text-stone-700">
             Email address
             <span className="relative">
               <Mail
@@ -374,7 +374,7 @@ export default function SignUpPage() {
               />
             </span>
           </label>
-          <label className="grid gap-1.5 text-xs font-semibold text-stone-700">
+          <label className="grid gap-1.5 text-sm font-medium text-stone-700">
             Password
             <span className="relative">
               <LockKeyhole
@@ -411,7 +411,7 @@ export default function SignUpPage() {
               return (
                 <li
                   key={rule.label}
-                  className={`flex items-center gap-1.5 text-[10px] ${met ? "font-medium text-emerald-700" : "text-stone-500"}`}
+                  className={`flex items-center gap-1.5 text-xs ${met ? "font-medium text-emerald-700" : "text-stone-500"}`}
                 >
                   <span
                     className={`flex size-3.5 items-center justify-center rounded-full ${met ? "bg-emerald-100" : "bg-stone-100"}`}
@@ -426,7 +426,7 @@ export default function SignUpPage() {
 
           <div>
             <div className="mb-1.5 flex items-center justify-between">
-              <p className="text-xs font-semibold text-stone-700">
+              <p className="text-sm font-medium text-stone-700">
                 Profile image{" "}
                 <span className="font-normal text-stone-400">Optional</span>
               </p>
@@ -434,7 +434,7 @@ export default function SignUpPage() {
                 <button
                   type="button"
                   onClick={removeProfileImage}
-                  className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-semibold text-rose-800 hover:bg-rose-50"
+                  className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold text-rose-800 hover:bg-rose-50"
                 >
                   <X size={12} />
                   Remove
@@ -465,7 +465,7 @@ export default function SignUpPage() {
                   <span className="block truncate text-xs font-semibold text-stone-800">
                     {profileFile?.name}
                   </span>
-                  <span className="mt-1 block text-[10px] text-stone-500">
+                  <span className="mt-1 block text-xs text-stone-500">
                     Ready to upload · up to 5 MB
                   </span>
                 </span>
@@ -484,7 +484,7 @@ export default function SignUpPage() {
                   <span className="block text-xs font-semibold text-stone-800">
                     Choose a profile photo
                   </span>
-                  <span className="mt-1 block text-[10px] text-stone-500">
+                  <span className="mt-1 block text-xs text-stone-500">
                     JPG, PNG or WebP · up to 5 MB · uploaded securely to ImgBB
                   </span>
                 </span>
@@ -495,7 +495,7 @@ export default function SignUpPage() {
           {error && (
             <div
               role="alert"
-              className="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-3 text-xs leading-5 text-rose-900"
+              className="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-3 text-sm leading-5 text-rose-900"
             >
               {error}
               {existingAccount && (
@@ -546,7 +546,7 @@ export default function SignUpPage() {
 
         <div className="my-4 flex items-center gap-3">
           <span className="h-px flex-1 bg-[#eee5df]" />
-          <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-stone-400">
+          <span className="text-xs font-medium uppercase tracking-[0.12em] text-stone-400">
             or continue with
           </span>
           <span className="h-px flex-1 bg-[#eee5df]" />
@@ -573,7 +573,7 @@ export default function SignUpPage() {
             Sign in
           </Link>
         </p>
-        <p className="mt-4 text-center text-[10px] leading-5 text-stone-400">
+        <p className="mt-4 text-center text-xs leading-5 text-stone-400">
           Public accounts are for customers and vendors. Admin access is
           assigned securely by WedPlan.
         </p>
@@ -615,7 +615,7 @@ function RoleChoice({
         <span className="block text-xs font-semibold text-stone-900">
           {title}
         </span>
-        <span className="mt-0.5 block text-[10px] leading-4 text-stone-500">
+        <span className="mt-0.5 block text-xs leading-4 text-stone-500">
           {description}
         </span>
       </span>

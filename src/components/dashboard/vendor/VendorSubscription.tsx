@@ -121,7 +121,7 @@ export function VendorSubscription() {
   return (
     <div className="mx-auto max-w-5xl">
       <div className="mb-7">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-800">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-rose-800">
           Your growth plan
         </p>
         <h1 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-[#352321]">
@@ -144,14 +144,14 @@ export function VendorSubscription() {
               {premium ? <Crown size={19} /> : <ShieldCheck size={19} />}
             </span>
             <div>
-              <p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-stone-500">
+              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-stone-500">
                 Current subscription
               </p>
               <p className="mt-0.5 text-sm font-semibold capitalize text-stone-900">
                 {planLabel} plan
               </p>
               {subscription?.cancelAtPeriodEnd && (
-                <p className="mt-1 text-[10px] font-medium text-amber-800">
+                <p className="mt-1 text-sm font-medium text-amber-800">
                   Cancellation scheduled at the end of this billing period
                 </p>
               )}
@@ -159,7 +159,7 @@ export function VendorSubscription() {
           </div>
           <div className="flex items-center gap-2">
             <span
-              className={`rounded-full px-3 py-1.5 text-[9px] font-semibold ${premium ? "bg-amber-50 text-amber-800" : "bg-stone-100 text-stone-600"}`}
+              className={`rounded-full px-3 py-1.5 text-xs font-semibold ${premium ? "bg-amber-50 text-amber-800" : "bg-stone-100 text-stone-600"}`}
             >
               {premium ? "Premium member" : "Free plan"}
             </span>
@@ -168,7 +168,7 @@ export function VendorSubscription() {
                 type="button"
                 onClick={() => manageBilling()}
                 disabled={loadingAction === "billing" || subscriptionPending}
-                className="inline-flex h-9 items-center gap-1.5 rounded-full border border-[#eadfd5] bg-white px-3 text-[10px] font-semibold text-stone-700 hover:bg-[#fffaf6] disabled:opacity-50"
+                className="inline-flex h-9 items-center gap-1.5 rounded-full border border-[#eadfd5] bg-white px-3 text-sm font-semibold text-stone-700 hover:bg-[#fffaf6] disabled:opacity-50"
               >
                 <CreditCard size={13} />
                 Manage billing
@@ -204,7 +204,7 @@ export function VendorSubscription() {
           ]}
           action={
             currentPlan === "premium" ? (
-              <span className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-amber-200 bg-amber-50 text-xs font-semibold text-amber-900">
+              <span className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-amber-200 bg-amber-50 text-sm font-semibold text-amber-900">
                 <BadgeCheck size={16} />
                 Your current plan
               </span>
@@ -249,7 +249,7 @@ export function VendorSubscription() {
             ]}
             action={
               currentPlan === option.id ? (
-                <span className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-amber-200 bg-amber-50 text-xs font-semibold text-amber-900">
+                <span className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-amber-200 bg-amber-50 text-sm font-semibold text-amber-900">
                   <BadgeCheck size={16} />
                   Your current plan
                 </span>
@@ -278,11 +278,11 @@ export function VendorSubscription() {
         ))}
       </div>
       <div className="mt-5 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-emerald-100 bg-emerald-50/70 px-4 py-3">
-        <p className="text-[10px] leading-5 text-emerald-900">
+        <p className="text-sm leading-5 text-emerald-900">
           Payments are processed securely by Stripe. WedPlan uses Stripe Test
           Mode for this integration.
         </p>
-        <span className="rounded-full bg-white px-2.5 py-1 text-[9px] font-semibold uppercase tracking-wider text-emerald-800">
+        <span className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-800">
           Test mode
         </span>
       </div>
@@ -294,12 +294,12 @@ export function VendorSubscription() {
       {error && (
         <p
           role="alert"
-          className="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-xs leading-5 text-rose-900"
+          className="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm leading-5 text-rose-900"
         >
           {error}
         </p>
       )}
-      <p className="mt-5 text-center text-[10px] leading-5 text-stone-400">
+      <p className="mt-5 text-center text-xs leading-5 text-stone-400">
         You’ll continue to our secure checkout to complete your upgrade.
       </p>
     </div>
@@ -351,7 +351,7 @@ function PlanCard({
             <Icon size={20} />
           </span>
           {current && (
-            <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[9px] font-semibold text-emerald-800">
+            <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-800">
               Current plan
             </span>
           )}
@@ -386,12 +386,12 @@ function PlanCard({
         <div className="mt-6">
           {action ??
             (current ? (
-              <span className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 text-xs font-semibold text-emerald-900">
+              <span className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 text-sm font-semibold text-emerald-900">
                 <BadgeCheck size={15} />
                 Your current plan
               </span>
             ) : (
-              <span className="inline-flex h-12 w-full items-center justify-center rounded-full border border-[#eee3dc] bg-[#fffdfa] text-xs font-semibold text-stone-500">
+              <span className="inline-flex h-12 w-full items-center justify-center rounded-full border border-[#eee3dc] bg-[#fffdfa] text-sm font-semibold text-stone-500">
                 Included as your current tier
               </span>
             ))}

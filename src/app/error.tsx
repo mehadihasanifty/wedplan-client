@@ -26,7 +26,7 @@ export default function AppError({
         <span className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-rose-50 text-rose-800">
           <TriangleAlert size={23} />
         </span>
-        <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.2em] text-rose-800">
+        <p className="mt-5 text-xs font-semibold uppercase tracking-[0.2em] text-rose-800">
           Something went wrong
         </p>
         <h1 className="mt-2 text-3xl font-semibold tracking-[-0.045em] text-[#352321]">

@@ -76,7 +76,7 @@ export function WhyChooseUs() {
                 <span className="flex size-10 items-center justify-center rounded-xl bg-rose-100 text-rose-800 transition-colors group-hover:bg-rose-800 group-hover:text-white">
                   <Icon aria-hidden="true" size={19} strokeWidth={1.8} />
                 </span>
-                <h3 className="mt-4 text-sm font-semibold leading-snug">
+                <h3 className="mt-4 text-base font-semibold leading-snug">
                   {title}
                 </h3>
                 <p className="mt-2 text-xs leading-5 text-stone-600">

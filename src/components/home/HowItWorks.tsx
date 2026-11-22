@@ -40,7 +40,7 @@ export function HowItWorks() {
       >
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose-800">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-800">
               A little at a time
             </p>
             <h2
@@ -72,7 +72,7 @@ export function HowItWorks() {
                 <span className="mx-auto flex size-14 items-center justify-center rounded-full border border-rose-200 bg-[#fffaf6] text-rose-800 shadow-[0_0_0_7px_#fbf8f5]">
                   <Icon aria-hidden="true" size={21} strokeWidth={1.65} />
                 </span>
-                <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.2em] text-rose-800">
+                <p className="mt-5 text-xs font-semibold uppercase tracking-[0.2em] text-rose-800">
                   Step {number}
                 </p>
                 <h3 className="mt-2 text-lg font-semibold tracking-tight">

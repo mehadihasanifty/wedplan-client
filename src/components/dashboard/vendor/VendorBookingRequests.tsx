@@ -107,7 +107,7 @@ export function VendorBookingRequests() {
   return (
     <div className="mx-auto max-w-7xl">
       <div className="mb-7">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-800">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-rose-800">
           Your conversations
         </p>
         <h1 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-[#352321]">
@@ -130,7 +130,7 @@ export function VendorBookingRequests() {
               key={item}
               onClick={() => setFilter(item)}
               aria-pressed={filter === item}
-              className={`shrink-0 rounded-full border px-3.5 py-2 text-[10px] font-semibold capitalize transition ${filter === item ? "border-rose-800 bg-rose-800 text-white" : "border-[#eadfd5] bg-white text-stone-600 hover:border-rose-200 hover:bg-rose-50"}`}
+              className={`shrink-0 rounded-full border px-3.5 py-2 text-sm font-semibold capitalize transition ${filter === item ? "border-rose-800 bg-rose-800 text-white" : "border-[#eadfd5] bg-white text-stone-600 hover:border-rose-200 hover:bg-rose-50"}`}
             >
               {item}{" "}
               <span
@@ -175,10 +175,10 @@ export function VendorBookingRequests() {
                       <UserRound size={18} />
                     </span>
                     <div className="min-w-0">
-                      <h2 className="truncate text-sm font-semibold text-stone-900">
+                      <h2 className="truncate text-base font-semibold text-stone-900">
                         {booking.customer?.name || "WedPlan customer"}
                       </h2>
-                      <p className="mt-0.5 truncate text-[10px] text-stone-500">
+                      <p className="mt-0.5 truncate text-xs text-stone-500">
                         {booking.customer?.email ||
                           `Customer ID: ${booking.customerId}`}
                       </p>
@@ -201,14 +201,14 @@ export function VendorBookingRequests() {
                       )}
                     </span>
                     <div>
-                      <p className="text-[9px] font-semibold uppercase tracking-[0.13em] text-stone-500">
+                      <p className="text-xs font-semibold uppercase tracking-[0.13em] text-stone-500">
                         Requested service
                       </p>
                       <p className="mt-0.5 text-sm font-semibold text-stone-900">
                         {service?.serviceName || `Service ${booking.serviceId}`}
                       </p>
                       {service?.category && (
-                        <p className="mt-0.5 text-[10px] text-rose-800">
+                        <p className="mt-0.5 text-xs text-rose-800">
                           {service.category}
                         </p>
                       )}
@@ -239,7 +239,7 @@ export function VendorBookingRequests() {
                     />
                   </div>
                   <div className="mt-4 rounded-xl bg-[#fbf8f5] px-3.5 py-3">
-                    <p className="flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.13em] text-stone-500">
+                    <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.13em] text-stone-500">
                       <MessageSquareText size={12} />
                       Customer message
                     </p>
@@ -254,7 +254,7 @@ export function VendorBookingRequests() {
                         disabled={busyId === bookingId}
                         aria-busy={busyId === bookingId}
                         onClick={() => decide(booking, "rejected")}
-                        className="inline-flex h-10 items-center gap-1.5 rounded-full border border-rose-200 bg-white px-4 text-xs font-semibold text-rose-800 transition hover:bg-rose-50 disabled:opacity-50"
+                        className="inline-flex h-10 items-center gap-1.5 rounded-full border border-rose-200 bg-white px-4 text-sm font-semibold text-rose-800 transition hover:bg-rose-50 disabled:opacity-50"
                       >
                         {busyId === bookingId ? (
                           <Clock3 size={14} className="animate-spin" />
@@ -268,7 +268,7 @@ export function VendorBookingRequests() {
                         disabled={busyId === bookingId}
                         aria-busy={busyId === bookingId}
                         onClick={() => decide(booking, "accepted")}
-                        className="inline-flex h-10 items-center gap-1.5 rounded-full bg-rose-800 px-4 text-xs font-semibold text-white shadow-sm transition hover:bg-rose-900 disabled:opacity-50"
+                        className="inline-flex h-10 items-center gap-1.5 rounded-full bg-rose-800 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-900 disabled:opacity-50"
                       >
                         {busyId === bookingId ? (
                           <Clock3 size={14} className="animate-spin" />
@@ -282,7 +282,7 @@ export function VendorBookingRequests() {
                     </div>
                   )}
                   {!pending && (
-                    <p className="mt-4 border-t border-[#f0e8e2] pt-3 text-[10px] text-stone-500">
+                    <p className="mt-4 border-t border-[#f0e8e2] pt-3 text-xs text-stone-500">
                       This request has been processed and can no longer be
                       changed.
                     </p>
@@ -308,7 +308,7 @@ function Status({ status }: { status: string }) {
           : "bg-amber-50 text-amber-800";
   return (
     <span
-      className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[9px] font-semibold capitalize ${tone}`}
+      className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs font-semibold capitalize ${tone}`}
     >
       <span className="size-1.5 rounded-full bg-current" />
       {status}
@@ -328,10 +328,10 @@ function Info({
     <div className="flex min-w-0 items-start gap-2.5">
       <Icon size={15} className="mt-0.5 shrink-0 text-rose-700" />
       <div className="min-w-0">
-        <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-stone-500">
+        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-stone-500">
           {label}
         </p>
-        <p className="mt-1 break-words text-xs font-medium text-stone-800">
+        <p className="mt-1 break-words text-sm font-medium text-stone-800">
           {value}
         </p>
       </div>

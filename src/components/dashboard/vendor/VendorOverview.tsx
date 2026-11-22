@@ -100,7 +100,7 @@ export function VendorOverview() {
         />
         <div className="relative flex flex-wrap items-end justify-between gap-5">
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.19em] text-rose-800">
+            <p className="text-xs font-semibold uppercase tracking-[0.19em] text-rose-800">
               Vendor workspace
             </p>
             <h1 className="mt-2 text-3xl font-semibold tracking-[-0.045em] text-[#352321] sm:text-4xl">
@@ -113,7 +113,7 @@ export function VendorOverview() {
           </div>
           <Link
             href="/dashboard/vendor/add-service"
-            className="inline-flex items-center gap-2 rounded-full bg-rose-800 px-4 py-3 text-xs font-semibold text-white shadow-md shadow-rose-950/10 transition hover:-translate-y-0.5 hover:bg-rose-900"
+            className="inline-flex items-center gap-2 rounded-full bg-rose-800 px-4 py-3 text-sm font-semibold text-white shadow-md shadow-rose-950/10 transition hover:-translate-y-0.5 hover:bg-rose-900"
           >
             <Plus size={15} />
             Add a service
@@ -176,7 +176,7 @@ export function VendorOverview() {
             <section className="rounded-[1.6rem] border border-[#eee3dc] bg-white p-5 shadow-[0_16px_42px_-35px_rgba(82,43,44,.36)] sm:p-6">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.17em] text-rose-800">
+                  <p className="text-xs font-semibold uppercase tracking-[0.17em] text-rose-800">
                     Needs your attention
                   </p>
                   <h2 className="mt-1 text-lg font-semibold tracking-tight text-stone-900">
@@ -185,7 +185,7 @@ export function VendorOverview() {
                 </div>
                 <Link
                   href="/dashboard/vendor/booking-requests"
-                  className="inline-flex items-center gap-1 rounded-full px-3 py-2 text-xs font-semibold text-rose-800 transition hover:bg-rose-50"
+                  className="inline-flex items-center gap-1 rounded-full px-3 py-2 text-sm font-semibold text-rose-800 transition hover:bg-rose-50"
                 >
                   View all
                   <ArrowRight size={14} />
@@ -219,7 +219,7 @@ export function VendorOverview() {
                           · {booking.eventLocation}
                         </p>
                       </div>
-                      <span className="rounded-full bg-amber-50 px-3 py-1.5 text-[10px] font-semibold text-amber-800">
+                      <span className="rounded-full bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-800">
                         Pending
                       </span>
                     </div>
@@ -242,7 +242,7 @@ export function VendorOverview() {
               )}
             </section>
             <section className="rounded-[1.6rem] border border-[#eee3dc] bg-white p-5 shadow-[0_16px_42px_-35px_rgba(82,43,44,.36)] sm:p-6">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.17em] text-rose-800">
+              <p className="text-xs font-semibold uppercase tracking-[0.17em] text-rose-800">
                 Quick actions
               </p>
               <h2 className="mt-1 text-lg font-semibold tracking-tight text-stone-900">
@@ -274,7 +274,7 @@ export function VendorOverview() {
               </div>
             </section>
           </div>
-          <p className="mt-5 text-center text-[10px] text-stone-400">
+          <p className="mt-5 text-center text-xs text-stone-400">
             Prices display using your service currency.{" "}
             {services.length
               ? `Average listed price: ${formatCurrency(services.reduce((sum, item) => sum + item.price, 0) / services.length, services[0]?.currency || "USD")}.`
@@ -312,13 +312,13 @@ function MetricCard({
       >
         <Icon aria-hidden="true" size={18} />
       </span>
-      <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-stone-500">
+      <p className="mt-4 text-xs font-semibold uppercase tracking-[0.12em] text-stone-500">
         {label}
       </p>
       <p className="mt-1 text-2xl font-semibold tracking-tight text-stone-900">
         {value}
       </p>
-      <p className="mt-1 text-[10px] leading-4 text-stone-500">{note}</p>
+      <p className="mt-1 text-sm leading-5 text-stone-500">{note}</p>
     </article>
   );
 }
@@ -346,7 +346,7 @@ function QuickAction({
         <span className="block text-xs font-semibold text-stone-800">
           {title}
         </span>
-        <span className="mt-1 block truncate text-[10px] text-stone-500">
+        <span className="mt-1 block truncate text-xs text-stone-500">
           {text}
         </span>
       </span>

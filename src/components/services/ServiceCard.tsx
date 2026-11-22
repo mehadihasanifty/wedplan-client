@@ -77,14 +77,14 @@ export function ServiceCard({ service }: { service: Service }) {
         >
           <ArrowUpRight size={16} />
         </span>
-        <span className="absolute bottom-4 left-4 rounded-full border border-white/35 bg-[#fffaf6]/90 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.13em] text-rose-950 shadow-sm backdrop-blur">
+        <span className="absolute bottom-4 left-4 rounded-full border border-white/35 bg-[#fffaf6]/90 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.13em] text-rose-950 shadow-sm backdrop-blur">
           A WedPlan professional
         </span>
       </Link>
       <div className="flex flex-1 flex-col p-5 sm:p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-rose-800/75">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-rose-800/75">
               Wedding service
             </p>
             <h3 className="mt-1.5 line-clamp-2 text-lg font-semibold leading-snug tracking-[-0.025em] text-stone-900">
@@ -94,7 +94,7 @@ export function ServiceCard({ service }: { service: Service }) {
           <p className="shrink-0 rounded-xl bg-[#fbf5f1] px-3 py-2 text-right text-sm font-semibold text-rose-900">
             <span className="sr-only">Starting at </span>
             {price}
-            <span className="mt-0.5 block text-[10px] font-normal text-stone-500">
+            <span className="mt-0.5 block text-xs font-normal text-stone-500">
               per package
             </span>
           </p>
@@ -109,7 +109,7 @@ export function ServiceCard({ service }: { service: Service }) {
         </div>
         <div className="mt-auto flex items-center justify-between gap-3 border-t border-[#f0e8e2] pt-4">
           <div className="flex min-w-0 items-center gap-2.5">
-            <span className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-rose-100 bg-gradient-to-br from-rose-100 to-[#f2ded3] text-[10px] font-semibold text-rose-900">
+            <span className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-rose-100 bg-gradient-to-br from-rose-100 to-[#f2ded3] text-xs font-semibold text-rose-900">
               {vendorImage ? (
                 <span
                   role="img"
@@ -122,7 +122,7 @@ export function ServiceCard({ service }: { service: Service }) {
               )}
             </span>
             <div className="min-w-0">
-              <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-stone-500">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-stone-500">
                 By
               </p>
               <p className="truncate text-xs font-semibold text-stone-800">
@@ -132,7 +132,7 @@ export function ServiceCard({ service }: { service: Service }) {
           </div>
           <Link
             href={detailHref}
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-rose-800 px-3.5 py-2.5 text-xs font-semibold text-white shadow-sm shadow-rose-950/10 transition hover:bg-rose-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-rose-800 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-rose-950/10 transition hover:bg-rose-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2"
           >
             View details
             <ArrowUpRight aria-hidden="true" size={14} />

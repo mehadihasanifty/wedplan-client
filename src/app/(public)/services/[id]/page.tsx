@@ -178,7 +178,7 @@ export default function ServiceDetailsPage({
             </div>
           )}
           <div className="mt-8">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.19em] text-rose-800">
+            <p className="text-xs font-semibold uppercase tracking-[0.19em] text-rose-800">
               About this service
             </p>
             <h2 className="mt-2 text-xl font-semibold tracking-tight text-stone-900">
@@ -190,7 +190,7 @@ export default function ServiceDetailsPage({
             </p>
           </div>
           <div className="mt-7 rounded-[1.5rem] border border-[#eee1d7] bg-[#fbf7f3] p-5 sm:p-6">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.19em] text-rose-800">
+            <p className="text-xs font-semibold uppercase tracking-[0.19em] text-rose-800">
               Your wedding professional
             </p>
             <div className="mt-3 flex items-center gap-3">

@@ -73,7 +73,7 @@ export function VendorServiceForm({
   return (
     <form onSubmit={handleSubmit} className="grid gap-5">
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="grid gap-2 text-xs font-semibold text-stone-700">
+        <label className="grid gap-2 text-sm font-medium text-stone-700">
           Service name
           <input
             required
@@ -84,7 +84,7 @@ export function VendorServiceForm({
             placeholder="e.g. Garden wedding photography"
           />
         </label>
-        <label className="grid gap-2 text-xs font-semibold text-stone-700">
+        <label className="grid gap-2 text-sm font-medium text-stone-700">
           Category
           <select
             required
@@ -101,7 +101,7 @@ export function VendorServiceForm({
           </select>
         </label>
       </div>
-      <label className="grid gap-2 text-xs font-semibold text-stone-700">
+      <label className="grid gap-2 text-sm font-medium text-stone-700">
         Description
         <textarea
           required
@@ -113,12 +113,12 @@ export function VendorServiceForm({
           className="w-full resize-y rounded-xl border border-[#e9ded6] bg-white px-3.5 py-3 text-sm font-normal text-stone-800 outline-none transition placeholder:text-stone-400 focus:border-rose-400 focus:ring-4 focus:ring-rose-100/80"
           placeholder="Describe what couples can expect, what’s included, and what makes your service special."
         />
-        <span className="text-right text-[10px] font-normal text-stone-400">
+        <span className="text-right text-xs font-normal text-stone-400">
           {description.length}/3000
         </span>
       </label>
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="grid gap-2 text-xs font-semibold text-stone-700">
+        <label className="grid gap-2 text-sm font-medium text-stone-700">
           Price per package
           <input
             required
@@ -131,7 +131,7 @@ export function VendorServiceForm({
             placeholder="0.00"
           />
         </label>
-        <label className="grid gap-2 text-xs font-semibold text-stone-700">
+        <label className="grid gap-2 text-sm font-medium text-stone-700">
           Location
           <span className="relative">
             <MapPin
@@ -151,7 +151,7 @@ export function VendorServiceForm({
         </label>
       </div>
       <div>
-        <p className="mb-2 text-xs font-semibold text-stone-700">
+        <p className="mb-2 text-sm font-medium text-stone-700">
           Service image{" "}
           <span className="font-normal text-stone-400">
             Required · uploaded to ImgBB
@@ -191,7 +191,7 @@ export function VendorServiceForm({
               {file?.name ??
                 (preview ? "Replace service image" : "Choose service image")}
             </span>
-            <span className="mt-1 block text-[10px] leading-4 text-stone-500">
+            <span className="mt-1 block text-xs leading-4 text-stone-500">
               JPG, PNG or WebP · up to 5 MB
             </span>
           </span>
@@ -207,7 +207,7 @@ export function VendorServiceForm({
           <span className="block text-xs font-semibold text-stone-800">
             Available for bookings
           </span>
-          <span className="mt-1 block text-[10px] text-stone-500">
+          <span className="mt-1 block text-xs text-stone-500">
             Customers can request this service once it is approved.
           </span>
         </span>
@@ -221,7 +221,7 @@ export function VendorServiceForm({
       {error && (
         <p
           role="alert"
-          className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-xs leading-5 text-rose-900"
+          className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm leading-5 text-rose-900"
         >
           {error}
         </p>

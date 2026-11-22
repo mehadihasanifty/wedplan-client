@@ -71,7 +71,7 @@ export function AddServicePageClient() {
     <div className="mx-auto max-w-4xl">
       <Link
         href="/dashboard/vendor"
-        className="mb-5 inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold text-stone-600 transition hover:bg-rose-50 hover:text-rose-900"
+        className="mb-5 inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold text-stone-600 transition hover:bg-rose-50 hover:text-rose-900"
       >
         <ArrowLeft size={15} />
         Back to overview
@@ -98,7 +98,7 @@ export function AddServicePageClient() {
           </p>
           <Link
             href="/dashboard/vendor/subscription"
-            className="mt-5 inline-flex rounded-full bg-rose-800 px-5 py-3 text-xs font-semibold text-white transition hover:bg-rose-900"
+            className="mt-5 inline-flex rounded-full bg-rose-800 px-5 py-3 text-sm font-semibold text-white transition hover:bg-rose-900"
           >
             Explore Premium
           </Link>

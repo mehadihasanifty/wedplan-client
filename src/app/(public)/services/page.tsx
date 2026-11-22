@@ -31,7 +31,7 @@ export default function ServicesPage() {
         />
         <div className="relative grid items-center gap-8 lg:grid-cols-[1fr_0.7fr] lg:gap-12">
           <div className="max-w-3xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-rose-200/80 bg-white/75 px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-800 shadow-sm">
+            <span className="inline-flex items-center gap-2 rounded-full border border-rose-200/80 bg-white/75 px-3.5 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-rose-800 shadow-sm">
               <Flower2 size={13} aria-hidden="true" />
               Made for your day
             </span>
@@ -97,7 +97,7 @@ export default function ServicesPage() {
                   <Heart aria-hidden="true" size={15} />
                 </span>
                 <span>
-                  <span className="block text-[9px] font-semibold uppercase tracking-wider text-stone-500">
+                  <span className="block text-xs font-semibold uppercase tracking-wider text-stone-500">
                     Your vision
                   </span>
                   <span className="block text-xs font-semibold text-stone-800">
@@ -130,7 +130,7 @@ export default function ServicesPage() {
               href="https://unsplash.com/photos/man-in-black-jacket-kissing-woman-in-white-wedding-dress-KKvXIWSZnWs"
               target="_blank"
               rel="noreferrer"
-              className="mt-1 block text-center text-[9px] text-rose-900/45 transition hover:text-rose-800"
+              className="mt-1 block text-center text-xs text-rose-900/45 transition hover:text-rose-800"
             >
               Photo via Unsplash
             </a>

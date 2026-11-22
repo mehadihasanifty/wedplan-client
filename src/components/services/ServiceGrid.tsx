@@ -132,10 +132,10 @@ function ServiceGridContent({ initialCategory }: { initialCategory: string }) {
       />
       <div className="mb-5 mt-9 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.19em] text-rose-800">
+          <p className="text-xs font-semibold uppercase tracking-[0.19em] text-rose-800">
             The WedPlan collection
           </p>
-          <h2 className="mt-1 text-2xl font-semibold tracking-[-0.03em] text-stone-900">
+          <h2 className="mt-1 text-2xl font-semibold tracking-[-0.03em] sm:text-3xl text-stone-900">
             Wedding services
           </h2>
         </div>
@@ -182,7 +182,7 @@ function ServiceGridContent({ initialCategory }: { initialCategory: string }) {
                   sort: "",
                 })
               }
-              className="mt-5 inline-flex items-center gap-2 rounded-full bg-rose-800 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-rose-900"
+              className="mt-5 inline-flex items-center gap-2 rounded-full bg-rose-800 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-rose-900"
             >
               <SlidersHorizontal size={14} />
               Clear your filters

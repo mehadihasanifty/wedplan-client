@@ -87,7 +87,7 @@ export function HeroArtwork() {
           <Heart aria-hidden="true" size={17} />
         </span>
         <span>
-          <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+          <span className="block text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
             The right people
           </span>
           <span className="mt-0.5 block font-serif text-base text-[#49342f]">
@@ -110,7 +110,7 @@ export function HeroArtwork() {
           <CalendarCheck size={18} />
         </span>
         <span>
-          <span className="block text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+          <span className="block text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             Your celebration
           </span>
           <span className="mt-0.5 block text-sm font-semibold">

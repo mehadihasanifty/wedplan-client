@@ -13,7 +13,7 @@ export default function PaymentCancelPage() {
           <span className="mx-auto flex size-16 items-center justify-center rounded-[1.35rem] bg-white text-rose-800 shadow-sm">
             <ShieldCheck size={27} />
           </span>
-          <p className="mt-6 text-[10px] font-semibold uppercase tracking-[0.2em] text-rose-800">
+          <p className="mt-6 text-xs font-semibold uppercase tracking-[0.2em] text-rose-800">
             You’re always in control
           </p>
           <h1 className="mt-2 text-3xl font-semibold tracking-[-0.045em] text-[#352321] sm:text-4xl">

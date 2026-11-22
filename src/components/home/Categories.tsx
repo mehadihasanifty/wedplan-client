@@ -102,7 +102,7 @@ export function Categories() {
                   <Icon aria-hidden="true" size={23} strokeWidth={1.65} />
                 </motion.span>
                 <span className="min-w-0 flex-1">
-                  <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-700/75">
+                  <span className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.18em] text-rose-700/75">
                     {String(index + 1).padStart(2, "0")} / DISCOVER
                   </span>
                   <span className="block font-semibold leading-snug">

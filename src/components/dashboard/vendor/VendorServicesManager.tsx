@@ -172,7 +172,7 @@ export function VendorServicesManager() {
     <div className="mx-auto max-w-7xl">
       <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-800">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-rose-800">
             Your listings
           </p>
           <h1 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-[#352321]">
@@ -184,7 +184,7 @@ export function VendorServicesManager() {
         </div>
         <Link
           href="/dashboard/vendor/add-service"
-          className="inline-flex items-center gap-2 rounded-full bg-rose-800 px-4 py-3 text-xs font-semibold text-white shadow-md shadow-rose-950/10 transition hover:bg-rose-900"
+          className="inline-flex items-center gap-2 rounded-full bg-rose-800 px-4 py-3 text-sm font-semibold text-white shadow-md shadow-rose-950/10 transition hover:bg-rose-900"
         >
           <Plus size={15} />
           Add a service
@@ -198,7 +198,7 @@ export function VendorServicesManager() {
           {activeCount >= 3 && (
             <Link
               href="/dashboard/vendor/subscription"
-              className="text-xs font-semibold text-rose-900 underline underline-offset-2"
+              className="text-sm font-semibold text-rose-900 underline underline-offset-2"
             >
               Upgrade for unlimited services
             </Link>
@@ -238,7 +238,7 @@ export function VendorServicesManager() {
                 className="overflow-hidden rounded-[1.55rem] border border-[#eee3dc] bg-white shadow-[0_15px_40px_-34px_rgba(82,43,44,.38)]"
               >
                 <div className="flex gap-4 p-4 sm:p-5">
-                  <span className="relative size-24 shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br from-rose-100 via-[#f8eee4] to-amber-100 sm:size-28">
+                  <span className="relative w-24 h-24 shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br from-rose-100 via-[#f8eee4] to-amber-100 sm:w-[190px] sm:h-[160px]">
                     {service.images?.[0] && (
                       <span
                         role="img"
@@ -249,7 +249,7 @@ export function VendorServicesManager() {
                         }}
                       />
                     )}
-                    <span className="absolute bottom-2 left-2 rounded-full bg-white/90 px-2 py-1 text-[8px] font-semibold text-rose-900 shadow-sm">
+                    <span className="absolute bottom-2 left-2 rounded-full bg-white/90 px-2 py-1 text-[12px] font-semibold text-rose-900 shadow-sm">
                       {service.category}
                     </span>
                   </span>
@@ -278,7 +278,7 @@ export function VendorServicesManager() {
                       <StatusBadge status={status} />
                       {approved ? (
                         <span
-                          className={`rounded-full px-2.5 py-1 text-[9px] font-semibold ${active ? "bg-emerald-50 text-emerald-800" : "bg-stone-100 text-stone-600"}`}
+                          className={`rounded-full px-2.5 py-1 text-xs font-semibold ${active ? "bg-emerald-50 text-emerald-800" : "bg-stone-100 text-stone-600"}`}
                         >
                           {active ? "Available" : "Paused"}
                         </span>
@@ -298,13 +298,13 @@ export function VendorServicesManager() {
                         type="button"
                         disabled={busyId === id}
                         onClick={() => toggleAvailability(service)}
-                        className="inline-flex items-center gap-1.5 rounded-full border border-[#eadfd5] bg-white px-3 py-2 text-[10px] font-semibold text-stone-700 transition hover:border-rose-200 hover:text-rose-900 disabled:opacity-50"
+                        className="inline-flex items-center gap-1.5 rounded-full border border-[#eadfd5] bg-white px-3 py-2 text-sm font-semibold text-stone-700 transition hover:border-rose-200 hover:text-rose-900 disabled:opacity-50"
                       >
                         <Power size={13} />
                         {active ? "Pause" : "Make available"}
                       </button>
                     ) : (
-                      <span className="inline-flex items-center gap-1.5 text-[10px] text-stone-500">
+                      <span className="inline-flex items-center gap-1.5 text-xs text-stone-500">
                         <Eye size={13} />
                         Only you can see this listing while it’s {status}.
                       </span>
@@ -356,7 +356,7 @@ export function VendorServicesManager() {
           >
             <div className="mb-5 flex items-start justify-between gap-4">
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-800">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-rose-800">
                   Service details
                 </p>
                 <h2
@@ -397,7 +397,7 @@ function StatusBadge({ status }: { status: string }) {
         : "bg-amber-50 text-amber-800";
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[9px] font-semibold capitalize ${style}`}
+      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold capitalize ${style}`}
     >
       {status === "approved" && <BadgeCheck size={11} />} {status}
     </span>
