@@ -1,53 +1,87 @@
-# WedPlan — Wedding Planning, Thoughtfully
+<div align="center">
 
-<p align="center">
-  <strong>Discover trusted wedding professionals, plan with confidence, and bring your celebration to life.</strong>
-</p>
+# WedPlan
 
-<p align="center">
-  <a href="https://nextjs.org"><img alt="Next.js" src="https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs"></a>
-  <a href="https://react.dev"><img alt="React" src="https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white"></a>
-  <a href="https://www.typescriptlang.org"><img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white"></a>
-</p>
+### Wedding planning, thoughtfully.
 
-## Project Overview
+Discover wedding professionals, coordinate booking requests, and bring every celebration together in one place.
 
-WedPlan is the client-side web application for a wedding planning marketplace. Customers can browse wedding services and request bookings. Vendors can publish and manage listings, respond to booking requests, and upgrade their subscription. Administrators can manage users and review services and transactions.
+[![Next.js](https://img.shields.io/badge/Next.js-16-111111?logo=nextdotjs)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 
-**Live website:** [Open WedPlan](https://wedplan-client-mfh52bneo-mehedi-hasan13.vercel.app)
+**[Visit the live website](https://wedplan-client-mfh52bneo-mehedi-hasan13.vercel.app)**
 
-## Important Features
+</div>
 
-- Responsive wedding-themed homepage and service discovery experience.
-- Search and filter services by name, category, and location; sort by price.
+---
+
+## Contents
+
+- [About WedPlan](#about-wedplan)
+- [Features](#features)
+- [Technology](#technology)
+- [Application Areas](#application-areas)
+- [Getting Started](#getting-started)
+- [Environment Configuration](#environment-configuration)
+- [Run Locally](#run-locally)
+- [Available Commands](#available-commands)
+- [Deployment](#deployment)
+- [Security](#security)
+
+## About WedPlan
+
+WedPlan is the **client-side application** for a role-based wedding services marketplace. Couples can discover wedding services and submit booking requests. Vendors can publish listings, manage requests, and choose a subscription plan. Administrators can review platform users, service listings, and payment transactions.
+
+The client is built with the Next.js App Router and communicates with the separate [WedPlan Express API](https://github.com/mehadihasanifty/wedplan-server) for marketplace operations. Better Auth manages authentication, while MongoDB stores authentication and platform data.
+
+## Features
+
+- Wedding-focused landing page with featured services and browsable categories.
+- Public service directory with name search, category and location filters, price sorting, and pagination.
 - Service detail pages with images, vendor information, and booking requests.
-- Better Auth email/password authentication and Google sign-in, with role-aware customer, vendor, and admin dashboards.
-- Vendor service management, approval status, booking-request tools, and subscription checkout.
-- Customer booking history and booking-status tracking.
-- Admin user and service management, plus read-only transaction monitoring.
-- Stripe Checkout flow with payment confirmation handled by the server webhook.
-- ImgBB image uploads, loading and error states, and toast notifications.
+- Email/password and Google sign-in through Better Auth.
+- Customer, vendor, and admin dashboard experiences with role-aware navigation.
+- Vendor tools for service listings, availability, booking requests, and Premium subscription checkout.
+- Customer booking history and booking status tracking.
+- Admin tools for user moderation and service review, with transaction records presented as read-only.
+- Stripe Checkout, with subscription activation confirmed by the server-side webhook.
+- ImgBB image uploads, responsive layouts, loading and error states, and toast notifications.
+- Motion effects that respect the user's reduced-motion preference.
 
-## Technology Stack
+## Technology
 
-| Area | Technologies |
+| Layer | Stack |
 | --- | --- |
-| Framework | Next.js 16 App Router, React 19, TypeScript |
-| Styling and UI | Tailwind CSS 4, ShadCN-based components, Lucide icons |
-| Authentication and data | Better Auth, MongoDB |
-| API | WedPlan Express.js server |
-| Payments and uploads | Stripe Checkout, ImgBB |
+| Web framework | Next.js 16 App Router, React 19 |
+| Language | TypeScript |
+| UI and styling | Tailwind CSS 4, ShadCN-based components, Lucide icons |
+| Authentication | Better Auth |
+| Data | MongoDB through Better Auth and the Express API |
+| API integration | WedPlan Express.js server, Fetch, Axios |
+| Payments and media | Stripe Checkout, ImgBB |
 | Animation | Framer Motion |
 
-## Installation
+## Application Areas
+
+| Role | Main capabilities |
+| --- | --- |
+| Visitor | Explore the homepage and browse approved, active wedding services. |
+| Customer | Request bookings and track or cancel eligible booking requests. |
+| Vendor | Manage services and booking requests, and upgrade a subscription. |
+| Admin | Manage users and services, and review payment transactions. |
+
+## Getting Started
 
 ### Prerequisites
 
-- Node.js 20 or newer and npm.
-- The [WedPlan API server](https://github.com/mehadihasanifty/wedplan-server) running locally or deployed.
-- MongoDB Atlas (or another reachable MongoDB deployment), plus credentials for the services you enable.
+- Node.js 20 or later and npm.
+- A MongoDB database reachable by both the client and API server.
+- The [WedPlan API server](https://github.com/mehadihasanifty/wedplan-server), running locally or deployed.
+- Provider credentials for the features you enable: Better Auth, ImgBB, Google OAuth, and Stripe.
 
-### Get the client code
+### Clone and install
 
 ```bash
 git clone https://github.com/mehadihasanifty/wedplan-client.git
@@ -55,29 +89,41 @@ cd wedplan-client
 npm install
 ```
 
-Create a `.env.local` file in the client project root. Keep it private and never commit it:
+Create a `.env.local` file in the project root and configure the variables below. Use your own credentials; do not copy secrets into source code.
+
+## Environment Configuration
+
+| Variable | Required | Purpose |
+| --- | :---: | --- |
+| `MONGODB_URL` | Yes | MongoDB connection string used by server-side Better Auth. |
+| `BETTER_AUTH_SECRET` | Yes | Secret used by Better Auth. Configure the matching value on the API server. |
+| `BETTER_AUTH_URL` | Yes | Client application origin, for example `http://localhost:3000`. |
+| `NEXT_PUBLIC_API_URL` | Yes | WedPlan API base URL, for example `http://localhost:5000/api`. |
+| `WEDPLAN_API_INTERNAL_URL` | No | Optional server-to-server API URL override. |
+| `NEXT_PUBLIC_APP_URL` | Recommended | Canonical client origin used by authentication and checkout flows. |
+| `IMGBB_API_KEY` | For uploads | Server-side key for the Next.js image upload route. Keep it private. |
+| `GOOGLE_CLIENT_ID` | For Google sign-in | Google OAuth client ID. |
+| `GOOGLE_CLIENT_SECRET` | For Google sign-in | Google OAuth client secret. Keep it private. |
+
+Example local configuration (replace every placeholder):
 
 ```dotenv
-MONGODB_URL="your-mongodb-connection-string"
-BETTER_AUTH_SECRET="a-long-random-secret-shared-with-the-api-server"
+MONGODB_URL="mongodb+srv://<db-user>:<db-password>@<cluster>/<database>"
+BETTER_AUTH_SECRET="<long-random-secret-shared-with-the-api-server>"
 BETTER_AUTH_URL="http://localhost:3000"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 NEXT_PUBLIC_API_URL="http://localhost:5000/api"
 WEDPLAN_API_INTERNAL_URL="http://localhost:5000/api"
-
-# Optional: enable Google sign-in
-GOOGLE_CLIENT_ID="your-google-oauth-client-id"
-GOOGLE_CLIENT_SECRET="your-google-oauth-client-secret"
-
-# Required for profile and service image uploads
-IMGBB_API_KEY="your-imgbb-api-key"
+IMGBB_API_KEY="<imgbb-api-key>"
+GOOGLE_CLIENT_ID="<google-oauth-client-id>"
+GOOGLE_CLIENT_SECRET="<google-oauth-client-secret>"
 ```
 
-Use the same `MONGODB_URL` and `BETTER_AUTH_SECRET` in the client and API server. Configure the API server’s own environment file for its MongoDB, JWT, CORS, and Stripe settings. **Never put secret keys in `NEXT_PUBLIC_*` variables or commit environment files.**
+`WEDPLAN_API_INTERNAL_URL` can be omitted when the public API URL also works for server-side requests. Google variables can be omitted when Google sign-in is not configured. The API server has its own environment variables for JWT, CORS, Stripe, and server configuration; see its README. Never prefix secret values with `NEXT_PUBLIC_`.
 
 ## Run Locally
 
-Start the API server in one terminal:
+Run the API server and client in separate terminals. Configure the server's environment first, then start the API:
 
 ```bash
 cd path/to/wedplan-server
@@ -85,26 +131,42 @@ npm install
 npm run dev
 ```
 
-Start the client in a second terminal:
+In another terminal, start the client:
 
 ```bash
 cd path/to/wedplan-client
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The API health endpoint should respond at [http://localhost:5000/api/health](http://localhost:5000/api/health).
+Open **[http://localhost:3000](http://localhost:3000)**. Check that the API is reachable at **[http://localhost:5000/api/health](http://localhost:5000/api/health)**.
 
-## Available Scripts
+## Available Commands
 
 | Command | Description |
 | --- | --- |
 | `npm run dev` | Start the Next.js development server. |
-| `npm run build` | Create an optimized production build. |
-| `npm run start` | Serve the production build locally. |
+| `npm run build` | Create the optimized production build. |
+| `npm run start` | Run the production build locally. |
 | `npm run lint` | Run ESLint. |
 
-## Deployment Notes
+## Deployment
 
-Set the client environment variables in the hosting provider and use the deployed client URL for `BETTER_AUTH_URL` and `NEXT_PUBLIC_APP_URL`. Set the API URL to the deployed WedPlan server. Add the deployed client origin to the API server’s CORS and Better Auth trusted-origin configuration. Configure Google OAuth callback URLs and Stripe webhook settings for the deployed domains. Redeploy after changing environment variables.
+1. Deploy the API server and configure its MongoDB, Better Auth, JWT, CORS, and Stripe environment variables.
+2. Deploy this client and add the client environment variables in the hosting provider's project settings.
+3. Set `BETTER_AUTH_URL` and `NEXT_PUBLIC_APP_URL` to the canonical deployed client origin.
+4. Set `NEXT_PUBLIC_API_URL` to the deployed API URL, including `/api`, and configure the API server to allow the client origin.
+5. Configure the Google OAuth callback URL and Stripe webhook URL for the deployed domains when using those features.
+6. Redeploy after changing environment variables, then verify authentication, service browsing, dashboards, booking, and checkout flows.
 
-Keep `.env.local` and all credentials out of Git. The repository ignores `.env*` files by default.
+## Security
+
+- Keep `.env`, `.env.local`, database credentials, OAuth secrets, ImgBB keys, and Stripe secrets out of Git.
+- Keep private credentials on the server; do not expose them through `NEXT_PUBLIC_*` variables.
+- Configure production origins and API CORS explicitly.
+- Payment success redirects do not grant Premium access; the server verifies Stripe webhook events.
+
+---
+
+<div align="center">
+  <sub>WedPlan — wedding planning, thoughtfully.</sub>
+</div>
