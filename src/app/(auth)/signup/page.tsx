@@ -335,7 +335,11 @@ export default function SignUpPage() {
           </div>
         </fieldset>
 
-        <form onSubmit={handleEmailSignUp} className="mt-5 grid gap-3.5">
+        <form
+          onSubmit={handleEmailSignUp}
+          onReset={(event) => event.preventDefault()}
+          className="mt-5 grid gap-3.5"
+        >
           <label className="grid gap-1.5 text-sm font-medium text-stone-700">
             Full name
             <span className="relative">

@@ -181,7 +181,11 @@ export default function SignInPage() {
           </p>
         )}
 
-        <form onSubmit={handleCredentialSignIn} className="grid gap-4">
+        <form
+          onSubmit={handleCredentialSignIn}
+          onReset={(event) => event.preventDefault()}
+          className="grid gap-4"
+        >
           <label className="grid gap-1.5 text-sm font-medium text-stone-700">
             Email address
             <span className="relative">
