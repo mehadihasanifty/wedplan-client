@@ -105,19 +105,7 @@ Create a `.env.local` file in the project root and configure the variables below
 | `GOOGLE_CLIENT_ID` | For Google sign-in | Google OAuth client ID. |
 | `GOOGLE_CLIENT_SECRET` | For Google sign-in | Google OAuth client secret. Keep it private. |
 
-Example local configuration (replace every placeholder):
 
-```dotenv
-MONGODB_URL="mongodb+srv://<db-user>:<db-password>@<cluster>/<database>"
-BETTER_AUTH_SECRET="<long-random-secret-shared-with-the-api-server>"
-BETTER_AUTH_URL="http://localhost:3000"
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
-NEXT_PUBLIC_API_URL="http://localhost:5000/api"
-WEDPLAN_API_INTERNAL_URL="http://localhost:5000/api"
-IMGBB_API_KEY="<imgbb-api-key>"
-GOOGLE_CLIENT_ID="<google-oauth-client-id>"
-GOOGLE_CLIENT_SECRET="<google-oauth-client-secret>"
-```
 
 `WEDPLAN_API_INTERNAL_URL` can be omitted when the public API URL also works for server-side requests. Google variables can be omitted when Google sign-in is not configured. The API server has its own environment variables for JWT, CORS, Stripe, and server configuration; see its README. Never prefix secret values with `NEXT_PUBLIC_`.
 
