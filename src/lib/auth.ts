@@ -46,11 +46,16 @@ const globalForMongo = globalThis as typeof globalThis & {
   wedPlanMongoClient?: MongoClient;
 };
 
+// const mongoClient =
+//   globalForMongo.wedPlanMongoClient ?? new MongoClient(mongoUrl);
+// if (process.env.NODE_ENV !== "production") {
+//   globalForMongo.wedPlanMongoClient = mongoClient;
+// }
+
 const mongoClient =
   globalForMongo.wedPlanMongoClient ?? new MongoClient(mongoUrl);
-if (process.env.NODE_ENV !== "production") {
-  globalForMongo.wedPlanMongoClient = mongoClient;
-}
+
+globalForMongo.wedPlanMongoClient = mongoClient;
 
 // Keep Better Auth records beside the rest of WedPlan's MongoDB data.
 export const authDb = mongoClient.db("wedding_planning_platform");
