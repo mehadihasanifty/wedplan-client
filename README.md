@@ -1,66 +1,110 @@
-# WedPlan — Wedding Planning Platform
+# WedPlan — Wedding Planning, Thoughtfully
 
-WedPlan helps couples find wedding professionals and request bookings. Vendors manage service listings, booking requests, and Premium subscriptions. Admins review users, listings, and payment records.
+<p align="center">
+  <strong>Discover trusted wedding professionals, plan with confidence, and bring your celebration to life.</strong>
+</p>
 
-## Features
+<p align="center">
+  <a href="https://nextjs.org"><img alt="Next.js" src="https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs"></a>
+  <a href="https://react.dev"><img alt="React" src="https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white"></a>
+  <a href="https://www.typescriptlang.org"><img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white"></a>
+</p>
 
-- Responsive public homepage and searchable service directory with category/location filters and price sorting.
-- Service details, ImgBB-hosted images, and customer booking requests.
-- Better Auth email/password and Google authentication with Customer, Vendor, and Admin role-aware dashboards.
-- Vendor listing management and approval states; public listings show only approved, active services.
-- Customer booking management, vendor accept/reject workflow, and admin user/service moderation.
-- Stripe Checkout subscription flow with server-verified webhook updates.
-- Loading, empty, and error states with toast feedback; animated homepage sections respect reduced-motion preferences.
+## Project Overview
 
-## Technology
+WedPlan is the client-side web application for a wedding planning marketplace. Customers can browse wedding services and request bookings. Vendors can publish and manage listings, respond to booking requests, and upgrade their subscription. Administrators can manage users and review services and transactions.
 
-Next.js 16 App Router, React 19, TypeScript, Tailwind CSS, ShadCN components, Better Auth, MongoDB, Express.js API, Stripe Checkout, ImgBB, and Framer Motion.
+**Live website:** [Open WedPlan](https://wedplan-client-mfh52bneo-mehedi-hasan13.vercel.app)
 
-## Repositories and deployment
+## Important Features
 
-- Client: [github.com/mehadihasanifty/wedplan-client](https://github.com/mehadihasanifty/wedplan-client)
-- Server: [github.com/mehadihasanifty/wedplan-server](https://github.com/mehadihasanifty/wedplan-server)
-- Live website: Not deployed yet. Add the deployed URL here before submission.
+- Responsive wedding-themed homepage and service discovery experience.
+- Search and filter services by name, category, and location; sort by price.
+- Service detail pages with images, vendor information, and booking requests.
+- Better Auth email/password authentication and Google sign-in, with role-aware customer, vendor, and admin dashboards.
+- Vendor service management, approval status, booking-request tools, and subscription checkout.
+- Customer booking history and booking-status tracking.
+- Admin user and service management, plus read-only transaction monitoring.
+- Stripe Checkout flow with payment confirmation handled by the server webhook.
+- ImgBB image uploads, loading and error states, and toast notifications.
 
-## Run locally
+## Technology Stack
 
-The client and API server are separate repositories and both need to run.
-
-1. Install Node.js and MongoDB Atlas or a local MongoDB instance.
-2. In the client repository, copy `.env.example` to `.env`, fill in the values below, then run:
-
-   ```bash
-   npm install
-   npm run dev
-   ```
-
-3. In the server repository, copy its `.env.example` to `.env`. Use the same `MONGODB_URL`, `BETTER_AUTH_SECRET`, and `BETTER_AUTH_URL` as the client, then run:
-
-   ```bash
-   npm install
-   npm run dev
-   ```
-
-4. Open `http://localhost:3000`. The API health endpoint is `http://localhost:5000/api/health`.
-
-## Client environment variables
-
-| Variable | Purpose |
+| Area | Technologies |
 | --- | --- |
-| `MONGODB_URL` | MongoDB connection URL used by server-side Better Auth and Next.js routes. Use the same database URL in the Express server. |
-| `BETTER_AUTH_SECRET` | Shared Better Auth signing secret. Keep it identical in client and server environments. |
-| `BETTER_AUTH_URL` | The client origin, such as `http://localhost:3000`. |
-| `NEXT_PUBLIC_API_URL` | Browser-visible Express API base URL, such as `http://localhost:5000/api`; it is not a credential. |
-| `IMGBB_API_KEY` | ImgBB key used only by the Next.js image upload route. Do not rename it to a `NEXT_PUBLIC_` variable. |
-| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Optional Google OAuth credentials; keep server-side. |
+| Framework | Next.js 16 App Router, React 19, TypeScript |
+| Styling and UI | Tailwind CSS 4, ShadCN-based components, Lucide icons |
+| Authentication and data | Better Auth, MongoDB |
+| API | WedPlan Express.js server |
+| Payments and uploads | Stripe Checkout, ImgBB |
+| Animation | Framer Motion |
 
-Set `PORT`, `CLIENT_URL`, `JWT_SECRET`, `JWT_ACCESS_TTL`, and Stripe variables in the server `.env`. Configure a Stripe Test Mode webhook to the server's `/api/payments/webhook` endpoint. See the server README for required Stripe events.
+## Installation
 
-## Deployment checklist
+### Prerequisites
 
-- Set all environment variables in the hosting providers; never upload `.env` files.
-- Set the client `BETTER_AUTH_URL` to the deployed client origin and server `CLIENT_URL` to the allowed client origin(s).
-- Set `NEXT_PUBLIC_API_URL` to the deployed API base URL and enable credentialed CORS for the client origin.
-- Keep MongoDB, Better Auth, Google OAuth, ImgBB, JWT, and Stripe credentials in server-side environment settings. Only the API URL is public.
-- Register the production Stripe webhook URL and signing secret; Premium access is granted only after a verified webhook.
-- Smoke-test direct navigation/reload for public, auth, payment, and role-protected routes; test signup, bookings, vendor approval, and Stripe Test Mode.
+- Node.js 20 or newer and npm.
+- The [WedPlan API server](https://github.com/mehadihasanifty/wedplan-server) running locally or deployed.
+- MongoDB Atlas (or another reachable MongoDB deployment), plus credentials for the services you enable.
+
+### Get the client code
+
+```bash
+git clone https://github.com/mehadihasanifty/wedplan-client.git
+cd wedplan-client
+npm install
+```
+
+Create a `.env.local` file in the client project root. Keep it private and never commit it:
+
+```dotenv
+MONGODB_URL="your-mongodb-connection-string"
+BETTER_AUTH_SECRET="a-long-random-secret-shared-with-the-api-server"
+BETTER_AUTH_URL="http://localhost:3000"
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+NEXT_PUBLIC_API_URL="http://localhost:5000/api"
+WEDPLAN_API_INTERNAL_URL="http://localhost:5000/api"
+
+# Optional: enable Google sign-in
+GOOGLE_CLIENT_ID="your-google-oauth-client-id"
+GOOGLE_CLIENT_SECRET="your-google-oauth-client-secret"
+
+# Required for profile and service image uploads
+IMGBB_API_KEY="your-imgbb-api-key"
+```
+
+Use the same `MONGODB_URL` and `BETTER_AUTH_SECRET` in the client and API server. Configure the API server’s own environment file for its MongoDB, JWT, CORS, and Stripe settings. **Never put secret keys in `NEXT_PUBLIC_*` variables or commit environment files.**
+
+## Run Locally
+
+Start the API server in one terminal:
+
+```bash
+cd path/to/wedplan-server
+npm install
+npm run dev
+```
+
+Start the client in a second terminal:
+
+```bash
+cd path/to/wedplan-client
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000). The API health endpoint should respond at [http://localhost:5000/api/health](http://localhost:5000/api/health).
+
+## Available Scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the Next.js development server. |
+| `npm run build` | Create an optimized production build. |
+| `npm run start` | Serve the production build locally. |
+| `npm run lint` | Run ESLint. |
+
+## Deployment Notes
+
+Set the client environment variables in the hosting provider and use the deployed client URL for `BETTER_AUTH_URL` and `NEXT_PUBLIC_APP_URL`. Set the API URL to the deployed WedPlan server. Add the deployed client origin to the API server’s CORS and Better Auth trusted-origin configuration. Configure Google OAuth callback URLs and Stripe webhook settings for the deployed domains. Redeploy after changing environment variables.
+
+Keep `.env.local` and all credentials out of Git. The repository ignores `.env*` files by default.
